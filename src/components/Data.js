@@ -1,6 +1,5 @@
 import mimg1 from '../Images/mSlide1.jpeg'
 import mimg2 from '../Images/mSlide2.jpg'
-import mimg3 from '../Images/mSlide3.jpg'
 import img1 from '../Images/slide1.jpeg'
 import img2 from '../Images/slide2.jpg'
 import original from '../Images/original.jpg'
@@ -45,11 +44,7 @@ export const mSlides = [
     {
         img: mimg2,
         key: mimg2
-    },
-    {
-        img: mimg3,
-        key: mimg3
-    },
+    }
 ]
 
 export const slides = [
@@ -60,11 +55,7 @@ export const slides = [
     {
         img: img2,
         key: img2
-    },
-    {
-        img: mimg3,
-        key: mimg3
-    },
+    }
 ]
 
 export const Chicken = [

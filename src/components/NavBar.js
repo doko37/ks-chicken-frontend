@@ -17,10 +17,6 @@ const Container = styled.div`
     align-items: center;
     width: 100%;
 
-    @media(min-width: 700px) {
-        width: 700px;
-    }
-
     @media(min-width: 1200px) {
         width: 1200px;
     }
@@ -31,10 +27,6 @@ const Right = styled.div`
     display: flex;
     align-items: center;
     margin-right: 1em;
-
-    @media(min-width: 700px) {
-        margin: 0;
-    }
 `
 
 const NavItems = styled.a`
@@ -47,11 +39,10 @@ const NavItems = styled.a`
 const Logo = styled.img`
     height: 60%;
     margin-left: 1em;
+    cursor: pointer;
 
     @media(min-width: 700px) {
         height: 70%;
-        margin: 0;
-        cursor: pointer;
     }
 `
 
@@ -66,7 +57,7 @@ export default function NavBar() {
                 </a>
                 <Right>
                     <NavItems href="/menu">MENU</NavItems>
-                    <NavItems>CONTACT US</NavItems>
+                    <NavItems href="/contact-us">CONTACT US</NavItems>
                 </Right>
             </Container>
         </Bar>

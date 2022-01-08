@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import header from '../../../Images/mSlide3.jpg'
 import Item from './Item'
@@ -39,7 +39,7 @@ const HeaderTitle = styled.div`
     font-weight: bold;
 `
 
-const Body = styled.div`
+export const Body = styled.div`
     width: 100%;
     height: auto;
     background-color: #efefefef;
@@ -80,12 +80,17 @@ const NavBarItemContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &#current {
+        border-bottom: 2px green solid;
+    }
 `
 
-const NavBarItem = styled.a`
+const NavBarItem = styled.p`
     text-decoration: none;
     margin: 0 1em;
-    color: black;
+    color: ${props => !props.active ? 'black' : 'lightgray'};
+    cursor: ${props => !props.active ? 'pointer' : 'default'};
 `
 
 const ItemContainer = styled.div`
@@ -120,7 +125,8 @@ const CategoryTitle = styled.h3`
 `
 
 export default function Menu() {
-    const [currentWidth, setCurrentWidth] = useState(window.innerWidth);
+    const [currentWidth, setCurrentWidth] = useState(window.innerWidth)
+    const chickenRef = useRef(null)
 
     useEffect(() => {
         function handleChange() {
@@ -130,8 +136,13 @@ export default function Menu() {
         window.addEventListener('resize', handleChange)
     })
 
+    function scrollMenu(category) {
+        const el = document.getElementById(category)
+        el.scrollIntoView()
+    }
+
     return (
-            <Body>
+            <Body id="body">
                 <HeaderContainer currentWidth={currentWidth}>
                     <Header src={header}/>
                     <HeaderTitle>-Menu-</HeaderTitle>
@@ -139,75 +150,79 @@ export default function Menu() {
                 <NavBarContainer>
                     <NavBar>
                         <NavBarItemContainer>
-                            <NavBarItem href="#chicken">Chicken</NavBarItem>
+                            <NavBarItem onClick={() => scrollMenu('chicken')}>Chicken</NavBarItem>
                         </NavBarItemContainer>
-                        <NavBarItem href="#lunch">Lunch</NavBarItem>
-                        <NavBarItem href="#sides">Sides</NavBarItem>
-                        <NavBarItem>Drinks</NavBarItem>
+                        <NavBarItemContainer>
+                            <NavBarItem onClick={() => scrollMenu('lunch')}>Lunch</NavBarItem>
+                        </NavBarItemContainer>
+                        <NavBarItemContainer>
+                            <NavBarItem onClick={() => scrollMenu('sides')}>Sides</NavBarItem>
+                        </NavBarItemContainer>
+                        <NavBarItem active>Drinks</NavBarItem>
                     </NavBar>
                 </NavBarContainer>
                 <Container>
-                <ItemContainer>
-                    <CategoryTitle>Chicken</CategoryTitle>
-                    <CategoryContainer id="chicken">
-                        {Chicken.map(item => {
-                            return (
-                                <Item 
-                                    img={item.img} 
-                                    title={item.title}
-                                    halfprice={item.halfprice}
-                                    fullprice={item.fullprice}
-                                    lunch={false}
-                                    chicken={true}
-                                />
-                            )
-                        })}
-                    </CategoryContainer>
-                    <CategoryTitle>Lunch (Meat Options)</CategoryTitle>
-                    <CategoryContainer id="lunch">
-                        {Lunch.Chicken.map(item => {
-                            return (
-                                <Item 
-                                    img={item.img} 
-                                    title={item.title}
-                                    halfprice={item.halfprice}
-                                    fullprice={item.fullprice}
-                                    lunch={true}
-                                    chicken={false}
-                                />
-                            )
-                        })}
-                    </CategoryContainer>
-                    <CategoryTitle>Lunch (Salad Options)</CategoryTitle>
-                    <CategoryContainer>
-                        {Lunch.Salad.map(item => {
-                            return (
-                                <Item 
-                                    img={item.img} 
-                                    title={item.title}
-                                    halfprice={item.halfprice}
-                                    fullprice={item.fullprice}
-                                    lunch={true}
-                                    chicken={false}
-                                />
-                            )
-                        })}
-                    </CategoryContainer>
-                    <CategoryTitle>Sides</CategoryTitle>
-                    <CategoryContainer id="sides">
-                        {Sides.map(item => {
-                            return (
-                                <Item 
-                                    img={item.img} 
-                                    title={item.title}
-                                    price={item.price}
-                                    chicken={false}
-                                />
-                            )
-                        })}
-                    </CategoryContainer>
-                </ItemContainer>
-            </Container>
+                    <ItemContainer>
+                        <CategoryTitle>Chicken</CategoryTitle>
+                        <CategoryContainer ref={chickenRef} id="chicken">
+                            {Chicken.map(item => {
+                                return (
+                                    <Item 
+                                        img={item.img} 
+                                        title={item.title}
+                                        halfprice={item.halfprice}
+                                        fullprice={item.fullprice}
+                                        lunch={false}
+                                        chicken={true}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                        <CategoryTitle>Lunch (Meat Options)</CategoryTitle>
+                        <CategoryContainer id="lunch">
+                            {Lunch.Chicken.map(item => {
+                                return (
+                                    <Item 
+                                        img={item.img} 
+                                        title={item.title}
+                                        halfprice={item.halfprice}
+                                        fullprice={item.fullprice}
+                                        lunch={true}
+                                        chicken={false}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                        <CategoryTitle>Lunch (Salad Options)</CategoryTitle>
+                        <CategoryContainer>
+                            {Lunch.Salad.map(item => {
+                                return (
+                                    <Item 
+                                        img={item.img} 
+                                        title={item.title}
+                                        halfprice={item.halfprice}
+                                        fullprice={item.fullprice}
+                                        lunch={true}
+                                        chicken={false}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                        <CategoryTitle>Sides</CategoryTitle>
+                        <CategoryContainer id="sides">
+                            {Sides.map(item => {
+                                return (
+                                    <Item 
+                                        img={item.img} 
+                                        title={item.title}
+                                        price={item.price}
+                                        chicken={false}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                    </ItemContainer>
+                </Container>
             </Body>
     )
 }

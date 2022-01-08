@@ -1,20 +1,21 @@
 import original from '../../Images/original.jpg'
 import chips from '../../Images/chips.JPG'
 import lunch from '../../Images/lunchsummary.jpg'
-import cola from '../../Images/cola.jpg'
+import cola from '../../Images/cola.PNG'
 import React from 'react'
 import styled from 'styled-components'
 import Slider from './Slider'
+import { Body } from '../OrderPage/Menu/Menu'
 
-const MenuHeader = styled.h2`
+export const Header = styled.h2`
     color: black;
     text-align: start;
     border-bottom: 1px black solid;
     font-weight: 300;
-    margin: 8px;
+    margin: 0.5em;
 
     @media(min-width: 700px) {
-        margin: 1em 8px
+        margin: 0.5em 1em
     }
 `
 
@@ -22,11 +23,21 @@ const MenuContainer = styled.div`
     align-items: center;
     height: auto;
     display: block;
+    margin: 0 4px;
     
     @media(min-width: 700px) {
-        display: block;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin: 0 1em;
         margin-bottom: 2em;
     }
+`
+
+
+const MenuButton = styled.a`
+    width: auto;
+    height: auto;
+    text-decoration: none;
 `
 
 const MenuCategory = styled.div`
@@ -34,44 +45,40 @@ const MenuCategory = styled.div`
     width: auto;
     height: 150px;
     display: flex;
-    background-color: black;
     align-items: center;
     cursor: pointer;
-    background-image: url(${props => props.img});
-    object-fit: cover;
+    position: relative;
+    box-shadow: 0 0 4px 0 gray;
+    background-color: white;
 
     @media(min-width: 700px) {
         height: 200px;
     }
     
     @media(min-width: 1200px) {
-        height: 400px;
+        height: 250px;
     }
 
-
     &:hover {
-        background-color: #e2e2e2;
+        background-color: transparent;
     }
 `
 
 const MenuImg = styled.img`
     height: 100%;
+    object-fit: cover;
 `
 
 const MenuTitle = styled.h2`
     margin: 0.5em;
     font-weight: 300;
     margin: auto;
-    color: gray;
+    color: ${props => !props.active ? 'black' : 'lightgray'}
 `
 
 const Bottom = styled.div`
     width: auto;
     margin: auto;
-
-    @media(min-width: 700px) {
-        width: 700px;
-    }
 
     @media(min-width: 1200px) {
         width: 1200px;
@@ -80,14 +87,35 @@ const Bottom = styled.div`
 
 export default function Home() {
     return (
-        <div>
+        <Body>
             <Slider />
             <Bottom>
-                <MenuHeader>Our Menu</MenuHeader>
+                <Header>Our Menu</Header>
                 <MenuContainer>
-                    <MenuCategory img={original}/>
+                    <MenuButton href='/menu'>
+                        <MenuCategory>
+                            <MenuImg src={original}/>
+                            <MenuTitle>Chicken</MenuTitle>
+                        </MenuCategory>
+                    </MenuButton>
+                    <MenuButton href='/menu#lunch'>
+                        <MenuCategory>
+                            <MenuImg src={lunch}/>
+                            <MenuTitle>Lunch</MenuTitle>
+                        </MenuCategory>
+                    </MenuButton>
+                    <MenuButton href='/menu#sides'>
+                        <MenuCategory>
+                            <MenuImg src={chips}/>
+                            <MenuTitle>Sides</MenuTitle>
+                        </MenuCategory>
+                    </MenuButton>
+                    <MenuCategory>
+                        <MenuImg src={cola}/>
+                        <MenuTitle active>Drinks</MenuTitle>
+                    </MenuCategory>
                 </MenuContainer>
             </Bottom>
-        </div>
+        </Body>
     )
 }
