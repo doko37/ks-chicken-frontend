@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import header from '../../../Images/mSlide3.jpg'
 import Item from './Item'
 import { Chicken, Lunch, Sides } from '../../Data'
+import './Menu.css'
 
 const Container = styled.div`
     width: auto;
@@ -35,7 +36,7 @@ const Header = styled.img`
 
 const HeaderTitle = styled.div`
     position: absolute;
-    font-size: 40px;
+    font-size: 55px;
     font-weight: bold;
 `
 
@@ -91,6 +92,11 @@ const NavBarItem = styled.p`
     margin: 0 1em;
     color: ${props => !props.active ? 'black' : 'lightgray'};
     cursor: ${props => !props.active ? 'pointer' : 'default'};
+    font-size: 15px;
+
+    @media(min-width: 700px) {
+        font-size: 20px;
+    }
 `
 
 const ItemContainer = styled.div`
@@ -145,7 +151,7 @@ export default function Menu() {
             <Body id="body">
                 <HeaderContainer currentWidth={currentWidth}>
                     <Header src={header}/>
-                    <HeaderTitle>-Menu-</HeaderTitle>
+                    <HeaderTitle className='RaceFont'>-MENU-</HeaderTitle>
                 </HeaderContainer>
                 <NavBarContainer>
                     <NavBar>

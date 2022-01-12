@@ -9,6 +9,7 @@ const Container = styled.div`
     background-color: white;
     display: flex;
     position: relative;
+    border-radius: 0.5em;
 
     @media(min-width: 700px) {
         height: 170px;
@@ -17,6 +18,7 @@ const Container = styled.div`
 
 const Image = styled.img`
     height: 100%;
+    border-radius: 0.5em 0 0 0.5em;
 `
 
 const Title = styled.h3`

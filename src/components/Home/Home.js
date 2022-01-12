@@ -5,7 +5,6 @@ import cola from '../../Images/cola.PNG'
 import React from 'react'
 import styled from 'styled-components'
 import Slider from './Slider'
-import { Body } from '../OrderPage/Menu/Menu'
 
 export const Header = styled.h2`
     color: black;
@@ -32,7 +31,6 @@ const MenuContainer = styled.div`
         margin-bottom: 2em;
     }
 `
-
 
 const MenuButton = styled.a`
     width: auto;
@@ -79,9 +77,22 @@ const MenuTitle = styled.h2`
 const Bottom = styled.div`
     width: auto;
     margin: auto;
+    padding-bottom: 0.5em;
 
     @media(min-width: 1200px) {
         width: 1200px;
+    }
+`
+
+const Body = styled.div`
+    width: 100%;
+    height: 100vh;
+    background-color: #efefefef;
+    z-index: -10;
+    position: absolute;
+
+    @media(min-width: 1200px) {
+        height: auto;
     }
 `
 

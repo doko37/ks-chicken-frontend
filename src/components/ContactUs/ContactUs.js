@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import mMap from '../../Images/mMap.png'
-import map from '../../Images/map.png'
 import { AccessTime, MapRounded, Phone } from '@material-ui/icons';
 import { Header } from '../Home/Home';
+import Map from './Map'
 
 const Container = styled.div`
     width: 100%;
@@ -15,15 +14,6 @@ const Container = styled.div`
 `
 
 const MapContainer = styled.a` 
-    width: 100%;
-    height: auto;
-
-    @media(min-width: 700px) {
-        height: ${props => props.width / 3.5}px;
-    }
-`
-
-const Map = styled.img`
     width: 100%;
     height: auto;
 
@@ -69,11 +59,8 @@ export default function ContactUsPage() {
 
     return (
         <div>
-            <MapContainer 
-                href="https://www.google.com/maps/place/KS+Chicken/@-36.7426125,174.7223319,16.25z/data=!4m5!3m4!1s0x6d0d3bd1a21da6df:0xa6ea9a0a91afe5ae!8m2!3d-36.7430825!4d174.7251296"
-                width={currentWidth}
-            >
-                {mState ? <Map src={mMap} width={currentWidth}/> : <Map src={map} width={currentWidth}/>}
+            <MapContainer>
+                <Map height={mState ? currentWidth : (currentWidth / 3.5)}/>
             </MapContainer>
             <Container>
                 <Header>Store Information</Header>
