@@ -180,6 +180,7 @@ export default function Menu() {
                                         fullprice={item.fullprice}
                                         lunch={false}
                                         chicken={true}
+                                        key={item.key}
                                     />
                                 )
                             })}
@@ -195,6 +196,7 @@ export default function Menu() {
                                         fullprice={item.fullprice}
                                         lunch={true}
                                         chicken={false}
+                                        key={item.key}
                                     />
                                 )
                             })}
@@ -210,6 +212,7 @@ export default function Menu() {
                                         fullprice={item.fullprice}
                                         lunch={true}
                                         chicken={false}
+                                        key={item.key}
                                     />
                                 )
                             })}
@@ -223,6 +226,7 @@ export default function Menu() {
                                         title={item.title}
                                         price={item.price}
                                         chicken={false}
+                                        key={item.key}
                                     />
                                 )
                             })}

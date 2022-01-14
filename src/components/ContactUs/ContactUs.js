@@ -60,7 +60,7 @@ export default function ContactUsPage() {
     return (
         <div>
             <MapContainer>
-                <Map height={mState ? currentWidth : (currentWidth / 3.5)}/>
+                <Map height={mState ? currentWidth : 700}/>
             </MapContainer>
             <Container>
                 <Header>Store Information</Header>
