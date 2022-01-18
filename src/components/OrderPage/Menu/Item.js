@@ -10,15 +10,29 @@ const Container = styled.div`
     display: flex;
     position: relative;
     border-radius: 0.5em;
+    overflow: hidden;
 
     @media(min-width: 700px) {
         height: 170px;
     }
 `
 
+const ImageContainer = styled.div`
+    width: auto;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 0.5em 0 0 0.5em;
+`
+
 const Image = styled.img`
     height: 100%;
     border-radius: 0.5em 0 0 0.5em;
+
+    transition: all 0.5s;
+
+    &:hover {
+        transform: scale(1.05);
+    }
 `
 
 const Title = styled.h3`
@@ -39,7 +53,9 @@ const Price = styled.p`
 export default function Item(props) {
     return (
         <Container>
-            <Image src={props.img}/>
+            <ImageContainer>
+                <Image src={props.img}/>
+            </ImageContainer>
             <Desc>
                 <Title>{props.title}</Title>
                 {props.chicken ? 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import header from '../../../Images/mSlide3.jpg'
+import header from '../../../Images/chicken.jpg'
 import Item from './Item'
 import { Chicken, Lunch, Sides } from '../../Data'
 import './Menu.css'
@@ -44,7 +44,7 @@ export const Body = styled.div`
     width: 100%;
     height: auto;
     background-color: #efefefef;
-    z-index: -10;
+    z-index: 10;
     position: absolute;
 `
 

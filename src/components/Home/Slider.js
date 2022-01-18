@@ -9,6 +9,7 @@ const Container = styled.div`
     overflow: hidden;
     position: relative;
     display: flex;
+    z-index: 10;
 `
 
 const Arrow = styled.div`
@@ -27,7 +28,7 @@ const Arrow = styled.div`
     right: ${props => props.pos === "right" && "10px"};
     left: ${props => props.pos === "left" && "10px"};
     cursor: pointer;
-    z-index: 2;
+    z-index: 12;
 `
 
 const Wrapper = styled.div`
@@ -36,12 +37,14 @@ const Wrapper = styled.div`
     align-items: center;
     transition: all 1s ease;
     transform: translateX(${props => props.slideState * -100}vw);
+    z-index: 10;
 `
 
 const Slide = styled.img`
     height: 100%;
     width: 100vw;
     object-fit: cover;
+    z-index: 10;
 `
 
 export default function Slider() {
