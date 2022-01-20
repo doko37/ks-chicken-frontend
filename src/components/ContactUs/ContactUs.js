@@ -66,7 +66,9 @@ export default function ContactUsPage() {
                 <Header>Store Information</Header>
                 <InfoContainer>
                     <Phone />
-                    <Info>09-476 1952</Info>
+                    <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'none'}}>
+                        <Info>09-476 1952</Info>
+                    </a>
                 </InfoContainer>
                 <InfoContainer>
                     <MapRounded/>
@@ -75,9 +77,9 @@ export default function ContactUsPage() {
                 <InfoContainer>
                     <AccessTime />
                     <Hours>
-                        <Info>Mon - Thu: 11am - 8pm</Info>
-                        <Info>Fri: 11am - 9pm</Info>
-                        <Info>Sat: 12am - 9pm</Info>
+                        <Info>Mon - Thu: 11am ~ 8pm</Info>
+                        <Info>Fri: 11am ~ 9pm</Info>
+                        <Info>Sat: 12am ~ 9pm</Info>
                         <Info>Sun: Closed</Info>
                     </Hours>
                 </InfoContainer>

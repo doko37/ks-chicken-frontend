@@ -65,6 +65,7 @@ const ButtonContainer = styled.div`
     justify-content: center;
     align-items: center;
     position: relative;
+    border-radius: 0.5em;
 
     @media(max-width: 699px) {
         &:nth-child(odd) {
@@ -97,10 +98,11 @@ const LinkContainer = styled.div`
     @media(min-width: 700px) {
         position: relative;
         background-color: white;
+        border-radius: 0.5em 0 0 0.5em;
     }
 
     &:hover {
-        background-color: rgb(0,0,0,0.1);
+        background-color: transparent;
     }
 `
 
@@ -128,6 +130,7 @@ const ImgConatiner = styled.div`
     @media(min-width: 700px) {
         height: 200px;
         margin-bottom: 0px;
+        border-radius: 0 0.5em 0.5em 0;
     }
 `
 
@@ -159,33 +162,41 @@ export default function Home() {
                         <LinkContainer>
                             <Button href="/menu">CHICKEN</Button>
                         </LinkContainer>
-                        <ImgConatiner>
-                            <ButtonImg src={chicken}/>
-                        </ImgConatiner>
+                        <a href="/menu"> 
+                            <ImgConatiner>
+                                <ButtonImg src={chicken}/>
+                            </ImgConatiner>
+                        </a>
                     </ButtonContainer>
                     <ButtonContainer>
                         <LinkContainer>
                             <Button href="/menu#lunch">LUNCH</Button>
                         </LinkContainer>
-                        <ImgConatiner>
-                            <ButtonImg src={lunch}/>
-                        </ImgConatiner>
+                        <a href="/menu#lunch">
+                            <ImgConatiner>
+                                <ButtonImg src={lunch}/>
+                            </ImgConatiner>
+                        </a>
                     </ButtonContainer>
                     <ButtonContainer>
                         <LinkContainer>
                             <Button href="/menu#sides">SIDES</Button>
                         </LinkContainer>
-                        <ImgConatiner>
-                            <ButtonImg src={chips}/>
-                        </ImgConatiner>
+                        <a href="/menu#sides">
+                            <ImgConatiner>
+                                <ButtonImg src={chips}/>
+                            </ImgConatiner>
+                        </a>
                     </ButtonContainer>
                     <ButtonContainer>
                         <LinkContainer>
                             <Button href="/menu">DRINKS</Button>
                         </LinkContainer>
-                        <ImgConatiner>
-                            <ButtonImg src={cola}/>
-                        </ImgConatiner> 
+                        <a href="/menu">
+                            <ImgConatiner>
+                                <ButtonImg src={cola}/>
+                            </ImgConatiner> 
+                        </a>
                     </ButtonContainer>
                 </MenuContainer>
                 </Left>

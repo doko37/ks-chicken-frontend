@@ -56,7 +56,7 @@ const NavBarContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 1px 2px 1px gray;
+    box-shadow: 0 0px 4px 1px gray;
     z-index: 10;
     background-color: white;
 `

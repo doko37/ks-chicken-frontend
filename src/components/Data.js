@@ -1,4 +1,4 @@
-import mimg1 from '../Images/mSlide1line.png'
+import mimg1 from '../Images/mSlide1.png'
 import mimg2 from '../Images/mSlide2.jpg'
 import img1 from '../Images/slide1.png'
 import img2 from '../Images/slide2.png'

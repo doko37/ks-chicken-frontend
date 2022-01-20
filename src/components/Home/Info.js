@@ -22,7 +22,7 @@ const Icon = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: ${props => props.border ? "4px solid black" : "none"};
+    border: ${props => props.border ? "6px solid black" : "none"};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,15 +57,35 @@ export default function Info() {
                     <Phone fontSize='large'/>
                 </Icon>
                 <div>
-                    <h3>ORDER NOW:</h3>
-                    <p>Call us on: 09-476 1952</p>
+                    <h3 style={{
+                        marginBottom: '0px'
+                    }}>ORDER NOW:</h3>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        <p style={{
+                            marginRight: '0.5em'
+                        }}>Call us:</p>
+                        <a href="tel:097461952" style={{color: '#3f51b5', textDecoration: 'none'}}>09-476 1952</a>
+                    </div>
                 </div>
             </SubInfoContainer> 
             : 
             <SubInfoContainer>
                 <div>
-                    <h3>ORDER NOW:</h3>
-                    <p>Call us on: 09-476 1952</p>
+                    <h3 style={{
+                        marginBottom: '0px'
+                    }}>ORDER NOW:</h3>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        <p style={{
+                            marginRight: '0.5em'
+                        }}>Call us:</p>
+                        <a href="tel:097461952" style={{color: '#3f51b5', textDecoration: 'none'}}>09-476 1952</a>
+                    </div>
                 </div>
                 <Icon border>
                     <Phone fontSize='large'/>
@@ -74,8 +94,8 @@ export default function Info() {
             {mState ? <SubInfoContainer>
                 <Icon border>
                     <Time style={{
-                        width: '70px',
-                        height: '70px'
+                        width: '74px',
+                        height: '74px'
                     }}/>
                 </Icon>
                 <div>
@@ -96,8 +116,8 @@ export default function Info() {
                 </div>
                 <Icon border>
                     <Time style={{
-                        width: '70px',
-                        height: '70px'
+                        width: '74px',
+                        height: '74px'
                     }}/>
                 </Icon>
         </SubInfoContainer>}
