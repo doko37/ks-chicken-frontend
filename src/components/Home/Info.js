@@ -67,7 +67,7 @@ export default function Info() {
                         <p style={{
                             marginRight: '0.5em'
                         }}>Call us:</p>
-                        <a href="tel:097461952" style={{color: '#3f51b5', textDecoration: 'none'}}>09-476 1952</a>
+                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'none'}}>09-476 1952</a>
                     </div>
                 </div>
             </SubInfoContainer> 
@@ -84,7 +84,7 @@ export default function Info() {
                         <p style={{
                             marginRight: '0.5em'
                         }}>Call us:</p>
-                        <a href="tel:097461952" style={{color: '#3f51b5', textDecoration: 'none'}}>09-476 1952</a>
+                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'none'}}>09-476 1952</a>
                     </div>
                 </div>
                 <Icon border>
