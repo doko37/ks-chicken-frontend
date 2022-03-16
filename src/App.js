@@ -1,20 +1,24 @@
 import './App.css';
-import Home from './components/Home/Home'
-import Order from './components/OrderPage/OrderPage'
-import ContactUs from './components/ContactUs/ContactUs'
-import NavBar from './components/NavBar';
-import { Routes, Route } from 'react-router-dom'
+import Layout from './components/Container/Layout';
+import styled from 'styled-components';
+
+const Body = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  font-family: 'Noto Sans', sans-serif;
+  text-align: center;
+  scroll-behavior: smooth;
+`
 
 function App() {
   return (
-    <div className="App">
-      <NavBar/>
-      <Routes>
-        <Route path="/" element={<Home />}/>
-        <Route path="/menu" element={<Order />}/>
-        <Route path="/contact-us" element={<ContactUs />}/>
-      </Routes>
-    </div>
+    <Body>
+      <Layout />
+    </Body>
   );
 }
 

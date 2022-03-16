@@ -1,13 +1,14 @@
 import React, {useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import header from '../../../Images/chicken.jpg'
+import header from '../../Images/chicken.jpg'
 import Item from './Item'
-import { Chicken, Lunch, Sides } from '../../Data'
+import { Chicken, Lunch, Sides } from '../Data'
 import './Menu.css'
 
 const Container = styled.div`
     width: auto;
     margin: auto;
+    scroll-behavior: smooth;
 
     @media(min-width: 1200px) {
         width: 1200px;
@@ -24,7 +25,7 @@ const HeaderContainer = styled.div`
     width: 100%;
 
     @media(min-width: 700px) {
-        height: ${(props => props.currentWidth / 3.5)}px;
+        height: ${(props => props.currentWidth / 5)}px;
     }
 ` 
 
@@ -41,11 +42,8 @@ const HeaderTitle = styled.div`
 `
 
 export const Body = styled.div`
-    width: 100%;
-    height: auto;
     background-color: #efefefef;
-    z-index: 10;
-    position: absolute;
+    position: relative;
 `
 
 const NavBarContainer = styled.div`
@@ -130,8 +128,10 @@ const CategoryTitle = styled.h3`
     color: black;
 `
 
-export default function Menu() {
+export default function Menu(props) {
     const [currentWidth, setCurrentWidth] = useState(window.innerWidth)
+    const [itemSelectedState, setItemSelectedState] = useState(false)
+    const [selectedItem, setSelectedItem] = useState(null)
     const chickenRef = useRef(null)
 
     useEffect(() => {
@@ -147,8 +147,18 @@ export default function Menu() {
         el.scrollIntoView()
     }
 
+    function itemSelected(item) {
+        setSelectedItem(item)
+        setItemSelectedState(!itemSelectedState)
+    }
+
+    function addItem(item) {
+        setItemSelectedState(false)
+        props.addItem(item)
+    }
+
     return (
-            <Body id="body">
+            <Body id="body" cartState={props.cartState} itemSelectedState={itemSelectedState}>
                 <HeaderContainer currentWidth={currentWidth}>
                     <Header src={header}/>
                     <HeaderTitle className='RaceFont'>-MENU-</HeaderTitle>
@@ -159,12 +169,12 @@ export default function Menu() {
                             <NavBarItem onClick={() => scrollMenu('chicken')}>Chicken</NavBarItem>
                         </NavBarItemContainer>
                         <NavBarItemContainer>
-                            <NavBarItem onClick={() => scrollMenu('lunch')}>Lunch</NavBarItem>
-                        </NavBarItemContainer>
-                        <NavBarItemContainer>
                             <NavBarItem onClick={() => scrollMenu('sides')}>Sides</NavBarItem>
                         </NavBarItemContainer>
                         <NavBarItem active>Drinks</NavBarItem>
+                        <NavBarItemContainer>
+                            <NavBarItem onClick={() => scrollMenu('lunch')}>Lunch</NavBarItem>
+                        </NavBarItemContainer>
                     </NavBar>
                 </NavBarContainer>
                 <Container>
@@ -178,9 +188,24 @@ export default function Menu() {
                                         title={item.title}
                                         halfprice={item.halfprice}
                                         fullprice={item.fullprice}
-                                        lunch={false}
-                                        chicken={true}
+                                        type="chicken"
                                         key={item.key}
+                                        itemSelect={() => itemSelected(item)}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                        <CategoryTitle>Sides</CategoryTitle>
+                        <CategoryContainer id="sides">
+                            {Sides.map(item => {
+                                return (
+                                    <Item 
+                                        img={item.img} 
+                                        title={item.title}
+                                        price={item.price}
+                                        type="sides"
+                                        key={item.key}
+                                        itemSelect={() => itemSelected(item)}
                                     />
                                 )
                             })}
@@ -194,8 +219,7 @@ export default function Menu() {
                                         title={item.title}
                                         halfprice={item.halfprice}
                                         fullprice={item.fullprice}
-                                        lunch={true}
-                                        chicken={false}
+                                        type="lunch"
                                         key={item.key}
                                     />
                                 )
@@ -210,22 +234,7 @@ export default function Menu() {
                                         title={item.title}
                                         halfprice={item.halfprice}
                                         fullprice={item.fullprice}
-                                        lunch={true}
-                                        chicken={false}
-                                        key={item.key}
-                                    />
-                                )
-                            })}
-                        </CategoryContainer>
-                        <CategoryTitle>Sides</CategoryTitle>
-                        <CategoryContainer id="sides">
-                            {Sides.map(item => {
-                                return (
-                                    <Item 
-                                        img={item.img} 
-                                        title={item.title}
-                                        price={item.price}
-                                        chicken={false}
+                                        type="lunch"
                                         key={item.key}
                                     />
                                 )
@@ -233,6 +242,8 @@ export default function Menu() {
                         </CategoryContainer>
                     </ItemContainer>
                 </Container>
+                {/* <ItemBox itemSelectedState={itemSelectedState} itemSelected={itemSelected} selectedItem={selectedItem} addItem={item => addItem(item)}/>
+                <OrderFooter toggleCart={props.toggleCart} numItems={props.numItems}/> */}
             </Body>
     )
 }

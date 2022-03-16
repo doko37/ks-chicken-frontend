@@ -78,8 +78,7 @@ export default function ContactUsPage() {
                     <AccessTime />
                     <Hours>
                         <Info>Mon - Thu: 11am ~ 8pm</Info>
-                        <Info>Fri: 11am ~ 9pm</Info>
-                        <Info>Sat: 12am ~ 9pm</Info>
+                        <Info>Fri - Sat: 11am ~ 9pm</Info>
                         <Info>Sun: Closed</Info>
                     </Hours>
                 </InfoContainer>

@@ -5,14 +5,13 @@ import cola from '../../Images/cola.PNG'
 import React from 'react'
 import styled from 'styled-components'
 import Slider from './Slider'
-import '../OrderPage/Menu/Menu.css'
 import Info from './Info'
 
 export const Header = styled.h2`
     color: black;
     text-align: start;
-    border-bottom: 1px black solid;
-    font-weight: 300;
+    border-bottom: 3px dotted black;
+    font-weight: 600;
     margin: 0.5em;
 
     @media(min-width: 700px) {
@@ -24,7 +23,7 @@ const MenuContainer = styled.div`
     align-items: center;
     height: auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     margin: 0 4px;
     width: auto;
     
@@ -55,7 +54,7 @@ const Body = styled.div`
     height: auto;
     background-color: #efefefef;
     z-index: 10;
-    position: absolute;
+    position: relative;
 `
 
 const ButtonContainer = styled.div`
@@ -66,21 +65,23 @@ const ButtonContainer = styled.div`
     align-items: center;
     position: relative;
     border-radius: 0.5em;
+    height: 200px;
+    margin-bottom: 0.5rem;
 
-    @media(max-width: 699px) {
-        &:nth-child(odd) {
-            margin-right: -0.05px;
-        }
+    // @media(max-width: 699px) {
+    //     &:nth-child(odd) {
+    //         margin-right: -0.05px;
+    //     }
     
-        &:nth-child(even) {
-            margin-left: -0.05px;
-        }
-    }
+    //     &:nth-child(even) {
+    //         margin-left: -0.05px;
+    //     }
+    // }
 
     @media(min-width: 700px) {
         display: grid;
         height: 200px;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: 1fr;
         margin: 1em 0;
         box-shadow: 0 0 4px 0 gray;
     }
@@ -94,15 +95,20 @@ const LinkContainer = styled.div`
     background-color: rgb(0,0,0,0.25);
     width: 100%;
     height: 100%;
+    z-index: 10;
+    border-radius: 0.5em;
 
     @media(min-width: 700px) {
-        position: relative;
-        background-color: white;
-        border-radius: 0.5em 0 0 0.5em;
+        position: absolute;
+        background-color: black;
+        opacity: 60%;
+        width: 50%;
+        left: 25%;
+        height: 50%;
     }
 
     &:hover {
-        background-color: transparent;
+        opacity: 80%;
     }
 `
 
@@ -118,19 +124,19 @@ const Button = styled.a`
     text-decoration: none;
 
     @media(min-width: 700px) {
-        color: black;
+        color: white;
     }
 `
 
 const ImgConatiner = styled.div`
-    height: auto;
-    margin-bottom: -5px;
+    height: 200px;
+    width: auto;
     overflow: hidden;
+    border-radius: 0.5rem;
 
     @media(min-width: 700px) {
         height: 200px;
         margin-bottom: 0px;
-        border-radius: 0 0.5em 0.5em 0;
     }
 `
 
@@ -162,7 +168,9 @@ export default function Home() {
                         <LinkContainer>
                             <Button href="/menu">CHICKEN</Button>
                         </LinkContainer>
-                        <a href="/menu"> 
+                        <a href="/menu" style={{
+                            width: '100%'
+                        }}> 
                             <ImgConatiner>
                                 <ButtonImg src={chicken}/>
                             </ImgConatiner>
@@ -170,19 +178,11 @@ export default function Home() {
                     </ButtonContainer>
                     <ButtonContainer>
                         <LinkContainer>
-                            <Button href="/menu#lunch">LUNCH</Button>
-                        </LinkContainer>
-                        <a href="/menu#lunch">
-                            <ImgConatiner>
-                                <ButtonImg src={lunch}/>
-                            </ImgConatiner>
-                        </a>
-                    </ButtonContainer>
-                    <ButtonContainer>
-                        <LinkContainer>
                             <Button href="/menu#sides">SIDES</Button>
                         </LinkContainer>
-                        <a href="/menu#sides">
+                        <a href="/menu#sides" style={{
+                            width: '100%'
+                        }}>
                             <ImgConatiner>
                                 <ButtonImg src={chips}/>
                             </ImgConatiner>
@@ -190,9 +190,23 @@ export default function Home() {
                     </ButtonContainer>
                     <ButtonContainer>
                         <LinkContainer>
+                            <Button href="/menu#lunch">LUNCH</Button>
+                        </LinkContainer>
+                        <a href="/menu#lunch" style={{
+                            width: '100%'
+                        }}>
+                            <ImgConatiner>
+                                <ButtonImg src={lunch}/>
+                            </ImgConatiner>
+                        </a>
+                    </ButtonContainer>
+                    <ButtonContainer>
+                        <LinkContainer>
                             <Button href="/menu">DRINKS</Button>
                         </LinkContainer>
-                        <a href="/menu">
+                        <a href="/menu" style={{
+                            width: '100%'
+                        }}>
                             <ImgConatiner>
                                 <ButtonImg src={cola}/>
                             </ImgConatiner> 

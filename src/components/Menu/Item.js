@@ -1,16 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
+import { AddCircleOutline as Add } from '@material-ui/icons'
 
 const Container = styled.div`
     width: auto;
     height: 120px;
     margin: 0 1em 1em 1em;
-    box-shadow: 0 0 4px 0 gray;
     background-color: white;
     display: flex;
     position: relative;
     border-radius: 0.5em;
     overflow: hidden;
+    box-shadow: 0 0 3px 0 gray;
 
     @media(min-width: 700px) {
         height: 170px;
@@ -37,7 +38,7 @@ const Image = styled.img`
 
 const Title = styled.h3`
     font-size: 15px;
-    margin: 0;
+    margin: 0.5rem;
     color: black;
 `
 
@@ -46,9 +47,22 @@ const Desc = styled.div`
     margin: 0.5em;
 `
 
-const Price = styled.p`
-    color: black;
+const AddContainer = styled.div`
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 0.5rem;
+    display: ${props => props.lunch ? 'none' : 'flex'};
+    align-items: center;
 `
+const AddLabel = styled.p`
+    font-size: 14px;
+    margin: 0;
+`
+
+// const Price = styled.p`
+//     color: black;
+// `
 
 export default function Item(props) {
     return (
@@ -56,16 +70,15 @@ export default function Item(props) {
             <ImageContainer>
                 <Image src={props.img}/>
             </ImageContainer>
-            <Desc>
-                <Title>{props.title}</Title>
-                {props.chicken ? 
-                <div>
-                    <Price>{props.lunch ? "" : "Half: $"}{props.halfprice}</Price>
-                    <Price>{props.lunch ? "" : "Full: $"}{props.fullprice}</Price>
-                </div> :
-                <Price>{props.price}</Price>
-                }
-            </Desc>
+            <Title>{props.title}</Title>
+            {/* <AddContainer lunch={props.type === "lunch"}>
+                <AddLabel>Add to cart</AddLabel>
+                <Add style={{
+                    opacity: '70%',
+                    fontSize: '30px',
+                    marginLeft: '0.25em',
+                }}/>
+            </AddContainer> */}
         </Container>
     )
 }

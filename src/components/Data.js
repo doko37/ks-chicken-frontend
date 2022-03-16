@@ -35,6 +35,7 @@ import coleslaw from '../Images/coleslaw.jpg'
 import rice from '../Images/rice.jpg'
 import radish from '../Images/radish.jpg'
 import sauce from '../Images/sauce.jpg'
+import chicken from '../Images/chicken.jpg'
 
 export const mSlides = [
     {
@@ -55,6 +56,27 @@ export const slides = [
     {
         img: img2,
         key: img2
+    }
+]
+
+export const OrderChicken = [
+    {
+        img: chicken,
+        title: "1/2 Chicken",
+        type: "halfchicken",
+        price: null,
+        priceLabel: "From $17",
+        key: "halfchicken",
+        details: true
+    },
+    {
+        img: chicken,
+        title: "Full Chicken",
+        type: "fullchicken",
+        price: null,
+        priceLabel: "From $34",
+        key: "fullchicken",
+        details: true
     }
 ]
 
@@ -250,31 +272,46 @@ export const Sides = [
     {
         img: chips,
         title: "Chips",
-        price: "Medium: $4 | Large: $6",
-        key: "chips"
+        type: "chips",
+        price: 4.00,
+        priceLabel: "From $4",
+        key: "chips",
+        details: true,
     },
     {
         img: rice,
         title: "Rice",
-        price: "$2 per serving.",
-        key: "rice"
+        type: "side",
+        price: 2.00,
+        priceLabel: "$2 per serving",
+        key: "rice",
+        details: false
     },
     {
         img: radish,
         title: "Radish",
-        price: "$2 per serving.",
-        key: "radish"
+        type: "side",
+        price: 2.00,
+        priceLabel: "$2 per serving",
+        key: "radish",
+        details: false
     },
     {
         img: coleslaw,
         title: "Coleslaw",
-        price: "$2 per serving.",
-        key: "coleslaw"
+        type: "side",
+        price: 2.00,
+        priceLabel: "$2 per serving",
+        key: "coleslaw",
+        details: false
     },
     {
         img: sauce,
         title: "Sauce",
-        price: "$3 per serving.",
-        key: "sauce"
+        type: "sauce",
+        price: 3.00,
+        priceLabel: "$3 per serving",
+        key: "sauce",
+        details: true
     },
 ]

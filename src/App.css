@@ -1,6 +1,12 @@
 .App {
   text-align: center;
   font-family: 'Noto Sans', sans-serif;
+  scroll-behavior: smooth;
+}
+
+.RaceFont {
+  text-align: center;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 html {

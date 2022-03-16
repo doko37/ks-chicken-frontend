@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import logo from '../Images/logo.svg'
 import { Menu } from '@material-ui/icons'
-import { ShoppingBasketOutlined as Basket } from '@material-ui/icons'
-import { Badge } from '@material-ui/core'
+import OrderFooter from './OrderPage/OrderFooter'
 
 const Container = styled.div`
     display: block;
+    position: relative;
+    left: ${props => props.cartState ? `-${window.innerWidth}px` : '0px'};
+    transition: left 0.25s ease;
     z-index: 0;
+
+    @media (min-width: 700px) {
+        left: 0;
+    }
 `
 
 const Bar = styled.div`
@@ -24,7 +30,7 @@ const Bar = styled.div`
 const SubBar = styled.div`
     position: relative;
     background-color: #efefefef;
-    height: ${props => props.dropBarState ? '92px' : '0px'};
+    height: ${props => props.dropBarState ? '130px' : '0px'};
     width: auto;
     text-align: left;
     padding-left: 1em;
@@ -49,7 +55,7 @@ const ContentContainer = styled.div`
     }
 `
 
-const BasketContainer = styled.div`
+const Filler = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
@@ -112,14 +118,50 @@ const MItem = styled.p`
     display: ${props => props.dropBarState ? '' : 'none'};
 `
 
-const OrderLabel = styled.p`
-    position: absolute;
-    color: white;
-    background-color: #3f51b5;
-    transform: rotate(5deg);
+const MenuContainer = styled.div`
+    transform: ${props => props.dropBarState ? 'rotate(180deg)' : 'rotate(0deg)'};
+    transition: transform 0.5s ease;
+    height: 30px;
+    width: 30px;
+`
+
+const OrderButtonContainer = styled.div`
+    flex: 1;
+    margin-right: 1em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+`
+
+const OrderButton = styled.div`
+    height: 30px;
+    width: 60px;
+    background-color: #cf8334;
     font-size: 10px;
-    right: -16.5px;
-    top: 30px;
+    border-radius: 1rem;
+
+    @media (min-width: 700px) {
+        height: 40px;
+        width: 90px;
+        font-size: 15px;
+        border-radius: 2rem;
+        transition: background-color 0.5s ease;
+    }
+
+    &:hover {
+        background-color: #ffa241;
+    }
+`
+
+const OrderLink = styled.a`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+    color: white;
 `
 
 export default function NavBar(props) {
@@ -143,27 +185,25 @@ export default function NavBar(props) {
     }
 
     return (
-        <Container>
+        <Container cartState={props.cartState}>
             <Bar>
                 {mState ? <ContentContainer>
                     <NavContainer>
-                        <Menu onClick={toggleDropBar} style={{
-                            color: 'white',
-                            fontSize: '30px'
-                        }}/>
+                        <MenuContainer dropBarState={dropBarState}>
+                            <Menu onClick={toggleDropBar} style={{
+                                color: 'white',
+                                fontSize: '30px'
+                            }}/>
+                        </MenuContainer>
                     </NavContainer>
                     <LogoLink href="/">
                         <Logo src={logo} alt="Logo"/>
                     </LogoLink>
-                    <BasketContainer>
-                        <Badge badgeContent={0} color="primary">
-                            <Basket  style={{
-                                color: 'white',
-                                fontSize: '30px'
-                            }}/>
-                        </Badge>
-                        <OrderLabel>Coming soon</OrderLabel>
-                    </BasketContainer>
+                    <OrderButtonContainer>
+                        <OrderButton>
+                            <OrderLink href="/order">Order Now</OrderLink>
+                        </OrderButton>
+                    </OrderButtonContainer>
                 </ContentContainer> : 
                 <ContentContainer>
                     <LogoLink href="/">
@@ -173,23 +213,22 @@ export default function NavBar(props) {
                         <NavItems href="/menu" mState={!mState}>MENU</NavItems>
                         <NavItems href="/contact-us" mState={!mState}>CONTACT US</NavItems>
                     </NavContainer>
-                    <BasketContainer>
-                        <Badge badgeContent={0} color="primary">
-                            <Basket  style={{
-                                color: 'white',
-                                fontSize: '30px'
-                            }}/>
-                        </Badge>
-                        <OrderLabel>Coming soon</OrderLabel>
-                    </BasketContainer>
+                    <OrderButtonContainer>
+                        <OrderButton>
+                            <OrderLink href="/order">Order Now</OrderLink>
+                        </OrderButton>
+                    </OrderButtonContainer>
                 </ContentContainer>}
             </Bar>
             <SubBar dropBarState={dropBarState}>
                 <MItem dropBarState={dropBarState}>
-                    <NavItems href="/menu" mState={mState} mobile={true}>MENU</NavItems>
+                    <NavItems href="/menu" mState={mState} mobile={true}>Menu</NavItems>
                 </MItem>
                 <MItem dropBarState={dropBarState}>
-                    <NavItems href="/contact-us" mState={mState} mobile={true}>CONTACT US</NavItems>
+                    <NavItems href="/order" mState={mState} mobile={true}>Order</NavItems>
+                </MItem>
+                <MItem dropBarState={dropBarState}>
+                    <NavItems href="/contact-us" mState={mState} mobile={true}>Contact Us</NavItems>
                 </MItem>
             </SubBar>
         </Container>
