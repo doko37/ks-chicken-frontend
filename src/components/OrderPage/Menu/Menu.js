@@ -179,7 +179,8 @@ export default function Menu() {
                                         halfprice={item.halfprice}
                                         fullprice={item.fullprice}
                                         lunch={false}
-                                        chicken={true}
+                                        chicken={item.key === "snowy" || item.key === "onion" ? false : true}
+                                        price={item.key === "snowy" || item.key === "onion" ? item.price : null }
                                         key={item.key}
                                     />
                                 )

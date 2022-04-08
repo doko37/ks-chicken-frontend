@@ -125,29 +125,27 @@ export const Chicken = [
         img: honey,
         title: "Honey Butter Chicken",
         halfprice: 21,
-        fullprice: 39,
+        fullprice: 41,
         key: "honey"
-    },
-    {
-        img: snowy,
-        title: "Snowy Cheese Chicken",
-        halfprice: 21,
-        fullprice: 39,
-        key: "snowy"
-    },
-    {
-        img: onion,
-        title: "Onion Seasoning Chicken",
-        halfprice: 21,
-        fullprice: 39,
-        key: "onion"
     },
     {
         img: padak,
         title: "Padak Chicken",
         halfprice: 24,
-        fullprice: 42,
+        fullprice: 43,
         key: "padak"
+    },
+    {
+        img: snowy,
+        title: "Snowy Cheese Topping",
+        price: "$3 per half.",
+        key: "snowy"
+    },
+    {
+        img: onion,
+        title: "Onion Seasoning Topping",
+        price: "$3 per half.",
+        key: "onion"
     },
 ]
 
@@ -266,7 +264,7 @@ export const Sides = [
     {
         img: sauce,
         title: "Sauce",
-        price: "$4 per serving.",
+        price: "$3 per serving.",
         key: "sauce"
     },
 ]
