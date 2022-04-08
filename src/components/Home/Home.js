@@ -114,7 +114,7 @@ const Button = styled.a`
     text-decoration: none;
 
     @media(min-width: 700px) {
-        color: black;
+        color: white;
     }
 `
 
