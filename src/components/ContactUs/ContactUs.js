@@ -18,7 +18,7 @@ const MapContainer = styled.a`
     height: auto;
 
     @media(min-width: 700px) {
-        height: ${props => props.width / 3.5}px;
+        height: ${props => props.width / 4.5}px;
     }
 `
 
@@ -60,7 +60,7 @@ export default function ContactUsPage() {
     return (
         <div>
             <MapContainer>
-                <Map height={mState ? currentWidth : 700}/>
+                <Map height={mState ? currentWidth : 500}/>
             </MapContainer>
             <Container>
                 <Header>Store Information</Header>
@@ -78,8 +78,7 @@ export default function ContactUsPage() {
                     <AccessTime />
                     <Hours>
                         <Info>Mon - Thu: 11am ~ 8pm</Info>
-                        <Info>Fri: 11am ~ 9pm</Info>
-                        <Info>Sat: 12am ~ 9pm</Info>
+                        <Info>Fri - Sat: 11am ~ 9pm</Info>
                         <Info>Sun: Closed</Info>
                     </Hours>
                 </InfoContainer>

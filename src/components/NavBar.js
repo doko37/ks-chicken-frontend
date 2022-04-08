@@ -115,11 +115,20 @@ const MItem = styled.p`
 const OrderLabel = styled.p`
     position: absolute;
     color: white;
-    background-color: #3f51b5;
-    transform: rotate(5deg);
+    background-color: #cf8334;
+    border-radius: 0.25rem;
+    height: 60px;
+    width: 60px;
     font-size: 10px;
-    right: -16.5px;
-    top: 30px;
+    right: 0.5px;
+    top: 0px;
+`
+
+const MenuContainer = styled.div`
+    transform: ${props => props.dropBarState ? 'rotate(180deg)' : 'rotate(0deg)'};
+    transition: transform 0.5s ease;
+    height: 30px;
+    width: 30px;
 `
 
 export default function NavBar(props) {
@@ -147,22 +156,18 @@ export default function NavBar(props) {
             <Bar>
                 {mState ? <ContentContainer>
                     <NavContainer>
-                        <Menu onClick={toggleDropBar} style={{
-                            color: 'white',
-                            fontSize: '30px'
-                        }}/>
+                        <MenuContainer dropBarState={dropBarState}>
+                            <Menu onClick={toggleDropBar} style={{
+                                color: 'white',
+                                fontSize: '30px',
+                            }}/>
+                        </MenuContainer>
                     </NavContainer>
                     <LogoLink href="/">
                         <Logo src={logo} alt="Logo"/>
                     </LogoLink>
                     <BasketContainer>
-                        <Badge badgeContent={0} color="primary">
-                            <Basket  style={{
-                                color: 'white',
-                                fontSize: '30px'
-                            }}/>
-                        </Badge>
-                        <OrderLabel>Coming soon</OrderLabel>
+                        <OrderLabel>Online ordering coming soon</OrderLabel>
                     </BasketContainer>
                 </ContentContainer> : 
                 <ContentContainer>
@@ -174,13 +179,7 @@ export default function NavBar(props) {
                         <NavItems href="/contact-us" mState={!mState}>CONTACT US</NavItems>
                     </NavContainer>
                     <BasketContainer>
-                        <Badge badgeContent={0} color="primary">
-                            <Basket  style={{
-                                color: 'white',
-                                fontSize: '30px'
-                            }}/>
-                        </Badge>
-                        <OrderLabel>Coming soon</OrderLabel>
+                        <OrderLabel>Online ordering coming soon</OrderLabel>
                     </BasketContainer>
                 </ContentContainer>}
             </Bar>

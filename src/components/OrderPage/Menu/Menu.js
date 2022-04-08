@@ -24,7 +24,7 @@ const HeaderContainer = styled.div`
     width: 100%;
 
     @media(min-width: 700px) {
-        height: ${(props => props.currentWidth / 3.5)}px;
+        height: ${(props => props.currentWidth / 4.5)}px;
     }
 ` 
 

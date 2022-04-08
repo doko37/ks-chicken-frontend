@@ -41,10 +41,6 @@ export const mSlides = [
         img: mimg1,
         key: mimg1
     },
-    {
-        img: mimg2,
-        key: mimg2
-    }
 ]
 
 export const slides = [
@@ -52,109 +48,105 @@ export const slides = [
         img: img1,
         key: img1
     },
-    {
-        img: img2,
-        key: img2
-    }
 ]
 
 export const Chicken = [
     {
         img: original,
         title: "Original Fried Chicken",
-        halfprice: 17,
-        fullprice: 32,
+        halfprice: 19,
+        fullprice: 35,
         key: "original"
     },
     {
         img: crispy,
         title: "Crispy Fried Chicken",
-        halfprice: 17,
-        fullprice: 32,
+        halfprice: 19,
+        fullprice: 35,
         key: "crispy"
     },
     {
         img: korean,
         title: "Korean Fried Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "korean"
     },
     {
         img: spicy,
         title: "Spicy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "spicy"
     },
     {
         img: hotandspicy,
         title: "Hot and Spicy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "hotandspicy"
     },
     {
         img: sweetchilly,
         title: "Sweet Chilly Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "sweetchilly"
     },
     {
         img: soy,
         title: "Soy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "soy"
     },
     {
         img: soy,
         title: "Garlic Soy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "garlicsoy"
     },
     {
         img: soy,
         title: "BBQ Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "bbq"
     },
     {
         img: spicysoy,
         title: "Spicy Soy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "spicysoy"
     },
     {
         img: honey,
         title: "Honey Butter Chicken",
-        halfprice: 19,
-        fullprice: 38,
+        halfprice: 21,
+        fullprice: 39,
         key: "honey"
     },
     {
         img: snowy,
         title: "Snowy Cheese Chicken",
-        halfprice: 19,
-        fullprice: 36,
+        halfprice: 21,
+        fullprice: 39,
         key: "snowy"
     },
     {
         img: onion,
         title: "Onion Seasoning Chicken",
-        halfprice: 19,
-        fullprice: 36,
+        halfprice: 21,
+        fullprice: 39,
         key: "onion"
     },
     {
         img: padak,
         title: "Padak Chicken",
-        halfprice: 22,
-        fullprice: 39,
+        halfprice: 24,
+        fullprice: 42,
         key: "padak"
     },
 ]
@@ -250,31 +242,31 @@ export const Sides = [
     {
         img: chips,
         title: "Chips",
-        price: "Medium: $4 | Large: $6",
+        price: "Medium: $5 | Large: $7",
         key: "chips"
     },
     {
         img: rice,
         title: "Rice",
-        price: "$2 per serving.",
+        price: "$3 per serving.",
         key: "rice"
     },
     {
         img: radish,
         title: "Radish",
-        price: "$2 per serving.",
+        price: "$3 per serving.",
         key: "radish"
     },
     {
         img: coleslaw,
         title: "Coleslaw",
-        price: "$2 per serving.",
+        price: "$3 per serving.",
         key: "coleslaw"
     },
     {
         img: sauce,
         title: "Sauce",
-        price: "$3 per serving.",
+        price: "$4 per serving.",
         key: "sauce"
     },
 ]

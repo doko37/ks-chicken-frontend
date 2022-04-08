@@ -35,7 +35,7 @@ const Wrapper = styled.div`
     display: flex;
     height: 100%;
     align-items: center;
-    transition: all 1s ease;
+    transition: all 0.25s ease;
     transform: translateX(${props => props.slideState * -100}vw);
     z-index: 10;
 `
