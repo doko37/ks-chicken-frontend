@@ -138,13 +138,13 @@ export const Chicken = [
     {
         img: snowy,
         title: "Snowy Cheese Topping",
-        price: "$3 per half.",
+        price: "$2 per half.",
         key: "snowy"
     },
     {
         img: onion,
         title: "Onion Seasoning Topping",
-        price: "$3 per half.",
+        price: "$2 per half.",
         key: "onion"
     },
 ]
