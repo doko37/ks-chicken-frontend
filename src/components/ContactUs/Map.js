@@ -13,7 +13,7 @@ export default function Map(props) {
     })
 
     const containerStyle = {
-        width: '100%',
+        width: 'auto',
         height: `${props.height}px`
     }
     

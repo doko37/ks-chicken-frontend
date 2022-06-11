@@ -7,17 +7,15 @@ const Container = styled.div`
     margin: ${props => props.checkout ? '0 1rem' : '0'};
     margin-bottom: 0.5rem;
     background-color: white;
-    box-shadow: 0 0 1px 0px gray;
-    border-radius: 0.125rem;
+    box-shadow: 0 0 0px 0px gray;
+    border: 1px solid #efefef;
+    border-radius: 0.25rem;
     position: relative;
     z-index: 1;
+    transition: 0.3s;
     cursor: ${props => props.checkout ? 'default' : 'pointer'};
 
     &:hover {
-      box-shadow: ${props => props.checkout ? '0 0 1px 0px gray' : '0 0 1px 1px gray'};
-    }
-
-    &:active {
       background-color: ${props => props.checkout ? 'white' : '#efefef'};
     }
 
@@ -34,24 +32,24 @@ const Top = styled.div`
 
 const Description = styled.div`
   text-align: left;
-  margin: 0 0 0 38px;
+  margin-left: 38px;
 `
 
 const Title = styled.p`
   font-weight: 600;
-  font-size: small;
+  font-size: 14px;
   margin: 0.5rem;
 `
 
 const DetailHeader = styled.p`
-  font-size: small;
-  margin: 0;
+  font-size: 14px;
+  margin: 0.25rem;
   font-weight: 600;
 `
 
 const Details = styled.p`
-  font-size: small;
-  margin: 0;
+  font-size: 14px;
+  margin: 0.25rem;
 `
 
 const Left = styled.div`

@@ -9,7 +9,6 @@ const Body = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: scroll;
-  font-family: 'Noto Sans', sans-serif;
   text-align: center;
   scroll-behavior: smooth;
 `

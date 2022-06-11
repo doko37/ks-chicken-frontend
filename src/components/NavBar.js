@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import logo from '../Images/logo.svg'
 import { Menu } from '@material-ui/icons'
 import OrderFooter from './OrderPage/OrderFooter'
+import '../App.css'
 
 const Container = styled.div`
     display: block;
@@ -18,7 +19,7 @@ const Container = styled.div`
 
 const Bar = styled.div`
     height: 80px;
-    background-color: #1e1e1e;
+    background-color: #201e1f;
     display: flex;
     justify-content: center;
 
@@ -29,13 +30,12 @@ const Bar = styled.div`
 
 const SubBar = styled.div`
     position: relative;
-    background-color: #efefefef;
-    height: ${props => props.dropBarState ? '130px' : '0px'};
+    background-color: #292829;
+    height: ${props => props.dropBarState ? '173px' : '0px'};
     width: auto;
     text-align: left;
-    padding-left: 1em;
     transition: height 0.5s ease;
-    z-index: 0;
+    display: block;
 
     @media(min-width: 700px) {
         display: none;
@@ -81,15 +81,29 @@ const NavContainer = styled.div`
 `
 
 const NavItems = styled.a`
-    color: ${props => props.mobile ? 'black' : 'white'};
-    cursor: pointer;
+    color: ${props => props.mobile ? 'white' : 'white'};
     margin-left: ${props => props.mobile ? '0' : '1em'};
+    width: ${window.innerWidth - 16}px;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 16px;
     display: ${props => props.mState ? '' : 'none'};
+    padding: 0.75rem 0 0.75rem 1rem;
+    display: block;
+    font-weight: 300;
+    cursor: pointer;
+
+    &:active {
+        background-color: lightgray;
+    }
 
     @media(min-width: 700px) {
-        font-size: 20px;
+        font-size: 25px;
+        font-weight: 300;
+        width: auto;
+
+        &:active {
+            background-color: transparent;
+        }
     }
 ` 
 
@@ -110,12 +124,6 @@ const LogoLink = styled.a`
     @media(min-width: 700px) {
         width: 200px;
     }
-`
-
-const MItem = styled.p`
-    margin: 0;
-    padding-top: 16px;
-    display: ${props => props.dropBarState ? '' : 'none'};
 `
 
 const MenuContainer = styled.div`
@@ -185,7 +193,7 @@ export default function NavBar(props) {
     }
 
     return (
-        <Container cartState={props.cartState}>
+        <Container cartState={props.cartState} className='Italic'>
             <Bar>
                 {mState ? <ContentContainer>
                     <NavContainer>
@@ -211,6 +219,7 @@ export default function NavBar(props) {
                     </LogoLink>
                     <NavContainer>
                         <NavItems href="/menu" mState={!mState}>MENU</NavItems>
+                        <NavItems href="/lunch-bar" mState={!mState}>LUNCH BAR</NavItems>
                         <NavItems href="/contact-us" mState={!mState}>CONTACT US</NavItems>
                     </NavContainer>
                     <OrderButtonContainer>
@@ -221,15 +230,10 @@ export default function NavBar(props) {
                 </ContentContainer>}
             </Bar>
             <SubBar dropBarState={dropBarState}>
-                <MItem dropBarState={dropBarState}>
-                    <NavItems href="/menu" mState={mState} mobile={true}>Menu</NavItems>
-                </MItem>
-                <MItem dropBarState={dropBarState}>
-                    <NavItems href="/order" mState={mState} mobile={true}>Order</NavItems>
-                </MItem>
-                <MItem dropBarState={dropBarState}>
-                    <NavItems href="/contact-us" mState={mState} mobile={true}>Contact Us</NavItems>
-                </MItem>
+                <NavItems href="/menu" mState={mState} mobile={true}>MENU</NavItems>
+                <NavItems href="/lunch-bar" mState={mState} mobile={true}>LUNCH BAR</NavItems>
+                <NavItems href="/order" mState={mState} mobile={true}>ORDER</NavItems>
+                <NavItems href="/contact-us" mState={mState} mobile={true}>CONTACT US</NavItems>
             </SubBar>
         </Container>
     )

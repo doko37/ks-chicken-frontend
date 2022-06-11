@@ -65,7 +65,7 @@ export const OrderChicken = [
         title: "1/2 Chicken",
         type: "halfchicken",
         price: null,
-        priceLabel: "From $17",
+        priceLabel: "From $19",
         key: "halfchicken",
         details: true
     },
@@ -74,7 +74,7 @@ export const OrderChicken = [
         title: "Full Chicken",
         type: "fullchicken",
         price: null,
-        priceLabel: "From $34",
+        priceLabel: "From $35",
         key: "fullchicken",
         details: true
     }
@@ -84,100 +84,98 @@ export const Chicken = [
     {
         img: original,
         title: "Original Fried Chicken",
-        halfprice: 17,
-        fullprice: 32,
+        halfprice: 19,
+        fullprice: 35,
         key: "original"
     },
     {
         img: crispy,
         title: "Crispy Fried Chicken",
-        halfprice: 17,
-        fullprice: 32,
+        halfprice: 19,
+        fullprice: 35,
         key: "crispy"
     },
     {
         img: korean,
         title: "Korean Fried Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "korean"
     },
     {
         img: spicy,
         title: "Spicy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "spicy"
     },
     {
         img: hotandspicy,
         title: "Hot and Spicy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "hotandspicy"
     },
     {
         img: sweetchilly,
         title: "Sweet Chilly Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "sweetchilly"
     },
     {
         img: soy,
         title: "Soy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "soy"
     },
     {
         img: soy,
         title: "Garlic Soy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "garlicsoy"
     },
     {
         img: soy,
         title: "BBQ Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "bbq"
     },
     {
         img: spicysoy,
         title: "Spicy Soy Chicken",
-        halfprice: 18,
-        fullprice: 34,
+        halfprice: 20,
+        fullprice: 37,
         key: "spicysoy"
     },
     {
         img: honey,
         title: "Honey Butter Chicken",
-        halfprice: 19,
-        fullprice: 38,
+        halfprice: 21,
+        fullprice: 41,
         key: "honey"
-    },
-    {
-        img: snowy,
-        title: "Snowy Cheese Chicken",
-        halfprice: 19,
-        fullprice: 36,
-        key: "snowy"
-    },
-    {
-        img: onion,
-        title: "Onion Seasoning Chicken",
-        halfprice: 19,
-        fullprice: 36,
-        key: "onion"
     },
     {
         img: padak,
         title: "Padak Chicken",
-        halfprice: 22,
-        fullprice: 39,
+        halfprice: 24,
+        fullprice: 42,
         key: "padak"
+    },
+    {
+        img: snowy,
+        title: "Snowy Cheese Topping",
+        halfprice: 2,
+        key: "snowy"
+    },
+    {
+        img: onion,
+        title: "Onion Seasoning Topping",
+        halfprice: 2,
+        key: "onion"
     },
 ]
 
@@ -273,8 +271,10 @@ export const Sides = [
         img: chips,
         title: "Chips",
         type: "chips",
-        price: 4.00,
-        priceLabel: "From $4",
+        price: 5.00,
+        priceLabel: "From $5",
+        mediumPrice: 5.00,
+        largePrice: 7.00,
         key: "chips",
         details: true,
     },
@@ -282,8 +282,8 @@ export const Sides = [
         img: rice,
         title: "Rice",
         type: "side",
-        price: 2.00,
-        priceLabel: "$2 per serving",
+        price: 3.00,
+        priceLabel: "$3 per serving",
         key: "rice",
         details: false
     },
@@ -291,8 +291,8 @@ export const Sides = [
         img: radish,
         title: "Radish",
         type: "side",
-        price: 2.00,
-        priceLabel: "$2 per serving",
+        price: 3.00,
+        priceLabel: "$3 per serving",
         key: "radish",
         details: false
     },
@@ -300,8 +300,8 @@ export const Sides = [
         img: coleslaw,
         title: "Coleslaw",
         type: "side",
-        price: 2.00,
-        priceLabel: "$2 per serving",
+        price: 3.00,
+        priceLabel: "$3 per serving",
         key: "coleslaw",
         details: false
     },

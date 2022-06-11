@@ -7,7 +7,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 50%;
-    margin: 1rem auto;
+    margin: 0.5rem auto;
     padding-top: 1rem;
 `
 
@@ -18,18 +18,24 @@ const Button = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.25rem;
+    border-radius: 2rem;
     cursor: pointer;
+
+    &:active {
+        opacity: 50%;
+    }
 `
 
 const Quantity = styled.div`
     width: 50px;
     height: 50px;
-    background-color: lightgray;
+    background-color: gray;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    color: white;
 `
 
 export default function QuantityBox(props) {

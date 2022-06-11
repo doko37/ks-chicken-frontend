@@ -17,7 +17,7 @@ export default function OptionBoxes(props) {
             break
         case "halfchicken":
             boxes = <div>
-                <ChickenOption changeChicken={chicken => props.changeChicken(chicken)} chicken={props.chicken} itemSelectedState={props.itemSelectedState}/>
+                <ChickenOption changeChicken={chicken => props.changeChicken(chicken)} chicken={props.chicken} itemSelectedState={props.itemSelectedState} half={true}/>
                 <OptionBox type="cut" changeCut={cut => props.changeCut(cut)} cut={props.cut}/>
                 <OptionBox type="chickentopping" changeChickenTopping={topping => props.changeChickenToppings(topping)} chickenToppings={props.chickenToppings} changePowderTopping={topping => props.changePowderToppings(topping)} powderToppings={props.powderToppings}/>
                 <OptionBox id="Side" type="side" changeSide={side => props.changeSide(side, "sides1")} side={props.sides.side1}/>

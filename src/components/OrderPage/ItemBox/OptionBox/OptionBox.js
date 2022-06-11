@@ -67,7 +67,7 @@ export const Required = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   padding: 0.25rem;
   font-size: small;
   margin-bottom: 1px;

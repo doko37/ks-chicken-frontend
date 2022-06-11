@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import CartItem from './CartItem';
 import CheckoutBtn from './CheckoutBtn';
+import Location from './Location';
+import Time from './Time';
+import RestaurantFinder, { Divider } from '../RestaurantFinder/RestaurantFinder';
 
 const Container = styled.div`
     width: ${props => props.cartState ? '100%' : '0'};
@@ -13,6 +16,7 @@ const Container = styled.div`
     position: fixed;
     z-index: 51;
     transition: width 0.25s ease;
+    background-color: #efefef;
 
     @media(min-width: 700px) {
         width: ${props => props.cartState ? '450px' : '0'};
@@ -24,6 +28,7 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: white;
 `
 
 const InnerContainer = styled.div`
@@ -47,7 +52,9 @@ const ExitBtnContainer = styled.div`
 `
 
 const ItemContainer = styled.div`
-    margin: 0 1rem 1rem 1rem;
+    padding: 1rem;
+    background-color: white;
+    margin-top: 0.25rem;
 `
 
 const TotalContainer = styled.div`
@@ -62,20 +69,40 @@ const Total = styled.p`
     margin: 1rem 0;
 `
 
+const Filler = styled.div`
+    background-color: white;
+    height: 100%;
+    overflow-y: hidden;
+`
+
 export default function Cart(props) {
+    const [resSelected, setResSelected] = useState(false)
+    const [finderState, setFinderState] = useState(false)
+
+    function toggleFinder() {
+        setFinderState(!finderState)
+    }
+
   return (
     <Container cartState={props.cartState}>
+        <RestaurantFinder set={finderState} toggleFinder={toggleFinder}/>
         <InnerContainer cartState={props.cartState}>
             <Header>
-                <div style={{width: '24px', margin: '1rem'}}/>
+                {/* <div style={{
+                    width: '56px'
+                }}/> */}
                 <h3 style={{
-                    margin: '1rem 0'
-                }}>Your Cart</h3>
+                    margin: '1rem 0',
+                    textAlign: 'left',
+                    marginLeft: '1rem'
+                }}>Your Order</h3>
                 <ExitBtnContainer onClick={props.toggleCart}>
                     <Close style={{cursor: 'pointer'}}/>
                 </ExitBtnContainer>
             </Header>
+            <Time set={resSelected} findRestaurant={toggleFinder}/>
             <ItemContainer>
+                <p style={{margin: '0 1rem 1rem 0', textAlign: 'left', fontWeight: '600'}}>Your Cart</p>
                 {props.cart.length < 1 ? <p style={{fontSize: 'small', textAlign: 'left'}}>Your cart is empty</p> : null}
                 {props.cart.map(cartItem => {
                         return (
@@ -99,10 +126,9 @@ export default function Cart(props) {
                 })}
             </ItemContainer>
         </InnerContainer>
-        <CheckoutBtn checkout={props.checkout} cartState={props.cartState}>
+        <CheckoutBtn checkout={props.checkout} cartState={props.cartState} resSelected={resSelected}>
             <TotalContainer>
-                <Total style={{fontWeight: 600}}>Total:</Total>
-                <Total>${props.total}</Total>
+                <Total style={{fontWeight: 600}}>Total: ${props.total}</Total>
             </TotalContainer>
         </CheckoutBtn>
     </Container>

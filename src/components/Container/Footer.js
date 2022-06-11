@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import '../../App.css'
 
 const Body = styled.div`
     width: 100%;
-    height: 200px;
+    height: 300px;
     background-color: #1e1e1e;
     color: white;
     left: ${props => props.cartState ? `-${window.innerWidth}px` : '0px'};
@@ -17,6 +18,6 @@ const Body = styled.div`
 
 export default function Footer(props) {
   return (
-    <Body cartState={props.cartState}>Footer</Body>
+    <Body className='Italic' cartState={props.cartState}>Footer [TODO]</Body>
   )
 }

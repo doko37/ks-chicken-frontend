@@ -6,12 +6,10 @@ const Container = styled.div`
     width: auto;
     height: 120px;
     margin: 0 1em 1em 1em;
-    background-color: white;
     display: flex;
     position: relative;
-    border-radius: 0.5em;
+    border-radius: 0.25rem;
     overflow: hidden;
-    box-shadow: 0 0 3px 0 gray;
 
     @media(min-width: 700px) {
         height: 170px;
@@ -22,12 +20,12 @@ const ImageContainer = styled.div`
     width: auto;
     height: 100%;
     overflow: hidden;
-    border-radius: 0.5em 0 0 0.5em;
+    border-radius: 1rem;
 `
 
 const Image = styled.img`
     height: 100%;
-    border-radius: 0.5em 0 0 0.5em;
+    border-radius: 1rem;
 
     transition: all 0.5s;
 
@@ -37,14 +35,17 @@ const Image = styled.img`
 `
 
 const Title = styled.h3`
-    font-size: 15px;
+    font-size: 20px;
+    font-weight: 300;
     margin: 0.5rem;
-    color: black;
+    color: ${props => props.type === "lunch" ? 'black' : 'white'};
+    text-align: left;
 `
 
 const Desc = styled.div`
     text-align: start;
-    margin: 0.5em;
+    color: lightgray;
+    margin: 0.5rem;
 `
 
 const AddContainer = styled.div`
@@ -70,13 +71,31 @@ export default function Item(props) {
             <ImageContainer>
                 <Image src={props.img}/>
             </ImageContainer>
-            <Title>{props.title}</Title>
+            <div>
+                <Title type={props.type}>{props.title}</Title>
+                {props.type === "chicken" ? 
+                <div>
+                    {props.itemKey === "onion" || props.itemKey === "snowy" ? <Desc>PER HALF - ${props.halfprice}</Desc> :
+                    <div>
+                        <Desc>HALF - ${props.halfprice}</Desc>
+                        <Desc>FULL - ${props.fullprice}</Desc>
+                    </div>
+                    }
+                </div> : null}
+                {props.type === "sides" ?
+                <div>
+                    {props.itemKey === "chips" ? <div>
+                        <Desc>MEDIUM - $5</Desc>
+                        <Desc>LARGE - $7</Desc>
+                    </div> : <Desc>{props.price}</Desc>}
+                </div> : null}
+            </div>
             {/* <AddContainer lunch={props.type === "lunch"}>
                 <AddLabel>Add to cart</AddLabel>
                 <Add style={{
                     opacity: '70%',
                     fontSize: '30px',
-                    marginLeft: '0.25em',
+                    marginLeft: '0.25rem',
                 }}/>
             </AddContainer> */}
         </Container>

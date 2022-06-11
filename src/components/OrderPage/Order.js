@@ -8,13 +8,15 @@ import ItemBox from './ItemBox/ItemBox';
 
 const Body = styled.div`
     width: 100%;
-    left: ${props => props.cartState ? `-${window.innerWidth}px;` : '0'};
+    left: ${props => props.cartState ? `-${window.innerWidth}px` : '0'};
     transition: left 0.25s ease;
-    background-color: #efefefef;
+    background-color: #efefef;
     z-index: 10;
     position: relative;
     min-height: ${props => props.cartState ? '0' : window.innerHeight - 80}px;
-    box-shadow: 0px -4px 4px -4px gray;
+    //box-shadow: 0px -4px 4px -4px gray;
+    box-shadow: 0 0px 4px 0 gray;
+    overflow-y: hidden;
 
     @media (min-width: 700px) {
         left: 0;
@@ -105,7 +107,7 @@ export default function OrderPage(props) {
     }
 
     return (
-        <Body cartState={cartState}>
+        <Body cartState={cartState} style={{backgroundColor: 'white'}}>
             <Cart cartState={cartState} cart={cart} toggleCart={toggleCart} total={total} selectItem={item => itemSelected(item)} editItem={item => editItemSelected(item)}/>
             <Backdrop cartState={cartState} toggleCart={toggleCart} cart/>
             <Backdrop cartState={itemSelectedState} toggleCart={() => setItemSelectedState(false)}/>

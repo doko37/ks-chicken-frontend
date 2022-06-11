@@ -1,220 +1,175 @@
-import chicken from '../../Images/chicken.jpg'
-import chips from '../../Images/chips.JPG'
-import lunch from '../../Images/lunchsummary.jpg'
-import cola from '../../Images/cola.PNG'
 import React from 'react'
 import styled from 'styled-components'
 import Slider from './Slider'
-import Info from './Info'
+import chicken from '../../Images/chicken.jpg'
+import chips from '../../Images/chips.JPG'
+import cola from '../../Images/cola.PNG'
+import lunch from '../../Images/lunchsummary.jpg'
+import '../../App.css'
 
-export const Header = styled.h2`
-    color: black;
-    text-align: start;
-    border-bottom: 3px dotted black;
-    font-weight: 600;
-    margin: 0.5em;
-
-    @media(min-width: 700px) {
-        margin: 0.5em 1em;
-    }
-`
-
-const MenuContainer = styled.div`
-    align-items: center;
+const Body = styled.div`
+    width: 100%;
     height: auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    margin: 0 4px;
-    width: auto;
-    
-    @media(min-width: 700px) {
-        display: block;
-        margin: 0 24px;
-        margin-bottom: 2em;
-    }
+    background-color: #252425;
+    z-index: 10;
+    position: relative;
 `
 
 const Bottom = styled.div`
-    width: auto;
+    height: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     margin: auto;
-    padding-bottom: 0.5em;
-    display: block;
-
-    @media(min-width: 700px) {
-        display: flex;
-    }
-
+    background-color: #252425;
+    
     @media(min-width: 1200px) {
         width: 1200px;
     }
 `
 
-const Body = styled.div`
-    width: 100%;
-    height: auto;
-    background-color: #efefefef;
-    z-index: 10;
-    position: relative;
+const TitleCtn = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
-const ButtonContainer = styled.div`
-    width: auto;
-    margin: 0 0.5em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    border-radius: 0.5em;
-    height: 200px;
+const Title = styled.h1`
+    margin: 0;
+    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-
-    // @media(max-width: 699px) {
-    //     &:nth-child(odd) {
-    //         margin-right: -0.05px;
-    //     }
-    
-    //     &:nth-child(even) {
-    //         margin-left: -0.05px;
-    //     }
-    // }
-
-    @media(min-width: 700px) {
-        display: grid;
-        height: 200px;
-        grid-template-columns: 1fr;
-        margin: 1em 0;
-        box-shadow: 0 0 4px 0 gray;
-    }
-`
-
-const LinkContainer = styled.div`
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(0,0,0,0.25);
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    border-radius: 0.5em;
-
-    @media(min-width: 700px) {
-        position: absolute;
-        background-color: black;
-        opacity: 60%;
-        width: 50%;
-        left: 25%;
-        height: 50%;
-    }
-
-    &:hover {
-        opacity: 80%;
-    }
-`
-
-const Button = styled.a`
     color: white;
-    width: 100%;
-    height: 100%;
+    font-weight: 300;
+    text-align: center;
+    font-size: ${props => props.top ? '28px' : '22px'};
+    border-top: 4px white double;
+    border-bottom: 4px white double;
+    width: fit-content;
+    transform: rotate(-3deg);
+
+    @media(min-width: 700px) {
+        font-size: ${props => props.top ? '40px' : '30px'};
+        margin-top: 1rem;
+    }
+`
+
+const DescCtn = styled.div`
+    margin: 0 0.5rem;
+`
+
+const Description = styled.h2`
+    color: white;
+    font-weight: 300;
+    font-size: 20px;
+    text-align: center;
+
+    @media(min-width: 700px) {
+        font-size: 28px;
+    }
+`
+
+const MenuCtn = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: fit-content;
+    margin: auto;
+    justify-content: center;
+
+    @media(min-width: 700px) {
+        margin: 0 20.5rem;
+    }
+`
+
+const Button = styled.div`
     display: flex;
+    height: 11rem;
+    width: 11rem;
+    margin: 0.5rem;
+    position: relative;
     justify-content: center;
     align-items: center;
-    font-size: 25px;
-    z-index: 5;
-    text-decoration: none;
-
-    @media(min-width: 700px) {
-        color: white;
-    }
-`
-
-const ImgConatiner = styled.div`
-    height: 200px;
-    width: auto;
+    border-radius: 1rem;
     overflow: hidden;
-    border-radius: 0.5rem;
 
     @media(min-width: 700px) {
-        height: 200px;
-        margin-bottom: 0px;
+        height: 16rem;
+        width: 16rem;
+        border-radius: 2rem;
     }
 `
 
-const ButtonImg = styled.img`
-    width: 100%;
+const Image = styled.img`
     height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    transition: all .5s;
+    width: auto;
+    border-radius: 1rem;
+    transition: all 0.5s;
+
+    @media(min-width: 700px) {
+        border-radius: 2rem;
+    }
 
     &:hover {
         transform: scale(1.1);
     }
 `
 
-const Left = styled.div`
-    flex: 2;
+const ButtonTxt = styled.a`
+    color: white;
+    font-size: 24px;
+    font-weight: 300;
+    position: absolute;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    background-color: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+
+    &:active {
+        background-color: rgba(0,0,0,0.1);
+    }
+
+    @media(min-width: 700px) {
+        border-radius: 2rem;
+    }
 `
 
 export default function Home() {
     return (
-        <Body>
+        <Body className='Italic'>
             <Slider />
             <Bottom>
-                <Left>
-                <Header>Our Menu</Header>
-                <MenuContainer className='RaceFont'>
-                    <ButtonContainer>
-                        <LinkContainer>
-                            <Button href="/menu">CHICKEN</Button>
-                        </LinkContainer>
-                        <a href="/menu" style={{
-                            width: '100%'
-                        }}> 
-                            <ImgConatiner>
-                                <ButtonImg src={chicken}/>
-                            </ImgConatiner>
-                        </a>
-                    </ButtonContainer>
-                    <ButtonContainer>
-                        <LinkContainer>
-                            <Button href="/menu#sides">SIDES</Button>
-                        </LinkContainer>
-                        <a href="/menu#sides" style={{
-                            width: '100%'
-                        }}>
-                            <ImgConatiner>
-                                <ButtonImg src={chips}/>
-                            </ImgConatiner>
-                        </a>
-                    </ButtonContainer>
-                    <ButtonContainer>
-                        <LinkContainer>
-                            <Button href="/menu#lunch">LUNCH</Button>
-                        </LinkContainer>
-                        <a href="/menu#lunch" style={{
-                            width: '100%'
-                        }}>
-                            <ImgConatiner>
-                                <ButtonImg src={lunch}/>
-                            </ImgConatiner>
-                        </a>
-                    </ButtonContainer>
-                    <ButtonContainer>
-                        <LinkContainer>
-                            <Button href="/menu">DRINKS</Button>
-                        </LinkContainer>
-                        <a href="/menu" style={{
-                            width: '100%'
-                        }}>
-                            <ImgConatiner>
-                                <ButtonImg src={cola}/>
-                            </ImgConatiner> 
-                        </a>
-                    </ButtonContainer>
-                </MenuContainer>
-                </Left>
-                <Info />
+                <TitleCtn>
+                    <Title top>The Best Korean Fried Chicken in Auckland!</Title>
+                </TitleCtn>
+                <DescCtn>
+                    <Description className='Normal'>
+                        KS Chicken is a family owned Korean Fried Chicken restaurant that opened in 2015. We make delicious and authentic Korean-style Fried Chicken with various different marinations for both lunch and dinner.
+                    </Description>
+                </DescCtn>
+                <TitleCtn>
+                    <Title>Our Menu</Title>
+                </TitleCtn>
+                <MenuCtn>
+                    <Button>
+                        <Image src={chicken}/>
+                        <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
+                    </Button>
+                    <Button>
+                        <Image src={chips}/>
+                        <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
+                    </Button>
+                    <Button>
+                        <Image src={cola}/>
+                        <ButtonTxt href="/menu">DRINKS</ButtonTxt>
+                    </Button>
+                    <Button>
+                        <Image src={lunch}/>
+                        <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
+                    </Button>
+                </MenuCtn>
             </Bottom>
         </Body>
     )

@@ -36,17 +36,18 @@ const List = styled.select`
   border: 1px gray solid;
   padding: 1rem 0;
   border-radius: 0.5rem;
-  border: 3px solid white;
-  background-color: transparent;
+  border: 1px solid white;
+  background-color: rgba(0,0,0,0.5);
   z-index: 10;
   font-size: medium;
   font-weight: 600;
+  text-align: center;
   color: white;
   cursor: pointer;
 `
 
 const Option = styled.option`
-  color: black;
+  color: white;
 `
 
 const Image = styled.img`
@@ -80,7 +81,7 @@ export default function ChickenOption(props) {
           <ListContainer />
             <List value={props.chicken.key} onChange={handleChange}>
               {Chicken.map(chicken => {
-                return chicken.key !== 'snowy' && chicken.key !== 'onion' ? <Option key={chicken.key} value={chicken.key}>{chicken.title}</Option> : null
+                return chicken.key !== 'snowy' && chicken.key !== 'onion' ? <Option key={chicken.key} value={chicken.key}>{chicken.title} {chicken.key !== 'original' && chicken.key !== 'crispy' ? ` + $${props.half ? chicken.halfprice - 19 : chicken.fullprice - 35}.00` : ''}</Option> : null
               })}
             </List>
       </ImageContainer>

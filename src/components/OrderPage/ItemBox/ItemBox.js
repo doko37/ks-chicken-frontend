@@ -44,10 +44,11 @@ const Content = styled.div`
 const TitleContainer = styled.div`
     position: relative;
     height: 150px;
-    box-shadow: 0 4px 4px -1px gray;
+    box-shadow: 0 0 4px 2px gray;
 
     @media(min-width: 700px) {
         height: 200px;
+        box-shadow: 0 2px 2px 0px gray;
     }
 `
 
@@ -55,7 +56,7 @@ const TitleBar = styled.div`
     height: 60px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     font-size: 18px;
     font-weight: 600;
@@ -89,12 +90,19 @@ const Image = styled.img`
 `
 
 const Bottom = styled.div`
-    background-color: #efefef;
+    background-color: white;
+    padding-bottom: 0.5rem;
 `
 
 const RemoveButton = styled.p`
-    color: #7300ff;
+    //color: #7300ff;
+    color: white;
     font-size: small;
+    width: 100px;
+    margin: 1rem auto;
+    border-radius: 0.5rem;
+    background-color: #ff5757;
+    padding: 0.25rem;
     cursor: pointer;
 
     &:active {
@@ -109,6 +117,13 @@ const Anchor = styled.div`
     background-color: transparent;
 `
 
+const Total = styled.div`
+    display: flex;
+    margin: 0 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+`
+
 
 export default function ItemBox(props) {
     const anchor = useRef(null)
@@ -116,6 +131,7 @@ export default function ItemBox(props) {
     const [item, setItem] = useState({
         title: '',
         chicken: {key: 'original', halfprice: 17, fullprice: 32},
+        img: '',
         cut: 'whole',
         chickenToppings: {sesame: false, peanuts: false, parsley: false},
         powderToppings: {snowy: false, onion: false},
@@ -227,9 +243,9 @@ export default function ItemBox(props) {
 
             if(type === "chips") {
                 if(item.size === "medium") {
-                    newPrice = 4
+                    newPrice = 5
                 } else {
-                    newPrice = 6
+                    newPrice = 7
                 }
             }
 
@@ -270,11 +286,11 @@ export default function ItemBox(props) {
             const newItem = {
                 title: props.selectedItem.title,
                 chicken: props.selectedItem.type.includes("chicken") ? item.chicken : null,
+                img: props.selectedItem.img,
                 cut: props.selectedItem.type.includes("chicken") ? item.cut : null,
                 chickenToppings: props.selectedItem.type.includes("chicken") ? item.chickenToppings : null,
                 sides: props.selectedItem.type.includes("chicken") ? props.selectedItem.type === "halfchicken" ? {side1: item.sides.side1, side2: null} : item.sides : null,
                 size: props.selectedItem.type === 'chips' ? item.size : null,
-                img: props.selectedItem.img,
                 quantity: item.quantity,
                 price: newPrice,
                 powderToppings: props.selectedItem.type === "chips" || props.selectedItem.type.includes("chicken") ? item.powderToppings : null,
@@ -292,14 +308,12 @@ export default function ItemBox(props) {
         <Container itemSelectedState={props.itemSelectedState}>
             <TitleContainer>
                 <TitleBar>
-                    <div style={{
-                        width: '24px',
-                        marginLeft: '1rem'
-                    }}/>
                     <p>{props.selectedItem ? props.selectedItem.title : ''}</p>
                     <Close onClick={props.close} style={{
-                        marginRight: '1rem',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        position: 'absolute',
+                        top: '16px',
+                        right: '16px'
                     }}/>
                 </TitleBar>
                 <ImageContainer>
@@ -328,8 +342,10 @@ export default function ItemBox(props) {
                 />
                 <Bottom>
                     <QuantityBox changeQuantity={newQuantity => changeQuantity(newQuantity)} quantity={item.quantity}/>
-                    <p>${finalItem ? (finalItem.price * finalItem.quantity) : 0}</p>
-                    {props.editState ? <RemoveButton onClick={() => props.removeItem(finalItem)}>Remove Item</RemoveButton> : null}
+                    {props.editState ? <RemoveButton onClick={() => props.removeItem(finalItem)}><strong>Remove Item</strong></RemoveButton> : null}
+                    <Total>
+                        <p style={{margin: '0', fontWeight: '600'}}>Total: ${finalItem ? (finalItem.price * finalItem.quantity) : 0}</p>
+                    </Total>
                     <AddButton addItem={() => props.editState ? props.editItem(finalItem) : props.addItem(finalItem)}>{props.editState ? 'Edit Item' : 'Add to cart'}</AddButton>
                 </Bottom>
             </Content>

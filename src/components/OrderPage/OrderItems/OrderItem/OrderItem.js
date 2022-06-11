@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
     height: 150px;
-    margin: 1rem;
+    margin: 0.5rem;
     background-color: white;
     border-radius: 0.5rem;
     display: flex;
@@ -11,6 +11,7 @@ const Container = styled.div`
     justify-content: right;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 0 4px 0 gray;
     cursor: pointer;
 
     @media (min-width: 700px) {
@@ -25,7 +26,7 @@ const Image = styled.img`
     height: 150px;
     width: 100%;
     object-fit: cover;
-    border-radius: 0.5rem;
+    border-radius: 0.25rem;
     height: 100%;
     z-index: 1;
     transition: transform 0.5s ease;
@@ -37,7 +38,7 @@ const Image = styled.img`
 
 const SideText = styled.div`
     text-align: right;
-    border-radius: 0 0.5rem 0.5rem 0;
+    border-radius: 0 0.25rem 0.25rem 0;
     display: flex;
     align-items: center;
     height: 100%;

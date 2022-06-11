@@ -1,12 +1,30 @@
-.App {
+@font-face {
+  src: url(../fonts/kenyan_coffee_rg.ttf);
+  font-family: "coffee_rg";
+  font-weight: 300;
+}
+
+@font-face {
+  src: url(../fonts/kenyan_coffee_rg_it.ttf);
+  font-family: "coffee_rg_it";
+  font-weight: 300;
+}
+
+@font-face {
+  src: url(../fonts//kenyan_coffee_bd.ttf);
+  font-family: "coffee_bd";
+  font-weight: 300;
+}
+
+.Italic {
   text-align: center;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: "coffee_rg_it";
   scroll-behavior: smooth;
 }
 
-.RaceFont {
+.Normal {
   text-align: center;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: "coffee_rg";
 }
 
 html {

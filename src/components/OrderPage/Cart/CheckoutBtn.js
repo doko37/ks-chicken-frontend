@@ -5,15 +5,16 @@ const Container = styled.div`
     height: 110px;
     width: 100%;
     background-color: white;
-    box-shadow: 0 0 6px 0px gray;
+    box-shadow: 0 0 4px 0 gray;
     position: absolute;
     bottom: 0;
     display: block;
+    z-index: 10;
 `
 
 const ButtonCtn = styled.div`
     margin: 0 1rem;
-    background-color: #cf8334;
+    background-color: ${props => props.resSelected ? '#cf8334' : 'lightgray'};
     height: 45px;
     width: auto;
     border: none;
@@ -25,11 +26,11 @@ const ButtonCtn = styled.div`
     cursor: pointer;
 
     &:hover {
-        box-shadow: 0 0 2px 1px gray;
+        box-shadow: ${props => props.resSelected ? '0 0 4px 0px gray' : 'none'};
     }
 
     &:active {
-        background-color: #f0983c;
+        background-color: ${props => props.resSelected ? '#f0983c' : 'lightgray'};
     }
 `
 
@@ -38,7 +39,20 @@ const CheckoutLink = styled.a`
     text-decoration: none;
     position: relative;
     align-self: center;
-    display: ${props => props.cartState ? 'flex' : 'none'};
+    display: ${props => props.resSelected ? props => props.cartState ? 'flex' : 'none' : 'none'};
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+`
+
+const DeadLink = styled.p`
+    color: white;
+    margin: 0;
+    text-decoration: none;
+    position: relative;
+    align-self: center;
+    display: ${props => props.resSelected ? 'none' : props => props.cartState ? 'flex' : 'none'};
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -49,8 +63,9 @@ export default function CheckoutBtn(props) {
   return (
     <Container>
         {props.children}
-        <ButtonCtn>
-            <CheckoutLink cartState={props.cartState} href="/checkout">Go to checkout</CheckoutLink>
+        <ButtonCtn resSelected={props.resSelected}>
+            <CheckoutLink cartState={props.cartState} resSelected={props.resSelected} href="/checkout">Go to checkout</CheckoutLink>
+            <DeadLink cartState={props.cartState} resSelected={props.resSelected}>Go to checkout</DeadLink>
         </ButtonCtn>
     </Container>
   )
