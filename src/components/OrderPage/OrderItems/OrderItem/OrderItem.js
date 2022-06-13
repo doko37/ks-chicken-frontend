@@ -3,19 +3,18 @@ import styled from 'styled-components';
 
 const Container = styled.div`
     height: 150px;
-    margin: 0.5rem;
+    margin: 1rem;
     background-color: white;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
     display: flex;
     align-items: center;
     justify-content: right;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 4px 0 gray;
     cursor: pointer;
 
     @media (min-width: 700px) {
-        margin: 0.5rem;
+        margin: 1rem;
         height: 180px;
     }
 `
@@ -26,7 +25,7 @@ const Image = styled.img`
     height: 150px;
     width: 100%;
     object-fit: cover;
-    border-radius: 0.25rem;
+    border-radius: 2rem;
     height: 100%;
     z-index: 1;
     transition: transform 0.5s ease;

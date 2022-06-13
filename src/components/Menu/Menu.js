@@ -1,8 +1,7 @@
 import React, {useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import header from '../../Images/chicken.jpg'
 import Item from './Item'
-import { Chicken, Lunch, Sides } from '../Data'
+import { Chicken, Sides } from '../Data'
 import './Menu.css'
 import '../../App.css'
 
@@ -14,32 +13,6 @@ const Container = styled.div`
     @media(min-width: 1200px) {
         width: 1200px;
     }
-`
-
-const HeaderContainer = styled.div`
-    position: relative;
-    text-align: center;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-
-    @media(min-width: 700px) {
-        height: ${(props => props.currentWidth / 4)}px;
-    }
-` 
-
-const Header = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-`
-
-const HeaderTitle = styled.div`
-    position: absolute;
-    font-size: 55px;
-    font-weight: bold;
 `
 
 export const Body = styled.div`
@@ -56,8 +29,8 @@ const NavBarContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px white solid;
     background-color: #201e1f;
+    //border-bottom: 1px white solid;
     z-index: 10;
 `
 
@@ -71,16 +44,19 @@ const NavBar = styled.div`
     background-color: transparent;
     
     @media(min-width: 1200px) {
-        width: 1200px;
+        width: 1168px;
     }
 `
 
 const NavBarItemContainer = styled.div`
-    width: auto;
+    width: 33%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: ${props => props.active ? '1px' : '0'};
+    border-bottom: ${props => props.active ? '1px solid white' : 'none'};
+    cursor: ${props => !props.temp ? 'pointer' : 'default'};
 
     &#current {
         border-bottom: 2px green solid;
@@ -90,8 +66,7 @@ const NavBarItemContainer = styled.div`
 const NavBarItem = styled.p`
     text-decoration: none;
     margin: 0 1em;
-    color: ${props => !props.active ? 'white' : 'gray'};
-    cursor: ${props => !props.active ? 'pointer' : 'default'};
+    color: ${props => !props.temp ? 'white' : 'gray'};
     font-size: 15px;
 
     @media(min-width: 700px) {
@@ -133,55 +108,51 @@ export const CategoryTitle = styled.h3`
 `
 
 export default function Menu(props) {
-    const [currentWidth, setCurrentWidth] = useState(window.innerWidth)
-    const [itemSelectedState, setItemSelectedState] = useState(false)
-    const [selectedItem, setSelectedItem] = useState(null)
+    const [inView, setInView] = useState('chicken')
     const chickenRef = useRef(null)
+    const sidesRef = useRef(null)
+    const ctnRef = useRef(null)
 
     useEffect(() => {
-        function handleChange() {
-            setCurrentWidth(window.innerWidth)
+        function detectYPos() {
+            if(chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2 || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
+                setInView('chicken')
+            } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2){
+                setInView('sides')
+            }
         }
-        
-        window.addEventListener('resize', handleChange)
-    })
+
+        window.addEventListener('scroll', detectYPos, false)
+    },)
 
     function scrollMenu(category) {
         const el = document.getElementById(category)
         el.scrollIntoView()
     }
 
-    function itemSelected(item) {
-        setSelectedItem(item)
-        setItemSelectedState(!itemSelectedState)
-    }
-
-    function addItem(item) {
-        setItemSelectedState(false)
-        props.addItem(item)
-    }
-
     return (
-            <Body id="body" cartState={props.cartState} itemSelectedState={itemSelectedState} className='Italic'>
+            <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
                 {/* <HeaderContainer currentWidth={currentWidth}>
                     <Header src={header}/>
                     <HeaderTitle className='RaceFont'>-MENU-</HeaderTitle>
                 </HeaderContainer> */}
                 <NavBarContainer>
                     <NavBar>
-                        <NavBarItemContainer>
-                            <NavBarItem onClick={() => scrollMenu('chicken')}>Chicken</NavBarItem>
+                        <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
+                            <NavBarItem>Chicken</NavBarItem>
                         </NavBarItemContainer>
-                        <NavBarItemContainer>
-                            <NavBarItem onClick={() => scrollMenu('sides')}>Sides</NavBarItem>
+                        <NavBarItemContainer active={inView === 'sides' ? true : false} onClick={() => scrollMenu('sides')}>
+                            <NavBarItem>Sides</NavBarItem>
                         </NavBarItemContainer>
-                        <NavBarItem active>Drinks</NavBarItem>
+                        <NavBarItemContainer active={inView === 'drinks' ? true : false} temp>
+                            <NavBarItem temp>Drinks</NavBarItem>
+                        </NavBarItemContainer>
                     </NavBar>
                 </NavBarContainer>
                 <Container>
                     <ItemContainer>
-                        <CategoryTitle>CHICKEN</CategoryTitle>
-                        <CategoryContainer ref={chickenRef} id="chicken">
+                        <CategoryTitle ref={chickenRef}>CHICKEN</CategoryTitle>
+                        <CategoryContainer id="chicken">
                             {Chicken.map(item => {
                                 return (
                                     <Item 
@@ -191,12 +162,12 @@ export default function Menu(props) {
                                         fullprice={item.fullprice}
                                         type="chicken"
                                         itemKey={item.key}
-                                        itemSelect={() => itemSelected(item)}
+                                        key={item.key}
                                     />
                                 )
                             })}
                         </CategoryContainer>
-                        <CategoryTitle>SIDES</CategoryTitle>
+                        <CategoryTitle ref={sidesRef}>SIDES</CategoryTitle>
                         <CategoryContainer id="sides">
                             {Sides.map(item => {
                                 return (
@@ -206,7 +177,7 @@ export default function Menu(props) {
                                         price={item.priceLabel}
                                         type="sides"
                                         itemKey={item.key}
-                                        itemSelect={() => itemSelected(item)}
+                                        key={item.key}
                                     />
                                 )
                             })}

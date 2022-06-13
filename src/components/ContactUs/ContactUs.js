@@ -57,7 +57,7 @@ const Info = styled.p`
     font-size: 18px;
 
     @media(min-width: 1200px) {
-        font-size: 20px;
+        font-size: 24px;
     }
 `
 
@@ -105,7 +105,7 @@ export default function ContactUsPage() {
                     <Header>CONTACT US</Header>
                     <InfoSection>
                         <Phone />
-                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'none'}}>
+                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'underline'}}>
                             <Info>09-476 1952</Info>
                         </a>
                     </InfoSection>
@@ -128,7 +128,7 @@ export default function ContactUsPage() {
                     <Header>CONTACT US</Header>
                     <InfoSection>
                         <Phone />
-                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'none'}}>
+                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'underline'}}>
                             <Info>09-476 1952</Info>
                         </a>
                     </InfoSection>

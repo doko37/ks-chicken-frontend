@@ -5,7 +5,9 @@ import chicken from '../../Images/chicken.jpg'
 import chips from '../../Images/chips.JPG'
 import cola from '../../Images/cola.PNG'
 import lunch from '../../Images/lunchsummary.jpg'
-import '../../App.css'
+import Map from '../ContactUs/Map'
+import hero from './hero.jpg'
+import './Home.css'
 
 const Body = styled.div`
     width: 100%;
@@ -13,14 +15,19 @@ const Body = styled.div`
     background-color: #252425;
     z-index: 10;
     position: relative;
+    padding-top: 0;
+
+    @media(min-width: 1168px) {
+        padding-top: 1rem;
+    }
 `
 
 const Bottom = styled.div`
     height: auto;
-    padding-top: 1rem;
     padding-bottom: 1rem;
     margin: auto;
     background-color: #252425;
+    width: auto;
     
     @media(min-width: 1200px) {
         width: 1200px;
@@ -31,6 +38,25 @@ const TitleCtn = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 5;
+    position: relative;
+`
+
+const HeroTitleCtn = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    background-image: linear-gradient(180deg, rgb(0,0,0,0.8), rgb(0,0,0,0));
+    padding-bottom: 1rem;
+    border-radius: 0;
+    position: absolute;
+    top: 0;
+
+    @media(min-width: 1168px) {
+        border-radius: 2rem 2rem 0 0;
+    }
 `
 
 const Title = styled.h1`
@@ -44,7 +70,7 @@ const Title = styled.h1`
     border-top: 4px white double;
     border-bottom: 4px white double;
     width: fit-content;
-    transform: rotate(-3deg);
+    transform: rotate(-2deg);
 
     @media(min-width: 700px) {
         font-size: ${props => props.top ? '40px' : '30px'};
@@ -54,6 +80,8 @@ const Title = styled.h1`
 
 const DescCtn = styled.div`
     margin: 0 0.5rem;
+    z-index: 5;
+    position: relative;
 `
 
 const Description = styled.h2`
@@ -61,6 +89,7 @@ const Description = styled.h2`
     font-weight: 300;
     font-size: 20px;
     text-align: center;
+    z-index: 5;
 
     @media(min-width: 700px) {
         font-size: 28px;
@@ -73,10 +102,6 @@ const MenuCtn = styled.div`
     width: fit-content;
     margin: auto;
     justify-content: center;
-
-    @media(min-width: 700px) {
-        margin: 0 20.5rem;
-    }
 `
 
 const Button = styled.div`
@@ -106,10 +131,6 @@ const Image = styled.img`
     @media(min-width: 700px) {
         border-radius: 2rem;
     }
-
-    &:hover {
-        transform: scale(1.1);
-    }
 `
 
 const ButtonTxt = styled.a`
@@ -133,17 +154,49 @@ const ButtonTxt = styled.a`
 
     @media(min-width: 700px) {
         border-radius: 2rem;
+        font-size: 30px;
+    }
+`
+
+const Hero = styled.img`
+    position: relative;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-radius: 0;
+
+    @media(min-width: 1168px) {
+        border-radius: 2rem;
+    }
+`
+
+const Top = styled.div`
+    height: auto;
+    position: relative;
+    width: 100%;
+    border-radius: 0;
+
+    @media(min-width: 1168px) {
+        width: 1168px;
+        margin: auto;
+        height: 613.188px;
+        border-radius: 2rem;
+        box-shadow: 0 0 4px 0 gray;
     }
 `
 
 export default function Home() {
     return (
         <Body className='Italic'>
-            <Slider />
-            <Bottom>
-                <TitleCtn>
+            {/* <Slider /> */}
+            <Top>
+                <Hero src={hero}/>
+                <HeroTitleCtn top>
                     <Title top>The Best Korean Fried Chicken in Auckland!</Title>
-                </TitleCtn>
+                </HeroTitleCtn>
+            </Top>
+            <Bottom>
                 <DescCtn>
                     <Description className='Normal'>
                         KS Chicken is a family owned Korean Fried Chicken restaurant that opened in 2015. We make delicious and authentic Korean-style Fried Chicken with various different marinations for both lunch and dinner.
@@ -153,23 +206,31 @@ export default function Home() {
                     <Title>Our Menu</Title>
                 </TitleCtn>
                 <MenuCtn>
-                    <Button>
-                        <Image src={chicken}/>
+                    <Button id='Cover'>
+                        <Image src={chicken} id='Image'/>
                         <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
                     </Button>
-                    <Button>
-                        <Image src={chips}/>
+                    <Button id='Cover'>
+                        <Image src={chips} id='Image'/>
                         <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
                     </Button>
-                    <Button>
-                        <Image src={cola}/>
+                    <Button id='Cover'>
+                        <Image src={cola} id='Image'/>
                         <ButtonTxt href="/menu">DRINKS</ButtonTxt>
                     </Button>
-                    <Button>
-                        <Image src={lunch}/>
+                    <Button id='Cover'>
+                        <Image src={lunch} id='Image'/>
                         <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
                     </Button>
                 </MenuCtn>
+                <TitleCtn>
+                    <Title>Where to find us</Title>
+                </TitleCtn>
+                <DescCtn>
+                    <Description className='Normal'>
+                        We are located in 33B Triton Drive, Rosedale in Auckland. Click <a href="/contact-us" style={{color: 'white'}}>here</a> for more details.
+                    </Description>
+                </DescCtn>
             </Bottom>
         </Body>
     )

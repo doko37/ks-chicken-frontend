@@ -81,8 +81,8 @@ const NavContainer = styled.div`
 `
 
 const NavItems = styled.a`
-    color: ${props => props.mobile ? 'white' : 'white'};
-    margin-left: ${props => props.mobile ? '0' : '1em'};
+    color: white;
+    margin-left: ${props => props.mobile ? '0' : '1rem'};
     width: ${window.innerWidth - 16}px;
     text-decoration: none;
     font-size: 16px;
@@ -170,6 +170,12 @@ const OrderLink = styled.a`
     height: 100%;
     width: 100%;
     color: white;
+    font-weight: 300;
+    font-size: 12.5px;
+
+    @media(min-width: 700px) {
+        font-size: 19px;
+    }
 `
 
 export default function NavBar(props) {

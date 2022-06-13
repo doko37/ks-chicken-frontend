@@ -4,10 +4,12 @@ import Item from '../Menu/Item'
 import { Lunch } from '../Data'
 import { CategoryTitle } from '../Menu/Menu'
 import '../../App.css'
+import { MobileState } from '../hooks/MobileState'
 
 const Body = styled.div`
     position: relative;
     background-color: #DBDBDB;
+    padding-bottom: 1rem;
 `
 
 const Container = styled.div`
@@ -33,7 +35,7 @@ const ItemContainer = styled.div`
 `
 
 const InfoHeader = styled.div`
-    height: 300px;
+    height: ${props => props.mState ? window.innerWidth : '400'}px;
     width: 100%;
     background-color: lightgray;
     display: flex;
@@ -42,9 +44,11 @@ const InfoHeader = styled.div`
 `
 
 export default function LunchBar() {
+    const mState = MobileState()
+
   return (
     <Body className='Italic'>
-        <InfoHeader>Infomation header [TODO]</InfoHeader>
+        <InfoHeader mState={mState}>Infomation header [TODO]</InfoHeader>
         <Container>
             <CategoryTitle lunch>Meat Options</CategoryTitle>
             <ItemContainer>
@@ -54,6 +58,7 @@ export default function LunchBar() {
                             img={item.img} 
                             title={item.title.toUpperCase()}
                             type="lunch"
+                            key={item.key}
                         />
                     )
                 })}
@@ -66,6 +71,7 @@ export default function LunchBar() {
                             img={item.img} 
                             title={item.title.toUpperCase()}
                             type="lunch"
+                            key={item.key}
                         />
                     )
                 })}

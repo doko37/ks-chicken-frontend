@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { AddCircleOutline as Add } from '@material-ui/icons'
+import chili from './chili.png'
 
 const Container = styled.div`
     width: auto;
     height: 120px;
-    margin: 0 1em 1em 1em;
+    margin: 0 1rem 2rem 1rem;
     display: flex;
     position: relative;
     border-radius: 0.25rem;
@@ -34,12 +35,22 @@ const Image = styled.img`
     }
 `
 
+const TitleCtn = styled.div`
+    display: flex;
+    align-items: center;
+`
+
 const Title = styled.h3`
     font-size: 20px;
     font-weight: 300;
     margin: 0.5rem;
     color: ${props => props.type === "lunch" ? 'black' : 'white'};
     text-align: left;
+`
+
+const Chili = styled.img`
+    width: 13.2px;
+    height: 13.2px;
 `
 
 const Desc = styled.div`
@@ -72,7 +83,23 @@ export default function Item(props) {
                 <Image src={props.img}/>
             </ImageContainer>
             <div>
-                <Title type={props.type}>{props.title}</Title>
+                <TitleCtn>
+                    <Title type={props.type}>{props.title}</Title>
+                    {props.itemKey === "spicy" ? <Chili src={chili}/> : null}
+                    {props.itemKey === "spicysoy" ? 
+                    <div>
+                        <Chili src={chili}/>
+                        <Chili src={chili}/>
+                    </div> : null
+                    }
+                    {props.itemKey === "hotandspicy" ? 
+                    <div>
+                        <Chili src={chili}/>
+                        <Chili src={chili}/>
+                        <Chili src={chili}/>
+                    </div> : null
+                    }
+                </TitleCtn>
                 {props.type === "chicken" ? 
                 <div>
                     {props.itemKey === "onion" || props.itemKey === "snowy" ? <Desc>PER HALF - ${props.halfprice}</Desc> :

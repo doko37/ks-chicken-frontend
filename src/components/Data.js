@@ -138,18 +138,18 @@ export const Chicken = [
         key: "garlicsoy"
     },
     {
-        img: soy,
-        title: "BBQ Chicken",
-        halfprice: 20,
-        fullprice: 37,
-        key: "bbq"
-    },
-    {
         img: spicysoy,
         title: "Spicy Soy Chicken",
         halfprice: 20,
         fullprice: 37,
         key: "spicysoy"
+    },
+    {
+        img: soy,
+        title: "BBQ Chicken",
+        halfprice: 20,
+        fullprice: 37,
+        key: "bbq"
     },
     {
         img: honey,
@@ -289,7 +289,7 @@ export const Sides = [
     },
     {
         img: radish,
-        title: "Radish",
+        title: "Pickled Radish",
         type: "side",
         price: 3.00,
         priceLabel: "$3 per serving",

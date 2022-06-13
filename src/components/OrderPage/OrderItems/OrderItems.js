@@ -7,7 +7,7 @@ import '../../../App.css'
 
 const Container = styled.div`
     z-index: 10;
-    background-color: white;
+    background-color: #252425;
 
     @media (min-width: 1200px) {
         width: 1200px;
@@ -17,22 +17,18 @@ const Container = styled.div`
 `
 
 const SectionCtn = styled.div`
-    background-color: ${props => props.odd ? '#e6e6e6' : '#efefef'};
+    background-color: #252425;
     padding: 0.5rem 0;
-
-    @media (min-width: 700px) {
-        background-color: white;
-    }
 `
 
 const Header = styled.p`
     //margin: ${props => props.top ? '0 0.5rem 0.5rem 0.5rem' : '0rem 0.5rem 0.5rem 0.5rem'};
-    margin: 0.5rem;
+    margin: 1rem;
     margin-top: 0;
     padding-top: ${props => props.top ? '0.25rem' : '0'};
-    border-bottom: 1px solid black;
     text-align: left;
     font-size: 22px;
+    color: white;
 
     @media (min-width: 1200px) {
         font-size: 26px;

@@ -5,22 +5,34 @@ import OrderItems from './OrderItems/OrderItems';
 import Cart from './Cart/Cart'
 import Backdrop from './Backdrop';
 import ItemBox from './ItemBox/ItemBox';
+import '../../App.css'
+import { MobileState } from '../hooks/MobileState';
 
 const Body = styled.div`
     width: 100%;
     left: ${props => props.cartState ? `-${window.innerWidth}px` : '0'};
     transition: left 0.25s ease;
-    background-color: #efefef;
     z-index: 10;
     position: relative;
     min-height: ${props => props.cartState ? '0' : window.innerHeight - 80}px;
-    //box-shadow: 0px -4px 4px -4px gray;
-    box-shadow: 0 0px 4px 0 gray;
     overflow-y: hidden;
+    background-color: #252425;
 
     @media (min-width: 700px) {
         left: 0;
         box-shadow: none;
+    }
+`
+
+const Message = styled.div`
+    font-weight: 300;
+    font-size: ${props => props.main ? '30px' : '22px'};
+    text-align: center;
+    margin: 0 1rem;
+    z-index: 10;
+
+    @media(min-width: 700px) {
+        font-size: ${props => props.main ? '40px' : '28px'};
     }
 `
 
@@ -106,21 +118,29 @@ export default function OrderPage(props) {
         setTotal(total - (existingItem.price * existingItem.quantity))
     }
 
+    const mState = MobileState()
+
     return (
-        <Body cartState={cartState} style={{backgroundColor: 'white'}}>
-            <Cart cartState={cartState} cart={cart} toggleCart={toggleCart} total={total} selectItem={item => itemSelected(item)} editItem={item => editItemSelected(item)}/>
-            <Backdrop cartState={cartState} toggleCart={toggleCart} cart/>
-            <Backdrop cartState={itemSelectedState} toggleCart={() => setItemSelectedState(false)}/>
-            <OrderItems addItem={newItem => addItem(newItem)} itemSelected={selectedItem => itemSelected(selectedItem)}/>
-            <OrderFooter numItems={numItems} toggleCart={toggleCart}/>
-            <ItemBox selectedItem={selectedItem} 
-                    close={() => setItemSelectedState(false)} 
-                    itemSelectedState={itemSelectedState} 
-                    addItem={newItem => addItem(newItem)} 
-                    editState={editState}
-                    editItem={item => editItem(item)}
-                    removeItem={item => removeItem(item)}
-            />
-        </Body>
+        // <Body cartState={cartState} className="Normal">
+        //     <Cart cartState={cartState} cart={cart} toggleCart={toggleCart} total={total} selectItem={item => itemSelected(item)} editItem={item => editItemSelected(item)}/>
+        //     <Backdrop cartState={cartState} toggleCart={toggleCart} cart/>
+        //     <Backdrop cartState={itemSelectedState} toggleCart={() => setItemSelectedState(false)}/>
+        //     <OrderItems addItem={newItem => addItem(newItem)} itemSelected={selectedItem => itemSelected(selectedItem)}/>
+        //     <OrderFooter numItems={numItems} toggleCart={toggleCart}/>
+        //     <ItemBox selectedItem={selectedItem} 
+        //             close={() => setItemSelectedState(false)} 
+        //             itemSelectedState={itemSelectedState} 
+        //             addItem={newItem => addItem(newItem)} 
+        //             editState={editState}
+        //             editItem={item => editItem(item)}
+        //             removeItem={item => removeItem(item)}
+        //     />
+        // </Body>
+        <div className='Italic' style={{backgroundColor: '#252425', color: 'white', height: window.innerHeight - 80, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: '10', position: 'relative'}}>
+            <div>
+                <Message main>ONLINE ORDERING WILL BE COMING SOON!</Message>
+                <Message>In the mean time, you can order by calling us on: <a href="tel:094761952" style={{color: 'white'}}>09-476 1952</a></Message>
+            </div>
+        </div>
     )
 }
