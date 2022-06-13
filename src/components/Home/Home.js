@@ -24,9 +24,14 @@ const Body = styled.div`
 
 const Bottom = styled.div`
     height: auto;
+<<<<<<< HEAD
     padding-bottom: 1rem;
     margin: auto;
     background-color: #252425;
+=======
+    display: block;
+    margin: 0 4px;
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     width: auto;
     
     @media(min-width: 1200px) {
@@ -82,6 +87,7 @@ const DescCtn = styled.div`
     margin: 0 0.5rem;
     z-index: 5;
     position: relative;
+<<<<<<< HEAD
 `
 
 const Description = styled.h2`
@@ -93,6 +99,18 @@ const Description = styled.h2`
 
     @media(min-width: 700px) {
         font-size: 28px;
+=======
+    border-radius: 0.5em;
+    height: 200px;
+    margin-bottom: 0.5rem;
+
+    @media(min-width: 700px) {
+        display: grid;
+        height: 200px;
+        grid-template-columns: 1fr;
+        margin: 1em 0;
+        box-shadow: 0 0 4px 0 gray;
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     }
 `
 
@@ -112,6 +130,7 @@ const Button = styled.div`
     position: relative;
     justify-content: center;
     align-items: center;
+<<<<<<< HEAD
     border-radius: 1rem;
     overflow: hidden;
 
@@ -119,6 +138,21 @@ const Button = styled.div`
         height: 16rem;
         width: 16rem;
         border-radius: 2rem;
+=======
+    background-color: rgb(0,0,0,0.25);
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    border-radius: 0.5rem;
+
+    @media(min-width: 700px) {
+        position: absolute;
+        background-color: black;
+        opacity: 60%;
+        width: 50%;
+        left: 25%;
+        height: 50%
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     }
 `
 
@@ -128,8 +162,13 @@ const Image = styled.img`
     border-radius: 1rem;
     transition: all 0.5s;
 
+<<<<<<< HEAD
     @media(min-width: 700px) {
         border-radius: 2rem;
+=======
+    &:hover {
+        opacity: 80%;
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     }
 `
 
@@ -148,6 +187,7 @@ const ButtonTxt = styled.a`
     align-items: center;
     pointer-events: auto;
 
+<<<<<<< HEAD
     &:active {
         background-color: rgba(0,0,0,0.1);
     }
@@ -159,6 +199,26 @@ const ButtonTxt = styled.a`
 `
 
 const Hero = styled.img`
+=======
+    @media(min-width: 700px) {
+        color: white;
+    }
+`
+
+const ImgConatiner = styled.div`
+    height: 200px;
+    width: auto;
+    overflow: hidden;
+    border-radius: 0.5rem;
+
+    @media(min-width: 700px) {
+        height: 200px;
+        margin-bottom: 0px;
+    }
+`
+
+const ButtonImg = styled.img`
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     position: relative;
     width: 100%;
     top: 0;
@@ -197,6 +257,7 @@ export default function Home() {
                 </HeroTitleCtn>
             </Top>
             <Bottom>
+<<<<<<< HEAD
                 <DescCtn>
                     <Description className='Normal'>
                         KS Chicken is a family owned Korean Fried Chicken restaurant that opened in 2015. We make delicious and authentic Korean-style Fried Chicken with various different marinations for both lunch and dinner.
@@ -231,6 +292,62 @@ export default function Home() {
                         We are located in 33B Triton Drive, Rosedale in Auckland. Click <a href="/contact-us" style={{color: 'white'}}>here</a> for more details.
                     </Description>
                 </DescCtn>
+=======
+                <Left>
+                <Header>Our Menu</Header>
+                <MenuContainer className='RaceFont'>
+                    <ButtonContainer>
+                        <LinkContainer>
+                            <Button href="/menu">CHICKEN</Button>
+                        </LinkContainer>
+                        <a href="/menu" style={{
+                            width: '100%'
+                        }}> 
+                            <ImgConatiner>
+                                <ButtonImg src={chicken}/>
+                            </ImgConatiner>
+                        </a>
+                    </ButtonContainer>
+                    <ButtonContainer>
+                        <LinkContainer>
+                            <Button href="/menu#sides">SIDES</Button>
+                        </LinkContainer>
+                        <a href="/menu#sides" style={{
+                            width: '100%'
+                        }}>
+                            <ImgConatiner>
+                                <ButtonImg src={chips}/>
+                            </ImgConatiner>
+                        </a>
+                    </ButtonContainer>
+                    <ButtonContainer>
+                        <LinkContainer>
+                            <Button href="/menu#lunch">LUNCH</Button>
+                        </LinkContainer>
+                        <a href="/menu#lunch" style={{
+                            width: '100%'
+                        }}>
+                            <ImgConatiner>
+                                <ButtonImg src={lunch}/>
+                            </ImgConatiner>
+                        </a>
+                    </ButtonContainer>
+                    <ButtonContainer>
+                        <LinkContainer>
+                            <Button href="/menu">DRINKS</Button>
+                        </LinkContainer>
+                        <a href="/menu" style={{
+                            width: '100%'
+                        }}>
+                            <ImgConatiner>
+                                <ButtonImg src={cola}/>
+                            </ImgConatiner> 
+                        </a>
+                    </ButtonContainer>
+                </MenuContainer>
+                </Left>
+                <Info />
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
             </Bottom>
         </Body>
     )

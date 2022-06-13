@@ -36,8 +36,12 @@ const MapContainer = styled.a`
     height: auto;
 
     @media(min-width: 700px) {
+<<<<<<< HEAD
         height: ${props => props.width / 3.5}px;
         flex: 8;
+=======
+        height: ${props => props.width / 4.5}px;
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     }
 `
 
@@ -96,6 +100,7 @@ export default function ContactUsPage() {
     } )
 
     return (
+<<<<<<< HEAD
         <>
             {mState ? <Ctn className='Italic'>
                 <MapContainer>
@@ -151,5 +156,33 @@ export default function ContactUsPage() {
             </Ctn>
             }
         </>
+=======
+        <div>
+            <MapContainer>
+                <Map height={mState ? currentWidth : 500}/>
+            </MapContainer>
+            <Container>
+                <Header>Store Information</Header>
+                <InfoContainer>
+                    <Phone />
+                    <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'none'}}>
+                        <Info>09-476 1952</Info>
+                    </a>
+                </InfoContainer>
+                <InfoContainer>
+                    <MapRounded/>
+                    <Info>33b Triton Drive, Rosedale</Info>
+                </InfoContainer>
+                <InfoContainer>
+                    <AccessTime />
+                    <Hours>
+                        <Info>Mon - Thu: 11am ~ 8pm</Info>
+                        <Info>Fri - Sat: 11am ~ 9pm</Info>
+                        <Info>Sun: Closed</Info>
+                    </Hours>
+                </InfoContainer>
+            </Container>
+        </div>
+>>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     )
 }
