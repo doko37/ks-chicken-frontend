@@ -8,12 +8,11 @@ const InfoContainer = styled.div`
     width: auto;
     margin-left: 1em;
     text-align: left;
-    margin-top: 1em;
 
     @media(min-width: 700px) {
         margin-top: 50px;
         width: auto;
-        margin-right: 1em;
+        margin-right: 1rem;
         text-align: right;
     }
 `
@@ -100,18 +99,16 @@ export default function Info() {
                 </Icon>
                 <div>
                     <h3>OUR HOURS:</h3>
-                    <p>Mon-Thu: 11am ~ 8:30pm</p>
-                    <p>Fri: 11am ~ 9pm</p>
-                    <p>Sat: 12am ~ 9pm</p>
+                    <p>Mon - Thu: 11am ~ 8:30pm</p>
+                    <p>Fri - Sat: 11am ~ 9pm</p>
                     <p>Sun: Closed</p>
                 </div>
             </SubInfoContainer> :
             <SubInfoContainer>
                 <div>
                     <h3>OUR HOURS:</h3>
-                    <p>Mon-Thu: 11am ~ 8:30pm</p>
-                    <p>Fri: 11am ~ 9pm</p>
-                    <p>Sat: 12am ~ 9pm</p>
+                    <p>Mon - Thu: 11am ~ 8:30pm</p>
+                    <p>Fri - Sat: 11am ~ 9pm</p>
                     <p>Sun: Closed</p>
                 </div>
                 <Icon border>

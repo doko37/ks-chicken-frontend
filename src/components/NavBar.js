@@ -2,17 +2,24 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import logo from '../Images/logo.svg'
 import { Menu } from '@material-ui/icons'
-import { ShoppingBasketOutlined as Basket } from '@material-ui/icons'
-import { Badge } from '@material-ui/core'
+import OrderFooter from './OrderPage/OrderFooter'
+import '../App.css'
 
 const Container = styled.div`
     display: block;
+    position: relative;
+    left: ${props => props.cartState ? `-${window.innerWidth}px` : '0px'};
+    transition: left 0.25s ease;
     z-index: 0;
+
+    @media (min-width: 700px) {
+        left: 0;
+    }
 `
 
 const Bar = styled.div`
     height: 80px;
-    background-color: #1e1e1e;
+    background-color: #201e1f;
     display: flex;
     justify-content: center;
 
@@ -23,13 +30,12 @@ const Bar = styled.div`
 
 const SubBar = styled.div`
     position: relative;
-    background-color: #efefefef;
-    height: ${props => props.dropBarState ? '92px' : '0px'};
+    background-color: #292829;
+    height: ${props => props.dropBarState ? '173px' : '0px'};
     width: auto;
     text-align: left;
-    padding-left: 1em;
     transition: height 0.5s ease;
-    z-index: 0;
+    display: block;
 
     @media(min-width: 700px) {
         display: none;
@@ -49,7 +55,7 @@ const ContentContainer = styled.div`
     }
 `
 
-const BasketContainer = styled.div`
+const Filler = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
@@ -75,15 +81,29 @@ const NavContainer = styled.div`
 `
 
 const NavItems = styled.a`
-    color: ${props => props.mobile ? 'black' : 'white'};
-    cursor: pointer;
-    margin-left: ${props => props.mobile ? '0' : '1em'};
+    color: white;
+    margin-left: ${props => props.mobile ? '0' : '1rem'};
+    width: ${window.innerWidth - 16}px;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 16px;
     display: ${props => props.mState ? '' : 'none'};
+    padding: 0.75rem 0 0.75rem 1rem;
+    display: block;
+    font-weight: 300;
+    cursor: pointer;
+
+    &:active {
+        background-color: lightgray;
+    }
 
     @media(min-width: 700px) {
-        font-size: 20px;
+        font-size: 25px;
+        font-weight: 300;
+        width: auto;
+
+        &:active {
+            background-color: transparent;
+        }
     }
 ` 
 
@@ -106,29 +126,56 @@ const LogoLink = styled.a`
     }
 `
 
-const MItem = styled.p`
-    margin: 0;
-    padding-top: 16px;
-    display: ${props => props.dropBarState ? '' : 'none'};
-`
-
-const OrderLabel = styled.p`
-    position: absolute;
-    color: white;
-    background-color: #cf8334;
-    border-radius: 0.25rem;
-    height: 60px;
-    width: 60px;
-    font-size: 10px;
-    right: 0.5px;
-    top: 0px;
-`
-
 const MenuContainer = styled.div`
     transform: ${props => props.dropBarState ? 'rotate(180deg)' : 'rotate(0deg)'};
     transition: transform 0.5s ease;
     height: 30px;
     width: 30px;
+`
+
+const OrderButtonContainer = styled.div`
+    flex: 1;
+    margin-right: 1em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+`
+
+const OrderButton = styled.div`
+    height: 30px;
+    width: 60px;
+    background-color: #cf8334;
+    font-size: 10px;
+    border-radius: 1rem;
+
+    @media (min-width: 700px) {
+        height: 40px;
+        width: 90px;
+        font-size: 15px;
+        border-radius: 2rem;
+        transition: background-color 0.5s ease;
+    }
+
+    &:hover {
+        background-color: #ffa241;
+    }
+`
+
+const OrderLink = styled.a`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-weight: 300;
+    font-size: 12.5px;
+
+    @media(min-width: 700px) {
+        font-size: 19px;
+    }
 `
 
 export default function NavBar(props) {
@@ -152,23 +199,25 @@ export default function NavBar(props) {
     }
 
     return (
-        <Container>
+        <Container cartState={props.cartState} className='Italic'>
             <Bar>
                 {mState ? <ContentContainer>
                     <NavContainer>
                         <MenuContainer dropBarState={dropBarState}>
                             <Menu onClick={toggleDropBar} style={{
                                 color: 'white',
-                                fontSize: '30px',
+                                fontSize: '30px'
                             }}/>
                         </MenuContainer>
                     </NavContainer>
                     <LogoLink href="/">
                         <Logo src={logo} alt="Logo"/>
                     </LogoLink>
-                    <BasketContainer>
-                        <OrderLabel>Online ordering coming soon</OrderLabel>
-                    </BasketContainer>
+                    <OrderButtonContainer>
+                        <OrderButton>
+                            <OrderLink href="/order">Order Now</OrderLink>
+                        </OrderButton>
+                    </OrderButtonContainer>
                 </ContentContainer> : 
                 <ContentContainer>
                     <LogoLink href="/">
@@ -176,20 +225,21 @@ export default function NavBar(props) {
                     </LogoLink>
                     <NavContainer>
                         <NavItems href="/menu" mState={!mState}>MENU</NavItems>
+                        <NavItems href="/lunch-bar" mState={!mState}>LUNCH BAR</NavItems>
                         <NavItems href="/contact-us" mState={!mState}>CONTACT US</NavItems>
                     </NavContainer>
-                    <BasketContainer>
-                        <OrderLabel>Online ordering coming soon</OrderLabel>
-                    </BasketContainer>
+                    <OrderButtonContainer>
+                        <OrderButton>
+                            <OrderLink href="/order">Order Now</OrderLink>
+                        </OrderButton>
+                    </OrderButtonContainer>
                 </ContentContainer>}
             </Bar>
             <SubBar dropBarState={dropBarState}>
-                <MItem dropBarState={dropBarState}>
-                    <NavItems href="/menu" mState={mState} mobile={true}>MENU</NavItems>
-                </MItem>
-                <MItem dropBarState={dropBarState}>
-                    <NavItems href="/contact-us" mState={mState} mobile={true}>CONTACT US</NavItems>
-                </MItem>
+                <NavItems href="/menu" mState={mState} mobile={true}>MENU</NavItems>
+                <NavItems href="/lunch-bar" mState={mState} mobile={true}>LUNCH BAR</NavItems>
+                <NavItems href="/order" mState={mState} mobile={true}>ORDER</NavItems>
+                <NavItems href="/contact-us" mState={mState} mobile={true}>CONTACT US</NavItems>
             </SubBar>
         </Container>
     )
