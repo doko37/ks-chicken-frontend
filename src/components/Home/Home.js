@@ -106,8 +106,8 @@ const MenuCtn = styled.div`
 
 const Button = styled.div`
     display: flex;
-    height: 11rem;
-    width: 11rem;
+    height: 10rem;
+    width: auto;
     margin: 0.5rem;
     position: relative;
     justify-content: center;
