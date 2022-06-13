@@ -130,16 +130,6 @@ export const Chicken = [
         key: "garlicsoy"
     },
     {
-<<<<<<< HEAD
-=======
-        img: soy,
-        title: "BBQ Chicken",
-        halfprice: 20,
-        fullprice: 37,
-        key: "bbq"
-    },
-    {
->>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
         img: spicysoy,
         title: "Spicy Soy Chicken",
         halfprice: 20,
@@ -164,31 +154,19 @@ export const Chicken = [
         img: padak,
         title: "Padak Chicken",
         halfprice: 24,
-<<<<<<< HEAD
         fullprice: 42,
-=======
-        fullprice: 43,
->>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
         key: "padak"
     },
     {
         img: snowy,
         title: "Snowy Cheese Topping",
-<<<<<<< HEAD
         halfprice: 2,
-=======
-        price: "$2 per half.",
->>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
         key: "snowy"
     },
     {
         img: onion,
         title: "Onion Seasoning Topping",
-<<<<<<< HEAD
         halfprice: 2,
-=======
-        price: "$2 per half.",
->>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
         key: "onion"
     },
 ]
@@ -284,7 +262,6 @@ export const Sides = [
     {
         img: chips,
         title: "Chips",
-<<<<<<< HEAD
         type: "chips",
         price: 5.00,
         priceLabel: "From $5",
@@ -292,15 +269,10 @@ export const Sides = [
         largePrice: 7.00,
         key: "chips",
         details: true,
-=======
-        price: "Medium: $5 | Large: $7",
-        key: "chips"
->>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     },
     {
         img: rice,
         title: "Rice",
-<<<<<<< HEAD
         type: "side",
         price: 3.00,
         priceLabel: "$3 per serving",
@@ -315,30 +287,15 @@ export const Sides = [
         priceLabel: "$3 per serving",
         key: "radish",
         details: false
-=======
-        price: "$3 per serving.",
-        key: "rice"
-    },
-    {
-        img: radish,
-        title: "Radish",
-        price: "$3 per serving.",
-        key: "radish"
->>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     },
     {
         img: coleslaw,
         title: "Coleslaw",
-<<<<<<< HEAD
         type: "side",
         price: 3.00,
         priceLabel: "$3 per serving",
         key: "coleslaw",
         details: false
-=======
-        price: "$3 per serving.",
-        key: "coleslaw"
->>>>>>> 9e7b2317363948fae9ca3d13cfaac912251e064e
     },
     {
         img: sauce,
