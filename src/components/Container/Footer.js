@@ -18,7 +18,7 @@ const Body = styled.div`
 `
 
 const Ctn = styled.div`
-  width: auto;
+  width: 100%;
   margin: auto;
   padding-top: 1rem;
   display: flex;
