@@ -1,0 +1,37 @@
+#scroll-container {
+    background-color: yellow;
+    height: 30px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+  
+#scroll-text {
+    font-size: x-large;
+}
+
+@media(max-width: 700px) {
+    #scroll-text {
+        -moz-transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+        
+        -moz-animation: my-animation 7s linear infinite;
+        -webkit-animation: my-animation 7s linear infinite;
+        animation: my-animation 7s linear infinite;
+        font-size: x-large;
+        white-space: nowrap;
+    }
+}
+
+@keyframes my-animation {
+    from {
+      -moz-transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+      transform: translateX(100%);
+    }
+    to {
+      -moz-transform: translateX(-220%);
+      -webkit-transform: translateX(-220%);
+      transform: translateX(-220%);
+    }
+}

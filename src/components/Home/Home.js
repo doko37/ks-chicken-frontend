@@ -8,6 +8,7 @@ import lunch from '../../Images/lunchsummary.jpg'
 import Map from '../ContactUs/Map'
 import hero from './hero.jpg'
 import './Home.css'
+import '../Alert.css'
 
 const Body = styled.div`
     width: 100%;
@@ -189,6 +190,9 @@ const Top = styled.div`
 export default function Home() {
     return (
         <Body className='Italic'>
+            <div id="scroll-container">
+                <div id="scroll-text">NOTICE: Our business hours have changed. Please go to the CONTACT US page for more details. Thank you!</div>
+            </div>
             {/* <Slider /> */}
             <Top>
                 <Hero src={hero}/>
