@@ -190,9 +190,6 @@ const Top = styled.div`
 export default function Home() {
     return (
         <Body className='Italic'>
-            <div id="scroll-container">
-                <div id="scroll-text">NOTICE: Our business hours have changed. Please go to the CONTACT US page for more details. Thank you!</div>
-            </div>
             {/* <Slider /> */}
             <Top>
                 <Hero src={hero}/>
