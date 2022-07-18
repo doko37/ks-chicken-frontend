@@ -67,7 +67,7 @@ const Title = styled.h1`
     color: white;
     font-weight: 300;
     text-align: center;
-    font-size: ${props => props.top ? '28px' : '22px'};
+    font-size: ${props => props.top ? '24px' : '22px'};
     border-top: 4px white double;
     border-bottom: 4px white double;
     width: fit-content;

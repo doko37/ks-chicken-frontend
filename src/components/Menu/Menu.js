@@ -54,8 +54,8 @@ const NavBarItemContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: ${props => props.active ? '1px' : '0'};
-    border-bottom: ${props => props.active ? '1px solid white' : 'none'};
+    //margin-top: ${props => props.active ? '1px' : '0'};
+    border-bottom: ${props => props.active ? '2px solid white' : '2px solid #201e1f'};
     cursor: ${props => !props.temp ? 'pointer' : 'default'};
 
     &#current {
