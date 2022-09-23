@@ -86,67 +86,71 @@ export default function ContactUsPage() {
         function handleResize() {
             setCurrentWidth(window.innerWidth)
             setCurrentHeight(window.innerHeight)
-            if(window.innerWidth < 700) {
+            if (window.innerWidth < 700) {
                 setMState(true)
             } else {
                 setMState(false)
             }
         }
         window.addEventListener('resize', handleResize)
-    } )
+    })
 
     return (
         <>
             {mState ? <Ctn className='Italic'>
                 <MapContainer>
-                    <Map height={mState ? currentWidth : 800}/>
+                    <Map height={mState ? currentWidth : 800} />
                 </MapContainer>
                 <InfoCtn>
                     <Header>CONTACT US</Header>
                     <InfoSection>
                         <Phone />
-                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'underline'}}>
+                        <a href="tel:094761952" style={{ color: '#3f51b5', textDecoration: 'underline' }}>
                             <Info>09-476 1952</Info>
                         </a>
                     </InfoSection>
                     <InfoSection>
-                        <MapRounded/>
+                        <MapRounded />
                         <Info>33b Triton Drive, Rosedale</Info>
                     </InfoSection>
                     <InfoSection>
                         <AccessTime />
                         <Hours>
-                            <Info>Mon - Sat: 11am ~ 8pm</Info>
+                            <Info>Mon - Thu: 11am ~ 8pm</Info>
+                            <Info>Fri: 11am ~ 8:30pm</Info>
+                            <Info>Sat: 12pm ~ 8:30pm</Info>
                             <Info>Sun: Closed</Info>
                         </Hours>
                     </InfoSection>
                 </InfoCtn>
             </Ctn> :
-            <Ctn className='Italic'>
-                <InfoCtn>
-                    <Header>CONTACT US</Header>
-                    <InfoSection>
-                        <Phone />
-                        <a href="tel:094761952" style={{color: '#3f51b5', textDecoration: 'underline'}}>
-                            <Info>09-476 1952</Info>
-                        </a>
-                    </InfoSection>
-                    <InfoSection>
-                        <MapRounded/>
-                        <Info>33b Triton Drive, Rosedale</Info>
-                    </InfoSection>
-                    <InfoSection>
-                        <AccessTime />
-                        <Hours>
-                            <Info>Mon - Sat: 11am ~ 8pm</Info>
-                            <Info>Sun: Closed</Info>
-                        </Hours>
-                    </InfoSection>
-                </InfoCtn>
-                <MapContainer>
-                    <Map height={mState ? currentWidth : (currentHeight - 80)}/>
-                </MapContainer>
-            </Ctn>
+                <Ctn className='Italic'>
+                    <InfoCtn>
+                        <Header>CONTACT US</Header>
+                        <InfoSection>
+                            <Phone />
+                            <a href="tel:094761952" style={{ color: '#3f51b5', textDecoration: 'underline' }}>
+                                <Info>09-476 1952</Info>
+                            </a>
+                        </InfoSection>
+                        <InfoSection>
+                            <MapRounded />
+                            <Info>33b Triton Drive, Rosedale</Info>
+                        </InfoSection>
+                        <InfoSection>
+                            <AccessTime />
+                            <Hours>
+                                <Info>Mon - Thu: 11am ~ 8pm</Info>
+                                <Info>Fri: 11am ~ 8:30pm</Info>
+                                <Info>Sat: 12pm ~ 8:30pm</Info>
+                                <Info>Sun: Closed</Info>
+                            </Hours>
+                        </InfoSection>
+                    </InfoCtn>
+                    <MapContainer>
+                        <Map height={mState ? currentWidth : (currentHeight - 80)} />
+                    </MapContainer>
+                </Ctn>
             }
         </>
     )

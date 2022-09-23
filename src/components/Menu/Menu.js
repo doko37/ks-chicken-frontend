@@ -1,9 +1,10 @@
-import React, {useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import Item from './Item'
 import { Chicken, Sides } from '../Data'
 import './Menu.css'
 import '../../App.css'
+import { Report } from '@material-ui/icons'
 
 const Container = styled.div`
     width: auto;
@@ -107,6 +108,25 @@ export const CategoryTitle = styled.h3`
     color: ${props => props.lunch ? 'black' : 'white'};
 `
 
+const NoticeCtn = styled.div`
+    position: relative;
+    width: auto;
+    background-color: #cf8334;
+    color: white;
+    font-weight: 300;
+    font-size: 16px;
+    padding: 0.5rem 0;
+
+    @media(min-width: 700px) {
+        font-size: 20px;
+        padding: 0.5rem 0;
+    }
+`
+
+const NoticeTxt = styled.p`
+    margin: 0.5rem;
+`
+
 export default function Menu(props) {
     const [inView, setInView] = useState('chicken')
     const chickenRef = useRef(null)
@@ -115,9 +135,9 @@ export default function Menu(props) {
 
     useEffect(() => {
         function detectYPos() {
-            if(chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2 || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
+            if (chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2 || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
                 setInView('chicken')
-            } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2){
+            } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
                 setInView('sides')
             }
         }
@@ -131,61 +151,63 @@ export default function Menu(props) {
     }
 
     return (
-            <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
-                {/* <HeaderContainer currentWidth={currentWidth}>
-                    <Header src={header}/>
-                    <HeaderTitle className='RaceFont'>-MENU-</HeaderTitle>
-                </HeaderContainer> */}
-                <NavBarContainer>
-                    <NavBar>
-                        <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
-                            <NavBarItem>Chicken</NavBarItem>
-                        </NavBarItemContainer>
-                        <NavBarItemContainer active={inView === 'sides' ? true : false} onClick={() => scrollMenu('sides')}>
-                            <NavBarItem>Sides</NavBarItem>
-                        </NavBarItemContainer>
-                        <NavBarItemContainer active={inView === 'drinks' ? true : false} temp>
-                            <NavBarItem temp>Drinks</NavBarItem>
-                        </NavBarItemContainer>
-                    </NavBar>
-                </NavBarContainer>
-                <Container>
-                    <ItemContainer>
-                        <CategoryTitle ref={chickenRef}>CHICKEN</CategoryTitle>
-                        <CategoryContainer id="chicken">
-                            {Chicken.map(item => {
-                                return (
-                                    <Item 
-                                        img={item.img} 
-                                        title={item.title.toUpperCase()}
-                                        halfprice={item.halfprice}
-                                        fullprice={item.fullprice}
-                                        type="chicken"
-                                        itemKey={item.key}
-                                        key={item.key}
-                                    />
-                                )
-                            })}
-                        </CategoryContainer>
-                        <CategoryTitle ref={sidesRef}>SIDES</CategoryTitle>
-                        <CategoryContainer id="sides">
-                            {Sides.map(item => {
-                                return (
-                                    <Item 
-                                        img={item.img} 
-                                        title={item.title.toUpperCase()}
-                                        price={item.priceLabel}
-                                        type="sides"
-                                        itemKey={item.key}
-                                        key={item.key}
-                                    />
-                                )
-                            })}
-                        </CategoryContainer>
-                    </ItemContainer>
-                </Container>
-                {/* <ItemBox itemSelectedState={itemSelectedState} itemSelected={itemSelected} selectedItem={selectedItem} addItem={item => addItem(item)}/>
+        <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
+            <NoticeCtn>
+                <Report style={{ color: 'white', fontSize: '30px' }} />
+                <NoticeTxt>Due to rising costs in oil and other ingredients, we are increasing the prices of our menu starting October 1st.</NoticeTxt>
+                <NoticeTxt>Half size chicken will go up by $1, and Full size chicken will go up by $2.</NoticeTxt>
+                <NoticeTxt>We are sorry for any inconveniences this may cause, and thank you for your understanding.</NoticeTxt>
+            </NoticeCtn>
+            <NavBarContainer>
+                <NavBar>
+                    <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
+                        <NavBarItem>Chicken</NavBarItem>
+                    </NavBarItemContainer>
+                    <NavBarItemContainer active={inView === 'sides' ? true : false} onClick={() => scrollMenu('sides')}>
+                        <NavBarItem>Sides</NavBarItem>
+                    </NavBarItemContainer>
+                    <NavBarItemContainer active={inView === 'drinks' ? true : false} temp>
+                        <NavBarItem temp>Drinks</NavBarItem>
+                    </NavBarItemContainer>
+                </NavBar>
+            </NavBarContainer>
+            <Container>
+                <ItemContainer>
+                    <CategoryTitle ref={chickenRef}>CHICKEN</CategoryTitle>
+                    <CategoryContainer id="chicken">
+                        {Chicken.map(item => {
+                            return (
+                                <Item
+                                    img={item.img}
+                                    title={item.title.toUpperCase()}
+                                    halfprice={item.halfprice}
+                                    fullprice={item.fullprice}
+                                    type="chicken"
+                                    itemKey={item.key}
+                                    key={item.key}
+                                />
+                            )
+                        })}
+                    </CategoryContainer>
+                    <CategoryTitle ref={sidesRef}>SIDES</CategoryTitle>
+                    <CategoryContainer id="sides">
+                        {Sides.map(item => {
+                            return (
+                                <Item
+                                    img={item.img}
+                                    title={item.title.toUpperCase()}
+                                    price={item.priceLabel}
+                                    type="sides"
+                                    itemKey={item.key}
+                                    key={item.key}
+                                />
+                            )
+                        })}
+                    </CategoryContainer>
+                </ItemContainer>
+            </Container>
+            {/* <ItemBox itemSelectedState={itemSelectedState} itemSelected={itemSelected} selectedItem={selectedItem} addItem={item => addItem(item)}/>
                 <OrderFooter toggleCart={props.toggleCart} numItems={props.numItems}/> */}
-            </Body>
+        </Body>
     )
 }
