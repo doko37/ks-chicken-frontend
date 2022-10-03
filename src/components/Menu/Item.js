@@ -80,42 +80,42 @@ export default function Item(props) {
     return (
         <Container>
             <ImageContainer>
-                <Image src={props.img}/>
+                <Image src={props.img} />
             </ImageContainer>
             <div>
                 <TitleCtn>
                     <Title type={props.type}>{props.title}</Title>
-                    {props.itemKey === "spicy" ? <Chili src={chili}/> : null}
-                    {props.itemKey === "spicysoy" ? 
-                    <div>
-                        <Chili src={chili}/>
-                        <Chili src={chili}/>
-                    </div> : null
+                    {props.itemKey === "spicy" ? <Chili src={chili} /> : null}
+                    {props.itemKey === "spicysoy" ?
+                        <div>
+                            <Chili src={chili} />
+                            <Chili src={chili} />
+                        </div> : null
                     }
-                    {props.itemKey === "hotandspicy" ? 
-                    <div>
-                        <Chili src={chili}/>
-                        <Chili src={chili}/>
-                        <Chili src={chili}/>
-                    </div> : null
+                    {props.itemKey === "hotandspicy" ?
+                        <div>
+                            <Chili src={chili} />
+                            <Chili src={chili} />
+                            <Chili src={chili} />
+                        </div> : null
                     }
                 </TitleCtn>
-                {props.type === "chicken" ? 
-                <div>
-                    {props.itemKey === "onion" || props.itemKey === "snowy" ? <Desc>PER HALF - ${props.halfprice}</Desc> :
+                {props.type === "chicken" ?
                     <div>
-                        <Desc>HALF - ${props.halfprice}</Desc>
-                        <Desc>FULL - ${props.fullprice}</Desc>
-                    </div>
-                    }
-                </div> : null}
+                        {props.itemKey === "onion" || props.itemKey === "snowy" ? <Desc>PER HALF - ${props.halfprice}</Desc> :
+                            <div>
+                                <Desc>HALF - ${props.halfprice}</Desc>
+                                <Desc>FULL - ${props.fullprice}</Desc>
+                            </div>
+                        }
+                    </div> : null}
                 {props.type === "sides" ?
-                <div>
-                    {props.itemKey === "chips" ? <div>
-                        <Desc>MEDIUM - $5</Desc>
-                        <Desc>LARGE - $7</Desc>
-                    </div> : <Desc>{props.price}</Desc>}
-                </div> : null}
+                    <div>
+                        {props.itemKey === "chips" ? <div>
+                            <Desc>MEDIUM - $6</Desc>
+                            <Desc>LARGE - $8</Desc>
+                        </div> : <Desc>{props.price}</Desc>}
+                    </div> : null}
             </div>
             {/* <AddContainer lunch={props.type === "lunch"}>
                 <AddLabel>Add to cart</AddLabel>

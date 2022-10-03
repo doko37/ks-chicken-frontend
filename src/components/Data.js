@@ -76,85 +76,85 @@ export const Chicken = [
     {
         img: original,
         title: "Original Fried Chicken",
-        halfprice: 19,
-        fullprice: 35,
+        halfprice: 20,
+        fullprice: 37,
         key: "original"
     },
     {
         img: crispy,
         title: "Crispy Fried Chicken",
-        halfprice: 19,
-        fullprice: 35,
+        halfprice: 20,
+        fullprice: 37,
         key: "crispy"
     },
     {
         img: korean,
         title: "Korean Fried Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "korean"
     },
     {
         img: spicy,
         title: "Spicy Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "spicy"
     },
     {
         img: hotandspicy,
         title: "Hot and Spicy Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "hotandspicy"
     },
     {
         img: sweetchilly,
         title: "Sweet Chilly Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "sweetchilly"
     },
     {
         img: soy,
         title: "Soy Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "soy"
     },
     {
         img: soy,
         title: "Garlic Soy Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "garlicsoy"
     },
     {
         img: spicysoy,
         title: "Spicy Soy Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "spicysoy"
     },
     {
         img: soy,
         title: "BBQ Chicken",
-        halfprice: 20,
-        fullprice: 37,
+        halfprice: 21,
+        fullprice: 39,
         key: "bbq"
     },
     {
         img: honey,
         title: "Honey Butter Chicken",
-        halfprice: 21,
-        fullprice: 41,
+        halfprice: 22,
+        fullprice: 44,
         key: "honey"
     },
     {
         img: padak,
         title: "Padak Chicken",
-        halfprice: 24,
-        fullprice: 42,
+        halfprice: 25,
+        fullprice: 44,
         key: "padak"
     },
     {
@@ -263,10 +263,10 @@ export const Sides = [
         img: chips,
         title: "Chips",
         type: "chips",
-        price: 5.00,
-        priceLabel: "From $5",
-        mediumPrice: 5.00,
-        largePrice: 7.00,
+        price: 6.00,
+        priceLabel: "From $6",
+        mediumPrice: 6.00,
+        largePrice: 8.00,
         key: "chips",
         details: true,
     },
