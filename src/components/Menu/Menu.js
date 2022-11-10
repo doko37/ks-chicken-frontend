@@ -152,12 +152,6 @@ export default function Menu(props) {
 
     return (
         <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
-            <NoticeCtn>
-                <Report style={{ color: 'white', fontSize: '30px' }} />
-                <NoticeTxt>Due to rising costs in oil and other ingredients, we have increased the prices of our menu on October 1st.</NoticeTxt>
-                <NoticeTxt>Half size chicken has went up by $1, and Full size chicken has went up by $2.</NoticeTxt>
-                <NoticeTxt>We are sorry for any inconveniences this may cause, and thank you for your understanding.</NoticeTxt>
-            </NoticeCtn>
             <NavBarContainer>
                 <NavBar>
                     <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
