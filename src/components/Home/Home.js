@@ -9,6 +9,8 @@ import Map from '../ContactUs/Map'
 import hero from './hero.jpg'
 import './Home.css'
 import '../Alert.css'
+import { Report } from '@material-ui/icons'
+import lights from './lights.png'
 
 const Body = styled.div`
     width: 100%;
@@ -17,6 +19,7 @@ const Body = styled.div`
     z-index: 10;
     position: relative;
     padding-top: 0;
+    //padding-top: 1rem;
 
     @media(min-width: 1168px) {
         padding-top: 1rem;
@@ -187,12 +190,61 @@ const Top = styled.div`
     }
 `
 
+const NoticeCtn = styled.div`
+    position: relative;
+    width: auto;
+    background-color: #cf8334;
+    color: white;
+    font-weight: 300;
+    font-size: 16px;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+
+    @media(min-width: 700px) {
+        font-size: 20px;
+        padding: 0.5rem 0;
+        margin-top: -1rem;
+    }
+`
+
+const NoticeTxt = styled.p`
+    margin: 0.5rem;
+`
+
+const Lights = styled.div`
+    background-image: url(${lights});
+    background-repeat: repeat-x;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    top: -17px;
+    height: 30px;
+    width: 100%;
+    display: block;
+    z-index: 0;
+
+    @media(min-width: 700px) {
+        background-size: 35% 30px;
+        top: -14px;
+    }
+    
+    @media(min-width: 1920px) {
+        background-size: 25% 30px;
+    }
+`
+
 export default function Home() {
     return (
         <Body className='Italic'>
+            <NoticeCtn>
+                <Report style={{ position: "relative", zIndex: 0 }} />
+                <NoticeTxt>We are closed from the 25th of Dec. until the 15th of Jan.</NoticeTxt>
+                <NoticeTxt>Happy Holidays!</NoticeTxt>
+                <Lights />
+            </NoticeCtn>
             {/* <Slider /> */}
             <Top>
-                <Hero src={hero}/>
+                <Hero src={hero} />
                 <HeroTitleCtn top>
                     <Title top>The Best Korean Fried Chicken in Auckland!</Title>
                 </HeroTitleCtn>
@@ -208,19 +260,19 @@ export default function Home() {
                 </TitleCtn>
                 <MenuCtn>
                     <Button id='Cover'>
-                        <Image src={chicken} id='Image'/>
+                        <Image src={chicken} id='Image' />
                         <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
                     </Button>
                     <Button id='Cover'>
-                        <Image src={chips} id='Image'/>
+                        <Image src={chips} id='Image' />
                         <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
                     </Button>
                     <Button id='Cover'>
-                        <Image src={cola} id='Image'/>
+                        <Image src={cola} id='Image' />
                         <ButtonTxt href="/menu">DRINKS</ButtonTxt>
                     </Button>
                     <Button id='Cover'>
-                        <Image src={lunch} id='Image'/>
+                        <Image src={lunch} id='Image' />
                         <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
                     </Button>
                 </MenuCtn>
@@ -229,7 +281,7 @@ export default function Home() {
                 </TitleCtn>
                 <DescCtn>
                     <Description className='Normal'>
-                        We are located in 33B Triton Drive, Rosedale in Auckland. Click <a href="/contact-us" style={{color: 'white'}}>here</a> for more details.
+                        We are located in 33B Triton Drive, Rosedale in Auckland. Click <a href="/contact-us" style={{ color: 'white' }}>here</a> for more details.
                     </Description>
                 </DescCtn>
             </Bottom>

@@ -4,7 +4,6 @@ import Item from './Item'
 import { Chicken, Sides } from '../Data'
 import './Menu.css'
 import '../../App.css'
-import { Report } from '@material-ui/icons'
 
 const Container = styled.div`
     width: auto;
@@ -106,25 +105,6 @@ export const CategoryTitle = styled.h3`
     font-weight: 300;
     text-align: left;
     color: ${props => props.lunch ? 'black' : 'white'};
-`
-
-const NoticeCtn = styled.div`
-    position: relative;
-    width: auto;
-    background-color: #cf8334;
-    color: white;
-    font-weight: 300;
-    font-size: 16px;
-    padding: 0.5rem 0;
-
-    @media(min-width: 700px) {
-        font-size: 20px;
-        padding: 0.5rem 0;
-    }
-`
-
-const NoticeTxt = styled.p`
-    margin: 0.5rem;
 `
 
 export default function Menu(props) {
