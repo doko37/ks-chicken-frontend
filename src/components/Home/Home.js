@@ -236,12 +236,6 @@ const Lights = styled.div`
 export default function Home() {
     return (
         <Body className='Italic'>
-            <NoticeCtn>
-                <Report style={{ position: "relative", zIndex: 0 }} />
-                <NoticeTxt>We are closed from the 25th of Dec. until the 15th of Jan.</NoticeTxt>
-                <NoticeTxt>Happy Holidays!</NoticeTxt>
-                <Lights />
-            </NoticeCtn>
             {/* <Slider /> */}
             <Top>
                 <Hero src={hero} />
