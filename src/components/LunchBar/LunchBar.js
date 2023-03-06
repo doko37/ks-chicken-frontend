@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import Item from '../Menu/Item'
-import { Lunch } from '../Data'
-import { CategoryTitle } from '../Menu/Menu'
+import Item from '../Menu/Item/Item'
+//import { Lunch } from '../Data'
+//import { CategoryTitle } from '../Menu/Menu'
 import '../../App.css'
 import { MobileState } from '../hooks/MobileState'
 
@@ -46,10 +46,10 @@ const InfoHeader = styled.div`
 export default function LunchBar() {
     const mState = MobileState()
 
-  return (
-    <Body className='Italic'>
-        <InfoHeader mState={mState}>Infomation header [TODO]</InfoHeader>
-        <Container>
+    return (
+        <Body className='Italic'>
+            <InfoHeader mState={mState}>Infomation header [TODO]</InfoHeader>
+            {/* <Container>
             <CategoryTitle lunch>Meat Options</CategoryTitle>
             <ItemContainer>
                 {Lunch.Chicken.map(item => {
@@ -76,7 +76,7 @@ export default function LunchBar() {
                     )
                 })}
             </ItemContainer>
-        </Container>
-    </Body>  
-  )
+        </Container> */}
+        </Body>
+    )
 }

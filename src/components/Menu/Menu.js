@@ -1,9 +1,15 @@
-import React, {useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import Item from './Item'
+import Item from './Item/Item'
 import { Chicken, Sides } from '../Data'
 import './Menu.css'
 import '../../App.css'
+import Drawer from './Drawer/Drawer'
+import Backdrop from './Drawer/Backdrop'
+import axios from 'axios'
+import publicRequest from '../../api/requestMethod'
+import StoreSelector from '../Cart/StoreSelector'
+import chicken from '../../Images/halfandhalfchicken.jpg'
 
 const Container = styled.div`
     width: auto;
@@ -30,7 +36,6 @@ const NavBarContainer = styled.div`
     justify-content: center;
     align-items: center;
     background-color: #201e1f;
-    //border-bottom: 1px white solid;
     z-index: 10;
 `
 
@@ -54,8 +59,7 @@ const NavBarItemContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: ${props => props.active ? '1px' : '0'};
-    border-bottom: ${props => props.active ? '1px solid white' : 'none'};
+    border-bottom: ${props => props.active ? '2px solid white' : '2px solid #201e1f'};
     cursor: ${props => !props.temp ? 'pointer' : 'default'};
 
     &#current {
@@ -85,6 +89,7 @@ const CategoryContainer = styled.div`
     margin-top: -110px;
     padding-top: 110px;
     display: block;
+    position: relative;
 
     @media(min-width: 700px) {
         display: grid;
@@ -109,33 +114,40 @@ export const CategoryTitle = styled.h3`
 
 export default function Menu(props) {
     const [inView, setInView] = useState('chicken')
+    const [item, setItem] = useState(null)
     const chickenRef = useRef(null)
     const sidesRef = useRef(null)
-    const ctnRef = useRef(null)
 
     useEffect(() => {
         function detectYPos() {
-            if(chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2 || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
+            if ((chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2) || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
                 setInView('chicken')
-            } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2){
+            } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
                 setInView('sides')
             }
         }
 
         window.addEventListener('scroll', detectYPos, false)
-    },)
+    })
 
     function scrollMenu(category) {
         const el = document.getElementById(category)
         el.scrollIntoView()
     }
 
+    function toggleDrawer(item) {
+        setItem(item)
+        props.toggleDrawer(item)
+    }
+
+    function addItem(item) {
+        props.toggleDrawer(null)
+        props.addItem(item)
+    }
+
     return (
-            <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
-                {/* <HeaderContainer currentWidth={currentWidth}>
-                    <Header src={header}/>
-                    <HeaderTitle className='RaceFont'>-MENU-</HeaderTitle>
-                </HeaderContainer> */}
+        <div>
+            <Body id="body" cartState={props.cartState} className='Italic' drawerState={props.drawerState}>
                 <NavBarContainer>
                     <NavBar>
                         <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
@@ -153,39 +165,60 @@ export default function Menu(props) {
                     <ItemContainer>
                         <CategoryTitle ref={chickenRef}>CHICKEN</CategoryTitle>
                         <CategoryContainer id="chicken">
-                            {Chicken.map(item => {
+                            {props.chickenItems.map(item => {
+                                item.type = 'chicken'
+                                if (item.key === "original" || item.key === "crispy") {
+                                    item.chickenType = "non_marinated"
+                                } else if (item.key !== "honey" && item.key !== "padak") {
+                                    item.chickenType = "marinated"
+                                } else {
+                                    item.chickenType = "special"
+                                }
                                 return (
-                                    <Item 
-                                        img={item.img} 
-                                        title={item.title.toUpperCase()}
-                                        halfprice={item.halfprice}
-                                        fullprice={item.fullprice}
-                                        type="chicken"
+                                    <Item
+                                        img={item.img}
+                                        title={item.name.toUpperCase()}
+                                        halfprice={item.half_price}
+                                        fullprice={item.full_price}
+                                        type={'chicken'}
                                         itemKey={item.key}
                                         key={item.key}
+                                        toggleDrawer={() => toggleDrawer(item)}
                                     />
                                 )
                             })}
                         </CategoryContainer>
                         <CategoryTitle ref={sidesRef}>SIDES</CategoryTitle>
                         <CategoryContainer id="sides">
-                            {Sides.map(item => {
+                            {props.sideItems.map(item => {
+                                item.type = 'sides'
                                 return (
-                                    <Item 
-                                        img={item.img} 
-                                        title={item.title.toUpperCase()}
-                                        price={item.priceLabel}
-                                        type="sides"
+                                    <Item
+                                        img={item.img}
+                                        title={item.name.toUpperCase()}
+                                        price={item.price}
+                                        type={'sides'}
                                         itemKey={item.key}
                                         key={item.key}
+                                        toggleDrawer={() => toggleDrawer(item)}
                                     />
                                 )
                             })}
                         </CategoryContainer>
                     </ItemContainer>
                 </Container>
-                {/* <ItemBox itemSelectedState={itemSelectedState} itemSelected={itemSelected} selectedItem={selectedItem} addItem={item => addItem(item)}/>
-                <OrderFooter toggleCart={props.toggleCart} numItems={props.numItems}/> */}
             </Body>
+            <Backdrop active={props.drawerState} toggleDrawer={() => toggleDrawer(null)} />
+            <Drawer active={props.drawerState}
+                item={item}
+                toggleDrawer={() => toggleDrawer(null)}
+                addItem={item => addItem(item)}
+                editState={props.editState}
+                chickenItems={props.chickenItems}
+                sideItems={props.sideItems}
+                token={props.token}
+                togglessState={props.togglessState}
+            />
+        </div>
     )
 }

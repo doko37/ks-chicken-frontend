@@ -8,7 +8,6 @@ const Body = styled.div`
   height: 250px;
   background-color: #1c1c1c;
   color: white;
-  left: ${props => props.cartState ? `-${window.innerWidth}px` : '0px'};
   transition: left 0.25s ease;
   z-index: 10;
   position: relative;
@@ -84,7 +83,7 @@ const Logo = styled.img`
   @media(min-width: 700px) {
     display: block;
     width: ${props => props.first ? '25%' : props.second ? '10%' : props.third ? '15%' : props.fourth ? '15%' : '10%'};
-    left: ${props => props.first ? '40%' : props.second ? '10%' : props.third ? '80%' : props.fourth? '20%' : '65%'};
+    left: ${props => props.first ? '40%' : props.second ? '10%' : props.third ? '80%' : props.fourth ? '20%' : '65%'};
     margin: 0;
     margin-top: ${props => props.fourth ? '9rem' : props.fifth ? '-4rem' : '0'};
     transform: rotate(10deg);
@@ -93,22 +92,22 @@ const Logo = styled.img`
 
 export default function Footer(props) {
   return (
-    <Body className='Normal' cartState={props.cartState}>
+    <Body className='Normal'>
       <Ctn>
         <Left>
-            <Text><Link href="/">Home</Link> | <Link href="/menu">Menu</Link> | <Link href="/lunch-bar">Lunch Bar</Link> | <Link href="/contact-us">Contact Us</Link> | <Link href="/order">Order</Link></Text>
-            <Text copyright>© 2022 KS Chicken. All Rights Reserved.</Text>
+          <Text><Link href="/">Home</Link> | <Link href="/menu">Menu</Link> | <Link href="/lunch-bar">Lunch Bar</Link> | <Link href="/contact-us">Contact Us</Link> | <Link href="/order">Order</Link></Text>
+          <Text copyright>© 2022 KS Chicken. All Rights Reserved.</Text>
         </Left>
         <Right>
           <Text>(09) 476-1952</Text>
           <Text>33B Triton Drive, Rosedale, Auckland</Text>
         </Right>
       </Ctn>
-      <Logo src={logo} first/>
-      <Logo src={logo} second/>
-      <Logo src={logo} third/>
-      <Logo src={logo} fourth/>
-      <Logo src={logo} fifth/>
+      <Logo src={logo} first />
+      <Logo src={logo} second />
+      <Logo src={logo} third />
+      <Logo src={logo} fourth />
+      <Logo src={logo} fifth />
     </Body>
   )
 }

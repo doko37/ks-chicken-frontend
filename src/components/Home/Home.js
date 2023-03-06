@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import Slider from './Slider'
-import chicken from '../../Images/chicken.jpg'
-import chips from '../../Images/chips.JPG'
-import cola from '../../Images/cola.PNG'
+//import Slider from './Slider'
+import chicken from '../../Images/KSChicken_KoreanFC.jpg'
+import chips from '../../Images/KSChicken_Chips.jpg'
+import cola from '../../Images/cola.jpg'
 import lunch from '../../Images/lunchsummary.jpg'
-import Map from '../ContactUs/Map'
-import hero from './hero.jpg'
+import hero from './KSChicken_Hero.jpg'
 import './Home.css'
 
 const Body = styled.div`
@@ -66,7 +65,7 @@ const Title = styled.h1`
     color: white;
     font-weight: 300;
     text-align: center;
-    font-size: ${props => props.top ? '28px' : '22px'};
+    font-size: ${props => props.top ? '26px' : '22px'};
     border-top: 4px white double;
     border-bottom: 4px white double;
     width: fit-content;
@@ -108,17 +107,39 @@ const Button = styled.div`
     display: flex;
     height: 10rem;
     width: auto;
-    margin: 0.5rem;
+    margin: 0.5rem 0;
     position: relative;
     justify-content: center;
     align-items: center;
     border-radius: 1rem;
     overflow: hidden;
 
+    
+    &:nth-child(1) {
+        margin-left: 1rem;
+        margin-right: 0.5rem;
+    }
+    
+    &:nth-child(2) {
+        margin-right: 1rem;
+        margin-left: 0.5rem;
+    }
+
+    &:nth-child(3) {
+        margin-left: 1rem;
+        margin-right: 0.5rem;
+    }
+
+    &:nth-child(4) {
+        margin-right: 1rem;
+        margin-left: 0.5rem;
+    }
+
     @media(min-width: 700px) {
-        height: 16rem;
-        width: 16rem;
+        height: 18rem;
+        width: auto;
         border-radius: 2rem;
+        margin: 0.5rem;
     }
 `
 
@@ -160,7 +181,9 @@ const ButtonTxt = styled.a`
 
 const Hero = styled.img`
     position: relative;
+    height: auto;
     width: 100%;
+    object-fit: cover;
     top: 0;
     left: 0;
     z-index: 0;
@@ -168,19 +191,21 @@ const Hero = styled.img`
 
     @media(min-width: 1168px) {
         border-radius: 2rem;
+        height: 100%;
     }
 `
 
 const Top = styled.div`
     height: auto;
     position: relative;
+    height: auto;
     width: 100%;
     border-radius: 0;
 
     @media(min-width: 1168px) {
         width: 1168px;
         margin: auto;
-        height: 613.188px;
+        height: 760px;
         border-radius: 2rem;
         box-shadow: 0 0 4px 0 gray;
     }
@@ -191,7 +216,7 @@ export default function Home() {
         <Body className='Italic'>
             {/* <Slider /> */}
             <Top>
-                <Hero src={hero}/>
+                <Hero src={hero} />
                 <HeroTitleCtn top>
                     <Title top>The Best Korean Fried Chicken in Auckland!</Title>
                 </HeroTitleCtn>
@@ -207,19 +232,19 @@ export default function Home() {
                 </TitleCtn>
                 <MenuCtn>
                     <Button id='Cover'>
-                        <Image src={chicken} id='Image'/>
+                        <Image src={chicken} id='Image' />
                         <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
                     </Button>
                     <Button id='Cover'>
-                        <Image src={chips} id='Image'/>
+                        <Image src={chips} id='Image' />
                         <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
                     </Button>
                     <Button id='Cover'>
-                        <Image src={cola} id='Image'/>
+                        <Image src={cola} id='Image' />
                         <ButtonTxt href="/menu">DRINKS</ButtonTxt>
                     </Button>
                     <Button id='Cover'>
-                        <Image src={lunch} id='Image'/>
+                        <Image src={lunch} id='Image' />
                         <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
                     </Button>
                 </MenuCtn>
@@ -228,7 +253,7 @@ export default function Home() {
                 </TitleCtn>
                 <DescCtn>
                     <Description className='Normal'>
-                        We are located in 33B Triton Drive, Rosedale in Auckland. Click <a href="/contact-us" style={{color: 'white'}}>here</a> for more details.
+                        We are located in 33B Triton Drive, Rosedale in Auckland. Click <a href="/contact-us" style={{ color: 'white' }}>here</a> for more details.
                     </Description>
                 </DescCtn>
             </Bottom>
