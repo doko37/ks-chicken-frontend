@@ -4,6 +4,7 @@ import Item from './Item'
 import { Chicken, Sides } from '../Data'
 import './Menu.css'
 import '../../App.css'
+import { ReportOutlined as Warning } from '@material-ui/icons'
 
 const Container = styled.div`
     width: auto;
@@ -107,6 +108,28 @@ export const CategoryTitle = styled.h3`
     color: ${props => props.lunch ? 'black' : 'white'};
 `
 
+const Alert = styled.div`
+    width: auto;
+    background-color: #cf8334;
+    color: white;
+    padding: 0.5rem;
+    font-size: x-large;
+`
+
+const AlertWrapper = styled.div`
+    margin: 0.25rem;
+    border: 4px white dashed;
+    position: relative;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    width: auto;
+
+    @media(min-width: 1200px) {
+        width: 1176px;
+        margin: 0.25rem auto;
+    }
+`
+
 export default function Menu(props) {
     const [inView, setInView] = useState('chicken')
     const chickenRef = useRef(null)
@@ -132,6 +155,16 @@ export default function Menu(props) {
 
     return (
         <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
+            <Alert>
+                <AlertWrapper>
+                    <Warning style={{fontSize: '30px'}}/>
+                    <p style={{marginTop: '0.5rem'}}>Due to rising costs, the prices of our chicken has increased from the 3rd of April.</p>
+                    <p>The Half Chicken has increased by $1,</p>
+                    <p>and the Full Chicken has increased by $2.</p>
+
+                    <p>We apologies for any inconviences, and thank you for your understanding.</p>
+                </AlertWrapper>
+            </Alert>
             <NavBarContainer>
                 <NavBar>
                     <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
