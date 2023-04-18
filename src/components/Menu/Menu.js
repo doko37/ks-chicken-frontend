@@ -155,16 +155,6 @@ export default function Menu(props) {
 
     return (
         <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
-            <Alert>
-                <AlertWrapper>
-                    <Warning style={{fontSize: '30px'}}/>
-                    <p style={{marginTop: '0.5rem'}}>Due to rising costs, the prices of our chicken has increased from the 3rd of April.</p>
-                    <p>The Half Chicken has increased by $1,</p>
-                    <p>and the Full Chicken has increased by $2.</p>
-
-                    <p>We apologies for any inconviences, and thank you for your understanding.</p>
-                </AlertWrapper>
-            </Alert>
             <NavBarContainer>
                 <NavBar>
                     <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
