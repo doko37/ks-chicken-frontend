@@ -8,6 +8,8 @@ import Drawer from '../Menu/Drawer/Drawer'
 import Checkout from './Checkout'
 import StoreSelector from './StoreSelector'
 import api from '../../api/requestMethod'
+import { KeyboardArrowDown as Down } from '@material-ui/icons'
+import { MobileState } from '../hooks/MobileState'
 
 const Body = styled.div`
   background-color: #252425;
@@ -22,6 +24,11 @@ const Title = styled.h1`
   color: white;
   margin: 0 1rem;
   text-align: left;
+`
+
+const TitleCtn = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const Wrapper = styled.div`
@@ -52,7 +59,7 @@ const Ctn = styled.div`
 `
 
 const CartCtn = styled.div`
-
+  display: ${props => props.cartDisplay ? 'block' : 'none'};
 `
 
 const Notice = styled.div`
@@ -96,24 +103,32 @@ const StartButton = styled.button`
     font-size: 2rem;
   }
 
-  &:hover {
-    box-shadow: 
-  }
-
   &:active {
     background-color: #a56829;
   }
 `
 
 export default function Cart(props) {
+  const [cartDisplay, setCartDisplay] = useState(true)
+  const mState = MobileState()
+
+  const toggleCartDisplay = () => {
+    if(mState) {
+      setCartDisplay(!cartDisplay)
+    }
+  }
+
   return (
     <Body className='Italic'>
       <Wrapper>
-        <Title>YOUR CART</Title>
+        <TitleCtn onClick={toggleCartDisplay}>
+          <Title>YOUR CART</Title>
+          <Down style={{color: 'white', transform: cartDisplay ? 'rotate(180deg)' : 'rotate(0deg)', cursor: 'pointer', display: mState ? '' : 'none'}}/>
+        </TitleCtn>
         {props.cart.length > 0 ?
           <>
             <Ctn>
-              <CartCtn>
+              <CartCtn cartDisplay={cartDisplay}>
                 {props.numItems > 0 ? props.cart.map(item => {
                   return (
                     <CartItem

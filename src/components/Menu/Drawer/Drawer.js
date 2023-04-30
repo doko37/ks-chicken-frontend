@@ -308,6 +308,7 @@ export default function Drawer(props) {
       if (hasNumber(props.item.key)) {
         if (item.type === "chicken") { originItem = props.chickenItems.find(i => i.key === keyWithoutNum(item.key)) }
         else if (item.key.includes("chips")) { originItem = props.sideItems.find(i => i.key === keyWithoutNum(item.key)) }
+        else { originItem = props.item }
       } else {
         originItem = props.item
       }
@@ -319,7 +320,7 @@ export default function Drawer(props) {
         if (item.key.includes("chips")) {
           price = item.size === 'medium' ? originItem.medium_price : originItem.large_price
         } else {
-          price = 3
+          price = originItem.price
         }
       }
       if (item.type === "chicken" || item.key.includes("chips")) {

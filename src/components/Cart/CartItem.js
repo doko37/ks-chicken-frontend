@@ -7,12 +7,14 @@ const Body = styled.div`
     border-radius: 1rem;
     background-color: rgba(0,0,0,0.2);
     margin: 1rem;
-    min-height: 180px;
+    min-height: auto;
     display: block;
+    padding: 0.5rem;
 
     @media(min-width: 900px) {
       display: flex;
       justify-content: space-between;
+      padding: 0;
     }
 `
 
@@ -45,8 +47,8 @@ const Image = styled.img`
 `
 
 const BottomCtn = styled.div`
-  height: 60px;
-  margin: 0 0.5rem;
+  height: auto;
+  margin: 0.5rem;
   border-top: 2px white dashed;
   display: flex;
   align-items: center;
@@ -64,13 +66,14 @@ const Text = styled.p`
   width: fit-content;
   height: fit-content;
   text-align: right;
-  margin: 1rem 0;
+  margin: 1rem 0 0.5rem 0;
   font-size: 20px;
   align-self: center;
 
   @media(min-width: 700px) {
     font-size: ${props => props.price ? '26px' : '20px'};
     align-self: ${props => props.price ? 'start' : 'end'};
+    margin: 1rem 0;
   }
 `
 
@@ -101,7 +104,7 @@ export default function CartItem(props) {
               <Desc>{props.item.cut.toUpperCase()}</Desc>
               <Desc>SIDES: {props.item.sides.side1.toUpperCase()}{props.item.sides.side2 === "nosides" ? null : ", " + props.item.sides.side2.toUpperCase()}</Desc>
             </div> : null}
-          </div> : null : null}
+          </div> : props.item.key.includes("sauce") ? <Desc>{props.item.sauce.toUpperCase()}</Desc> : null : null}
         </div>
       </TopCtn>
       <BottomCtn>

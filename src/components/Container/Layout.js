@@ -52,12 +52,15 @@ export default function Layout() {
         const numItems = localStorage.getItem('numItems')
         const token = localStorage.getItem('token')
         const id = localStorage.getItem('id')
+        const time = localStorage.getItem('time')
+        const date = localStorage.getItem('date')
         try {
             if (cart) {
                 setCart(JSON.parse(cart))
                 setTotal(JSON.parse(total))
                 setNumItems(JSON.parse(numItems))
                 setSession({ id: JSON.parse(id), token: JSON.parse(token) })
+                setPickupInfo({date: date, time: time})
             }
         } catch {
             console.log('cart empty')
@@ -106,6 +109,8 @@ export default function Layout() {
         localStorage.setItem('cart', JSON.stringify(cart))
         localStorage.setItem('total', JSON.stringify(total))
         localStorage.setItem('numItems', JSON.stringify(numItems))
+        localStorage.setItem('time', JSON.stringify(pickupInfo.time))
+        localStorage.setItem('date', JSON.stringify(pickupInfo.date))
     })
 
     useEffect(() => {
@@ -121,10 +126,6 @@ export default function Layout() {
 
                 const _dates = await publicRequest.get('/dates')
                 setDates(_dates.data)
-
-                if (pickupInfo.time === '' || (moment(pickupInfo.time).hour() * 60) + moment(pickupInfo.time).minute() < (moment(_times.data[0]).hour() * 60) + moment(_times.data[0]).minute()) {
-                    setInfo(_times.data[0], _dates.data[0])
-                }
             } catch (err) {
                 console.log(err)
             }
@@ -137,7 +138,28 @@ export default function Layout() {
     }, [])
 
     useEffect(() => {
-        console.log("update discount")
+        const defaultDate = moment().set({
+            'month': moment(dates[0]).month(), 
+            'day': moment(dates[0]).day(), 
+            'hour': moment(times[0]).hour(), 
+            'minute': moment(times[0]).minute()
+        }).valueOf()
+
+        const setDate = pickupInfo.date === '' ? 0 : moment().set({
+            'month': moment(pickupInfo.date).month(), 
+            'day': moment(pickupInfo.date).day(), 
+            'hour': moment(pickupInfo.time).hour(), 
+            'minute': moment(pickupInfo.time).minute()
+        }).valueOf()
+
+        console.log(pickupInfo)
+
+        if(setDate < defaultDate) {
+            setPickupInfo({date: dates[0], time: times[0]})
+        }
+    }, [dates])
+
+    useEffect(() => {
         let marinated = 0
         let nonMarinated = 0
         let discount = 0
@@ -165,11 +187,6 @@ export default function Layout() {
         setDiscount(discount)
     }, [total])
 
-
-    function setInfo(_time, _date) {
-        setPickupInfo({ ...pickupInfo, time: _time, date: _date })
-    }
-
     function changeTime(time) {
         setPickupInfo({ ...pickupInfo, time: time })
     }
@@ -183,8 +200,22 @@ export default function Layout() {
     }
 
     function checkout(info) {
-        const time = moment().format('YYYY MMMM Do, h:mm a')
-        axios.post("http://localhost:3001/submitOrder", { fName: info.fn, lName: info.ln, phoneNo: info.phno, email: info.email, time: time, cart: cart, total: (total + (total * 0.03)).toFixed(2) }).then((response) => {
+        //const time = moment().format('YYYY MMMM Do, h:mm a')
+        axios.post("http://localhost:3001/submitOrder", { 
+            user: { 
+                fName: info.fn, 
+                lName: info.ln, 
+                phoneNo: info.phno, 
+                email: info.email,
+                cart: {
+                    items: cart,
+                    total: (total + (total * 0.03)).toFixed(2)
+                }
+            }, 
+            date: moment(pickupInfo.date).format("YYYY MMMM Do"),
+            time: moment(pickupInfo.time).format("h:mm a"),
+
+         }).then((response) => {
             console.log(response)
         }).catch(error => { console.log(error) })
 
@@ -199,10 +230,15 @@ export default function Layout() {
         updateCart([...cart, item], (total + item.price))
     }
 
-    function toggleDrawer(item, edit = false) {
+    function toggleDrawer(item, edit = false, addToCart = false) {
         setItem(item)
         setEditState(edit)
         setDrawerState(!drawerState)
+        // addItem(item)
+        // console.log(cart.find(i => i.key === item.key))
+        // if (cart.find(i => i.key === item.key) !== undefined && !addToCart) {
+        //     removeItem(item)
+        // }
     }
 
     function editItem(item) {
@@ -254,7 +290,8 @@ export default function Layout() {
                 <NavBar cartLen={cart.length} />
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/menu" element={<Menu addItem={item => addItem(item)}
+                    <Route path="/menu" element={<Menu 
+                        addItem={item => addItem(item)}
                         drawerState={drawerState}
                         toggleDrawer={item => toggleDrawer(item)}
                         editState={editState}

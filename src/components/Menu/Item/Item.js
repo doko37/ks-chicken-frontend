@@ -48,7 +48,7 @@ export const Title = styled.h3`
     font-size: 20px;
     font-weight: 300;
     margin: 0.5rem;
-    color: ${props => props.type === "lunch" ? 'black' : 'white'};
+    color: white;
     text-align: left;
 
     @media(min-width: 700px) {
@@ -105,8 +105,8 @@ export default function Item(props) {
                 {props.type === "sides" ?
                     <div>
                         {props.itemKey === "chips" ? <div>
-                            <Desc>MEDIUM - $6.00</Desc>
-                            <Desc>LARGE - $8.00</Desc>
+                            <Desc>MEDIUM - $7.00</Desc>
+                            <Desc>LARGE - $9.00</Desc>
                         </div> : <Desc>${props.price} PER SERVING</Desc>}
                     </div> : null}
             </div>

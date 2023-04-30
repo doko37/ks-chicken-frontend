@@ -1,14 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import Item from '../Menu/Item/Item'
-//import { Lunch } from '../Data'
-//import { CategoryTitle } from '../Menu/Menu'
+import { Lunch } from './LunchItems'
+import { CategoryTitle } from '../Menu/Menu'
 import '../../App.css'
 import { MobileState } from '../hooks/MobileState'
+import { HeroTitleCtn, Title } from '../Home/Home'
 
 const Body = styled.div`
     position: relative;
-    background-color: #DBDBDB;
+    background-color: #252425;
     padding-bottom: 1rem;
 `
 
@@ -35,12 +36,15 @@ const ItemContainer = styled.div`
 `
 
 const InfoHeader = styled.div`
-    height: ${props => props.mState ? window.innerWidth : '400'}px;
+    height: ${props => props.mState ? window.innerWidth * 0.73 : '650'}px;
     width: 100%;
-    background-color: lightgray;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow-y: hidden;
+    position: relative;
+`
+
+const LunchPicture = styled.img`
+    width: 100%;
+    object-fit: cover;
 `
 
 export default function LunchBar() {
@@ -48,9 +52,14 @@ export default function LunchBar() {
 
     return (
         <Body className='Italic'>
-            <InfoHeader mState={mState}>Infomation header [TODO]</InfoHeader>
-            {/* <Container>
-            <CategoryTitle lunch>Meat Options</CategoryTitle>
+            <InfoHeader mState={mState}>
+                <LunchPicture src="https://i.ibb.co/cJqNqsD/DSC-6926.jpg" mState={MobileState(true)}/>
+                <HeroTitleCtn>
+                    <Title top>Available Weekdays from 10:30AM ~ 2:00PM!</Title>
+                </HeroTitleCtn>
+            </InfoHeader>
+            <Container>
+            <CategoryTitle>Meat Options</CategoryTitle>
             <ItemContainer>
                 {Lunch.Chicken.map(item => {
                     return(
@@ -63,7 +72,7 @@ export default function LunchBar() {
                     )
                 })}
             </ItemContainer>
-            <CategoryTitle lunch>Salad Options</CategoryTitle>
+            <CategoryTitle>Salad Options</CategoryTitle>
             <ItemContainer>
                 {Lunch.Salad.map(item => {
                     return(
@@ -76,7 +85,7 @@ export default function LunchBar() {
                     )
                 })}
             </ItemContainer>
-        </Container> */}
+        </Container>
         </Body>
     )
 }

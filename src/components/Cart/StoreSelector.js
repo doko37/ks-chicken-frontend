@@ -86,7 +86,7 @@ export default function StoreSelector(props) {
 
     const changeTime = (time) => {
         setBoxState("default")
-        props.setDate(time)
+        props.setTime(time)
     }
 
     useEffect(() => {

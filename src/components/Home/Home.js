@@ -41,7 +41,7 @@ const TitleCtn = styled.div`
     position: relative;
 `
 
-const HeroTitleCtn = styled.div`
+export const HeroTitleCtn = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
@@ -58,7 +58,7 @@ const HeroTitleCtn = styled.div`
     }
 `
 
-const Title = styled.h1`
+export const Title = styled.h1`
     margin: 0;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -96,47 +96,31 @@ const Description = styled.h2`
 `
 
 const MenuCtn = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* display: grid;
+    grid-template-columns: 1fr 1fr; */
+    display: block;
     width: fit-content;
     margin: auto;
     justify-content: center;
+
+    @media(min-width: 700px) {
+        display: flex;
+    }
 `
 
 const Button = styled.div`
     display: flex;
-    height: 10rem;
+    height: 16rem;
     width: auto;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     position: relative;
     justify-content: center;
     align-items: center;
     border-radius: 1rem;
     overflow: hidden;
 
-    
-    &:nth-child(1) {
-        margin-left: 1rem;
-        margin-right: 0.5rem;
-    }
-    
-    &:nth-child(2) {
-        margin-right: 1rem;
-        margin-left: 0.5rem;
-    }
-
-    &:nth-child(3) {
-        margin-left: 1rem;
-        margin-right: 0.5rem;
-    }
-
-    &:nth-child(4) {
-        margin-right: 1rem;
-        margin-left: 0.5rem;
-    }
-
     @media(min-width: 700px) {
-        height: 18rem;
+        height: 16rem;
         width: auto;
         border-radius: 2rem;
         margin: 0.5rem;
@@ -156,7 +140,7 @@ const Image = styled.img`
 
 const ButtonTxt = styled.a`
     color: white;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 300;
     position: absolute;
     text-decoration: none;
@@ -239,10 +223,10 @@ export default function Home() {
                         <Image src={chips} id='Image' />
                         <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
                     </Button>
-                    <Button id='Cover'>
+                    {/* <Button id='Cover'>
                         <Image src={cola} id='Image' />
                         <ButtonTxt href="/menu">DRINKS</ButtonTxt>
-                    </Button>
+                    </Button> */}
                     <Button id='Cover'>
                         <Image src={lunch} id='Image' />
                         <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>

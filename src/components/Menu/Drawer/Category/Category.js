@@ -76,18 +76,7 @@ const ItemCtn = styled.div`
 export default function Category(props) {
   return (
     <>
-      {props.type === "chicken" ? props.item.key === "halfandhalf" ? <div>
-        <CategoryBody style={{ marginBottom: '1rem' }}>
-          <CategoryTitleCtn>
-            <CategoryTitle>CHOOSE CHICKEN 1</CategoryTitle>
-          </CategoryTitleCtn>
-        </CategoryBody>
-        <CategoryBody>
-          <CategoryTitleCtn>
-            <CategoryTitle>CHOOSE CHICKEN 2</CategoryTitle>
-          </CategoryTitleCtn>
-        </CategoryBody>
-      </div> : <div>
+      {props.type === "chicken" ? <div>
         <CategoryBody zIndex={101}>
           <CategoryTitleCtn onClick={() => props.toggleCtg('size')}>
             <CategoryTitle>SIZE</CategoryTitle>
@@ -290,7 +279,7 @@ export default function Category(props) {
           </CategoryCtn>
         </CategoryBody>
         <CategoryBody zIndex={105} temp />
-      </div> : props.item.key === "sauce" ? <div>
+      </div> : props.item.key.includes("sauce") ? <div>
         <CategoryBody zIndx={101}>
           <CategoryTitleCtn onClick={() => props.toggleCtg('sauce')}>
             <CategoryTitle>SAUCE</CategoryTitle>
