@@ -36,6 +36,7 @@ import rice from '../Images/rice.jpg'
 import radish from '../Images/radish.jpg'
 import sauce from '../Images/sauce.jpg'
 import chicken from '../Images/chicken.jpg'
+import quarter from '../Images/quarterquartersquare2.jpg'
 
 export const mSlides = [
     {
@@ -73,6 +74,12 @@ export const OrderChicken = [
 ]
 
 export const Chicken = [
+    {
+        img: quarter,
+        title: "Boneless Quarter Quarter",
+        halfprice: 26,
+        key: "quarter"
+    },
     {
         img: original,
         title: "Original Fried Chicken",

@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import '../../App.css'
 import logo from './headerlogo.png'
+import { Facebook } from '@material-ui/icons';
+import { Instagram } from '@material-ui/icons';
 
 const Body = styled.div`
   width: 100%;
@@ -102,6 +104,8 @@ export default function Footer(props) {
         <Right>
           <Text>(09) 476-1952</Text>
           <Text>33B Triton Drive, Rosedale, Auckland</Text>
+          <a href="https://www.facebook.com/profile.php?id=100090818742236" target="_blank" style={{color: 'white'}}><Facebook /></a>
+          <a href="https://www.instagram.com/ks_chicken/" target="_blank" style={{color: 'white'}}><Instagram /></a>
         </Right>
       </Ctn>
       <Logo src={logo} first/>

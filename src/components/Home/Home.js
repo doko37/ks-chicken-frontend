@@ -11,6 +11,7 @@ import './Home.css'
 import '../Alert.css'
 import { Report } from '@material-ui/icons'
 import lights from './lights.png'
+import promotionImg from './promotion.jpg'
 
 const Body = styled.div`
     width: 100%;
@@ -106,12 +107,16 @@ const MenuCtn = styled.div`
     width: fit-content;
     margin: auto;
     justify-content: center;
+
+    @media(min-width: 1168px) {
+        width: fit-content;
+    }
 `
 
 const Button = styled.div`
     display: flex;
     height: 10rem;
-    width: auto;
+    width: 10rem;
     margin: 0.5rem;
     position: relative;
     justify-content: center;
@@ -120,15 +125,15 @@ const Button = styled.div`
     overflow: hidden;
 
     @media(min-width: 700px) {
-        height: 16rem;
-        width: 16rem;
+        height: auto;
+        width: auto;
         border-radius: 2rem;
     }
 `
 
 const Image = styled.img`
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 100%;
     border-radius: 1rem;
     transition: all 0.5s;
 
@@ -185,6 +190,7 @@ const Top = styled.div`
         width: 1168px;
         margin: auto;
         height: 613.188px;
+        overflow-y: hidden;
         border-radius: 2rem;
         box-shadow: 0 0 4px 0 gray;
     }
@@ -233,6 +239,52 @@ const Lights = styled.div`
     }
 `
 
+const BottomCtn = styled.div`
+    display: block;
+
+    @media(min-width: 700px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin: 0 3rem;
+        max-height: 568px;
+    }
+`
+
+const PromotionCtn = styled.div`
+    width: auto;
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2rem;
+    align-self: center;
+
+    @media(min-width: 1168px) {
+        height: auto;
+        width: auto;
+    }
+`
+
+const PromotionText = styled.p`
+    position: absolute;
+    top: -30px;
+    right: -5px;
+    color: white;
+    font-size: 35px;
+    margin: 0;
+    padding-right: 1rem;
+    padding-top: 2rem;
+    padding-left: 55%;
+    transform: rotate(7deg);
+    background-image: linear-gradient(180deg, rgb(0,0,0,0.9), rgb(0,0,0,0));
+
+    @media(min-width: 1000px) {
+        font-size: 45px;
+    }
+`
+
 export default function Home() {
     return (
         <Body className='Italic'>
@@ -252,24 +304,32 @@ export default function Home() {
                 <TitleCtn>
                     <Title>Our Menu</Title>
                 </TitleCtn>
-                <MenuCtn>
-                    <Button id='Cover'>
-                        <Image src={chicken} id='Image' />
-                        <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
-                    </Button>
-                    <Button id='Cover'>
-                        <Image src={chips} id='Image' />
-                        <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
-                    </Button>
-                    <Button id='Cover'>
-                        <Image src={cola} id='Image' />
-                        <ButtonTxt href="/menu">DRINKS</ButtonTxt>
-                    </Button>
-                    <Button id='Cover'>
-                        <Image src={lunch} id='Image' />
-                        <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
-                    </Button>
-                </MenuCtn>
+                <BottomCtn>
+                    <a href="/menu">
+                        <PromotionCtn>
+                            <PromotionText>New Menu Item!</PromotionText>
+                            <img src={promotionImg} style={{width: '100%', borderRadius: '2rem'}}/>
+                        </PromotionCtn>
+                    </a>
+                    <MenuCtn>
+                        <Button id='Cover'>
+                            <Image src={chicken} id='Image' />
+                            <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
+                        </Button>
+                        <Button id='Cover'>
+                            <Image src={chips} id='Image' />
+                            <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
+                        </Button>
+                        <Button id='Cover'>
+                            <Image src={cola} id='Image' />
+                            <ButtonTxt href="/menu">DRINKS</ButtonTxt>
+                        </Button>
+                        <Button id='Cover'>
+                            <Image src={lunch} id='Image' />
+                            <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
+                        </Button>
+                    </MenuCtn> 
+                </BottomCtn>
                 <TitleCtn>
                     <Title>Where to find us</Title>
                 </TitleCtn>

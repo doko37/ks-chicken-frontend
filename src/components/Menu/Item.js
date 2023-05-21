@@ -38,6 +38,7 @@ const Image = styled.img`
 const TitleCtn = styled.div`
     display: flex;
     align-items: center;
+    position: relative;
 `
 
 const Title = styled.h3`
@@ -72,6 +73,18 @@ const AddLabel = styled.p`
     margin: 0;
 `
 
+const NewLabel = styled.p`
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-bottom: white 4px double;
+    margin: 0.5rem 1rem;
+    transform: rotate(-5deg);
+`
+
 // const Price = styled.p`
 //     color: black;
 // `
@@ -102,7 +115,7 @@ export default function Item(props) {
                 </TitleCtn>
                 {props.type === "chicken" ?
                     <div>
-                        {props.itemKey === "onion" || props.itemKey === "snowy" ? <Desc>PER HALF - ${props.halfprice}</Desc> :
+                        {props.itemKey === "onion" || props.itemKey === "snowy" || props.itemKey === "quarter" ? <Desc>PER HALF - ${props.halfprice}</Desc> :
                             <div>
                                 <Desc>HALF - ${props.halfprice}</Desc>
                                 <Desc>FULL - ${props.fullprice}</Desc>
@@ -125,6 +138,7 @@ export default function Item(props) {
                     marginLeft: '0.25rem',
                 }}/>
             </AddContainer> */}
+            { props.itemKey === "quarter" ? <NewLabel>New Item!</NewLabel> : null }
         </Container>
     )
 }
