@@ -105,6 +105,7 @@ const MenuCtn = styled.div`
 
     @media(min-width: 700px) {
         display: flex;
+        width: auto;
     }
 `
 
@@ -199,6 +200,7 @@ export default function Home() {
     return (
         <Body className='Italic'>
             {/* <Slider /> */}
+            {/* <h1 style={{color: 'white', fontWeight: '300', fontSize: '42px'}}>KS Chicken</h1> */}
             <Top>
                 <Hero src={hero} />
                 <HeroTitleCtn top>

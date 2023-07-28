@@ -10,6 +10,9 @@ import axios from 'axios'
 import publicRequest from '../../api/requestMethod'
 import StoreSelector from '../Cart/StoreSelector'
 import chicken from '../../Images/halfandhalfchicken.jpg'
+import { useDispatch, useSelector } from 'react-redux'
+import { addItemToCart, updateCart } from "../../features/user/userSlice"
+import { ArrowUpward } from '@material-ui/icons'
 
 const Container = styled.div`
     width: auto;
@@ -112,11 +115,55 @@ export const CategoryTitle = styled.h3`
     color: ${props => props.lunch ? 'black' : 'white'};
 `
 
+const ScrollToTopButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 1rem;
+    background-color: #cf8334;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    z-index: 50;
+    color: white;
+    border: none;
+    
+    &:active {
+        background-color: #A56829;
+    }
+
+    @media(min-width: 700px) {
+        display: none;
+    }
+`
+
 export default function Menu(props) {
     const [inView, setInView] = useState('chicken')
     const [item, setItem] = useState(null)
+    const chicken = useSelector((store) => store.menu.chicken.items)
+    const sides = useSelector((store) => store.menu.sides.items)
+    const [items, setItems] = useState({
+        chicken: [],
+        sides: []
+    })
     const chickenRef = useRef(null)
     const sidesRef = useRef(null)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const getItems = async () => {
+            try {
+                let chicken = await publicRequest.get("/items/chicken")
+                let sides = await publicRequest.get("/items/sides")
+                setItems({chicken: chicken.data, sides: sides.data})
+            } catch(err) { }
+        }
+
+        getItems()
+    }, [])
 
     useEffect(() => {
         function detectYPos() {
@@ -128,7 +175,7 @@ export default function Menu(props) {
         }
 
         window.addEventListener('scroll', detectYPos, false)
-    })
+    }, [])
 
     function scrollMenu(category) {
         const el = document.getElementById(category)
@@ -140,9 +187,10 @@ export default function Menu(props) {
         props.toggleDrawer(item)
     }
 
-    function addItem(item) {
+    const addItem = (item) => {
+        dispatch(addItemToCart({ item: item }))
+        dispatch(updateCart())
         props.toggleDrawer(null)
-        props.addItem(item)
     }
 
     return (
@@ -165,7 +213,7 @@ export default function Menu(props) {
                     <ItemContainer>
                         <CategoryTitle ref={chickenRef}>CHICKEN</CategoryTitle>
                         <CategoryContainer id="chicken">
-                            {props.chickenItems.map(item => {
+                            {items.chicken.map(item => {
                                 item.type = 'chicken'
                                 if (item.key === "original" || item.key === "crispy") {
                                     item.chickenType = "non_marinated"
@@ -190,7 +238,7 @@ export default function Menu(props) {
                         </CategoryContainer>
                         <CategoryTitle ref={sidesRef}>SIDES</CategoryTitle>
                         <CategoryContainer id="sides">
-                            {props.sideItems.map(item => {
+                            {items.sides.map(item => {
                                 item.type = 'sides'
                                 return (
                                     <Item
@@ -214,11 +262,14 @@ export default function Menu(props) {
                 toggleDrawer={() => toggleDrawer(null)}
                 addItem={item => addItem(item)}
                 editState={props.editState}
-                chickenItems={props.chickenItems}
-                sideItems={props.sideItems}
+                chickenItems={items.chickenItems}
+                sideItems={items.sideItems}
                 token={props.token}
                 togglessState={props.togglessState}
             />
+            <ScrollToTopButton onClick={() => window.scrollTo(0,0)}>
+                <ArrowUpward />
+            </ScrollToTopButton>
         </div>
     )
 }

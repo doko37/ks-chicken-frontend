@@ -5,8 +5,9 @@ import { PinDrop, AccessTime } from '@material-ui/icons'
 import './tf.css'
 import '../../App.css'
 import moment from 'moment'
+import { useSelector } from 'react-redux'
 
-const Body = styled.div`
+export const Body = styled.div`
   position: relative;
   width: auto;
   margin: 1rem;
@@ -77,12 +78,12 @@ const Change = styled.p`
 const Button = styled.div`
   height: 50px;
   background-color: #cf8334;
-  border-radius: 2rem;
+  border-radius: 1rem;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0.5rem 0 1rem 0;
+  margin: 1.5rem 0 1rem 0;
   font-size: 26px;
   cursor: pointer;
 
@@ -100,7 +101,7 @@ const theme = createTheme({
   }
 })
 
-export default function Checkout(props) {
+export default function CheckoutPanel(props) {
   const [custInfo, setCustInfo] = useState({
     fn: '',
     ln: '',
@@ -109,6 +110,8 @@ export default function Checkout(props) {
   })
 
   const [firstAttempt, setFirstAttempt] = useState(true)
+  const cart = useSelector((store) => store.user.cart)
+  const pickupTime = useSelector((store) => store.user.sessionInfo.pickupTime)
 
   function handleChange(event) {
     setCustInfo({ ...custInfo, [event.target.name]: event.target.value })
@@ -125,7 +128,7 @@ export default function Checkout(props) {
     <Body>
       <Ctn>
         <SubCtn>
-          <Label>STORE</Label>
+          <Label>PICK UP INFO</Label>
           <FlexCtn>
             <PinDrop style={{ color: 'white', fontSize: '26px' }} />
             <div>
@@ -136,8 +139,8 @@ export default function Checkout(props) {
           <FlexCtn style={{ marginBottom: '0' }}>
             <AccessTime style={{ color: 'white', fontSize: '26px' }} />
             <div>
-              <Text>{moment(props.pickupInfo.date).format('dddd, MMM Do')}, {moment(props.pickupInfo.time).format('h:mm A')}</Text>
-              <Text style={{ fontSize: '14px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() > 19) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
+              <Text>{moment(pickupTime).format('dddd, MMM Do, h:mm A')}</Text>
+              <Text style={{ fontSize: '14px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() > 20 || moment().hour() === 20 && moment().minute() > 15) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
             </div>
             <Change onClick={props.togglessState}>Change</Change>
           </FlexCtn>
@@ -196,7 +199,7 @@ export default function Checkout(props) {
         <SubCtn last>
           <Label>ORDER SUMMARY</Label>
           <div style={{ borderBottom: '2px dashed white' }}>
-            {props.cart.map(item => {
+            {props.cart.items.map(item => {
               return (
                 <FlexCtn key={item.key} style={{ justifyContent: 'space-between' }}>
                   <Text item>{item.quantity} x {item.name.toUpperCase()}</Text>
@@ -205,10 +208,10 @@ export default function Checkout(props) {
               )
             })}
           </div>
-          <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>SUB TOTAL: ${props.total.toFixed(2)}</Label>
-          {/* <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>+ CREDIT CARD CHARGE FEE: ${(props.total * 0.029 + 0.3).toFixed(2)}</Label> */}
-          <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>- HALF AND HALF DISCOUNT: ${props.discount}</Label>
-          <Label style={{ fontSize: '20px', marginTop: '1rem' }}>TOTAL: ${(props.total - props.discount).toFixed(2)}</Label>
+          <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>SUB TOTAL: ${cart.total.toFixed(2)}</Label>
+          <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>+ CREDIT CARD CHARGE FEE: ${((((cart.total - props.discount) / (1 - 0.029)) - (cart.total - props.discount)) + 0.31).toFixed(2)}</Label>
+          {props.discount === 0 ? null : <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>- HALF AND HALF DISCOUNT: ${props.discount}</Label>}
+          <Label style={{ fontSize: '20px', marginTop: '1rem' }}>TOTAL: ${(((cart.total - props.discount)/(1-0.029)) + 0.31).toFixed(2)}</Label>
         </SubCtn>
         <Button onClick={checkout}>Checkout</Button>
       </Ctn>

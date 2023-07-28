@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import '../../../App.css'
 import './Drawer.css'
 import { Close, Add, Remove } from '@material-ui/icons'
 import Category from './Category/Category'
 import { ScreenHeight } from '../../hooks/ScreenHeight'
+import { useDispatch, useSelector } from 'react-redux'
+import publicRequest from '../../../api/requestMethod'
+import { updatePrice } from '../../../features/item/itemSlice'
 
 export const Body = styled.main`
     width: 80%;
@@ -107,6 +110,10 @@ export const Button = styled.div`
   color: white;
   font-weight: 300;
   cursor: pointer;
+
+  &:active {
+    background-color: #A56829;
+  }
 `
 
 export const QuantityCtn = styled.div`
@@ -133,6 +140,30 @@ export const Quantity = styled.div`
 
 export default function Drawer(props) {
   const sh = ScreenHeight()
+  const dispatch = useDispatch()
+
+  const userToken = useSelector((store) => store.user.userToken)
+  const [items, setItems] = useState({
+    chicken: [],
+    sides: []
+  })
+
+  const isMounted = useRef(true)
+
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+          let chicken = await publicRequest.get("/items/chicken")
+          await publicRequest.get("/items/sides").then(sides => {
+            if (isMounted.current) {
+              setItems({chicken: chicken.data, sides: sides.data})
+            }
+          })
+      } catch(err) { }
+    }
+
+    getItems()
+  }, [])
 
   const [activeCtg, setActiveCtg] = useState({
     size: false,
@@ -180,14 +211,14 @@ export default function Drawer(props) {
   }
 
   function handleChange(type, value) {
-    setItem({ ...item, [type]: value })
-
     if (type === 'size' && props.item.type === "chicken") {
       if (value === 'half') {
-        item.sides.side2 = 'nosides'
+        setItem({ ...item, sides: {side1: item.sides.side1, side2: 'nosides'}, size: value})
       } else {
-        item.sides.side2 = 'coleslaw'
+        setItem({ ...item, sides: {side1: item.sides.side1, side2: 'coleslaw'}, size: value})
       }
+    } else {
+      setItem({ ...item, [type]: value })
     }
   }
 
@@ -306,8 +337,8 @@ export default function Drawer(props) {
     if (props.item !== null) {
       let originItem = null
       if (hasNumber(props.item.key)) {
-        if (item.type === "chicken") { originItem = props.chickenItems.find(i => i.key === keyWithoutNum(item.key)) }
-        else if (item.key.includes("chips")) { originItem = props.sideItems.find(i => i.key === keyWithoutNum(item.key)) }
+        if (item.type === "chicken") { originItem = items.chicken.find(i => i.key === keyWithoutNum(item.key)) }
+        else if (item.key.includes("chips")) { originItem = items.sides.find(i => i.key === keyWithoutNum(item.key)) }
         else { originItem = props.item }
       } else {
         originItem = props.item
@@ -367,7 +398,7 @@ export default function Drawer(props) {
         </Ctn> : null}
         <Footer active={props.active}>
           <Title style={{ marginLeft: '1rem' }}>TOTAL: ${item.price.toFixed(2)}</Title>
-          {props.token ? <Button onClick={() => props.addItem(item)}>{props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
+          {userToken ? <Button onClick={() => props.addItem(item)}>{props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
             <Button onClick={props.togglessState} style={{ backgroundColor: '#808080' }}>START ORDER</Button>}
         </Footer>
       </main>

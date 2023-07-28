@@ -17,6 +17,13 @@ import { ImageList } from '@material-ui/core';
 import Callout from './Callout';
 import StoreSelector from '../Cart/StoreSelector';
 import Backdrop from '../Menu/Drawer/Backdrop';
+import { getCart, setEmail, setCart, resetUser, setUser, setPickupTime, setCartAmount, resetCart } from '../../features/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { getChickenItems, getSideItems } from '../../features/menu/menuSlice';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import Checkout from '../Checkout/Checkout';
+import Success from '../Success/Success';
 
 const Container = styled.div`
     width: 100%;
@@ -25,98 +32,26 @@ const Container = styled.div`
 `
 
 export default function Layout() {
+    const session = useSelector((store) => store.user)
     const [ssState, setssState] = useState(false)
-    const [cart, setCart] = useState([])
-    const [chickenItems, setChickenItems] = useState([])
-    const [sideItems, setSideItems] = useState([])
-    const [total, setTotal] = useState(0.00)
-    const [numItems, setNumItems] = useState(0)
     const [item, setItem] = useState(null)
     const [drawerState, setDrawerState] = useState(false)
     const [editState, setEditState] = useState(false)
     const [discount, setDiscount] = useState(0)
-    const [session, setSession] = useState({
-        token: null,
-        id: null
-    })
     const [dates, setDates] = useState([])
     const [times, setTimes] = useState([])
-    const [pickupInfo, setPickupInfo] = useState({
-        date: '',
-        time: ''
-    })
+    const [clientSecret, setClientSecret] = useState("")
+    const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY)
+    const appearance = {
+        theme: 'night'
+    }
 
-    useEffect(() => {
-        const cart = localStorage.getItem('cart')
-        const total = localStorage.getItem('total')
-        const numItems = localStorage.getItem('numItems')
-        const token = localStorage.getItem('token')
-        const id = localStorage.getItem('id')
-        const time = localStorage.getItem('time')
-        const date = localStorage.getItem('date')
-        try {
-            if (cart) {
-                setCart(JSON.parse(cart))
-                setTotal(JSON.parse(total))
-                setNumItems(JSON.parse(numItems))
-                setSession({ id: JSON.parse(id), token: JSON.parse(token) })
-                setPickupInfo({date: date, time: time})
-            }
-        } catch {
-            console.log('cart empty')
-        }
-    }, [])
+    const options = {
+        clientSecret,
+        appearance
+    }
 
-    useEffect(() => {
-        const getItems = async () => {
-            try {
-                const chicken = await publicRequest.get("/items/chicken")
-                setChickenItems(chicken.data)
-
-                const sides = await publicRequest.get("/items/sides")
-                setSideItems(sides.data)
-            } catch (err) { console.error(err) }
-        }
-
-        getItems()
-    }, [])
-
-    useEffect(() => {
-        const getCart = async () => {
-            if (session.id !== null) {
-                try {
-                    const user = await publicRequest.get("/user/" + session.id, { headers: { token: "Bearer " + session.token } })
-                    setCart(user.data.cart.items)
-                    setTotal(user.data.cart.total)
-                } catch (err) {
-                    setCart([])
-                    setTotal(0)
-                    setNumItems(0)
-                    setSession({ id: null, token: null })
-                    alert("your session has expired.")
-                }
-            } else {
-                setCart([])
-                setTotal(0)
-                setNumItems(0)
-            }
-        }
-
-        getCart()
-    }, [session])
-
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cart))
-        localStorage.setItem('total', JSON.stringify(total))
-        localStorage.setItem('numItems', JSON.stringify(numItems))
-        localStorage.setItem('time', JSON.stringify(pickupInfo.time))
-        localStorage.setItem('date', JSON.stringify(pickupInfo.date))
-    })
-
-    useEffect(() => {
-        localStorage.setItem('token', JSON.stringify(session.token))
-        localStorage.setItem('id', JSON.stringify(session.id))
-    }, [session])
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const fetchTimes = async () => {
@@ -126,43 +61,83 @@ export default function Layout() {
 
                 const _dates = await publicRequest.get('/dates')
                 setDates(_dates.data)
+
+                const defaultDate = moment(_dates.data[0]).add(_times.data[0].time)
+
+                const pickupTime = JSON.parse(localStorage.getItem('session')).sessionInfo.pickupTime
+                if(pickupTime === null) return
+                const setDate = moment(pickupTime)
+
+                if(setDate.valueOf() < defaultDate.valueOf()) {
+                    console.log("update date")
+                    dispatch(setPickupTime({time: defaultDate.format('YYYY-MM-DD HH:mm')}))
+                }
             } catch (err) {
                 console.log(err)
             }
         }
 
+        const updateSession = async () => {
+            const currentUrl = window.location.href
+            const currSession = JSON.parse(localStorage.getItem('session'))
+            if (currSession.userId !== null) {
+                try {
+                    const res = await publicRequest.get("/user/" + currSession.userId, { headers: { token: "Bearer " + currSession.userToken } })
+                    const cart = {
+                        items: res.data.cart.items,
+                        total: res.data.cart.total,
+                        numItems: res.data.cart.numItems,
+                        numHalfs: res.data.cart.numHalfs,
+                        loading: false
+                    }
+
+                    let pickupTime = currSession.sessionInfo.pickupTime
+                    if(pickupTime === null || pickupTime === undefined) {
+                        const _times = await publicRequest.get('/times')
+                        pickupTime = moment().startOf('day').add(_times.data[0].time).format('YYYY-MM-DD HH:mm')
+                    }
+
+                    const user = {
+                        userId: currSession.userId,
+                        userToken: currSession.userToken,
+                        sessionInfo: {
+                            email: currSession.sessionInfo.email,
+                            paid: currSession.sessionInfo.paid,
+                            pickupTime: pickupTime
+                        },
+                        cart: cart
+                    }
+
+                    if(!currentUrl.includes("success")) {
+                        localStorage.setItem('order', null)
+                    }
+
+                    dispatch(setUser({user: user}))
+                } catch (err) {
+                    dispatch(resetUser())
+                }
+            } else {
+                const _times = await publicRequest.get('/times')
+                const _dates = await publicRequest.get('/dates')
+                dispatch(setPickupTime({time: moment(_dates.data[0]).add(_times.data[0].time).format('YYYY-MM-DD HH:mm')}))
+            }
+        }
         fetchTimes()
+        updateSession()
         setInterval(() => {
-            fetchTimes()
-        }, 1000);
+            fetchTimes(session)
+        }, 60000);
     }, [])
 
     useEffect(() => {
-        const defaultDate = moment().set({
-            'month': moment(dates[0]).month(), 
-            'day': moment(dates[0]).day(), 
-            'hour': moment(times[0]).hour(), 
-            'minute': moment(times[0]).minute()
-        }).valueOf()
-
-        const setDate = pickupInfo.date === '' ? 0 : moment().set({
-            'month': moment(pickupInfo.date).month(), 
-            'day': moment(pickupInfo.date).day(), 
-            'hour': moment(pickupInfo.time).hour(), 
-            'minute': moment(pickupInfo.time).minute()
-        }).valueOf()
-
-        console.log(pickupInfo)
-
-        if(setDate < defaultDate) {
-            setPickupInfo({date: dates[0], time: times[0]})
-        }
-    }, [dates])
+        localStorage.setItem('session', JSON.stringify(session))
+    }, [session])
 
     useEffect(() => {
         let marinated = 0
         let nonMarinated = 0
         let discount = 0
+        let cart = session.cart.items
 
         for (let i in cart) {
             if (cart[i].chickenType === "marinated") marinated += 1
@@ -185,146 +160,111 @@ export default function Layout() {
         }
 
         setDiscount(discount)
-    }, [total])
-
-    function changeTime(time) {
-        setPickupInfo({ ...pickupInfo, time: time })
-    }
-
-    function changeDate(date) {
-        setPickupInfo({ ...pickupInfo, date: date })
-    }
+    }, [session.cart])
 
     function togglessState() {
         setssState(!ssState)
     }
 
-    function checkout(info) {
-        //const time = moment().format('YYYY MMMM Do, h:mm a')
-        axios.post("http://localhost:3001/submitOrder", { 
-            user: { 
-                fName: info.fn, 
-                lName: info.ln, 
-                phoneNo: info.phno, 
+    async function checkout(info) {
+        // Get the user's cart from the database, also checks if the user's session has expired
+        try {
+            const data = await publicRequest.get("/user/" + session.userId, { headers: { token: "Bearer " + session.userToken } })
+    
+            const cart = data.data.cart.items
+
+            dispatch(setEmail({email: info.email}))
+
+            // Call API to create a new payment intent
+            await axios.post("http://localhost:3001/api/stripe/create-payment-intent/" + session.userId, {
+                fn: info.fn,
+                ln: info.ln,
                 email: info.email,
-                cart: {
-                    items: cart,
-                    total: (total + (total * 0.03)).toFixed(2)
+                phno: info.phno,
+                cart: cart, 
+                userId: session.userId, 
+                pickupTime: session.sessionInfo.pickupTime,
+            }, { headers: { token: "Bearer " + session.userToken } }).then((data) => {
+                dispatch(setCartAmount({amount: (data.data.amount / 100)}))
+                const order = {
+                    userId: data.data.userId,
+                    email: data.data.email,
+                    pickupTime: data.data.pickupTime,
+                    orderNo: moment(session.sessionInfo.pickupTime).format('MMDD') + session.userId.substring(session.userId.length - 4)
                 }
-            }, 
-            date: moment(pickupInfo.date).format("YYYY MMMM Do"),
-            time: moment(pickupInfo.time).format("h:mm a"),
-
-         }).then((response) => {
-            console.log(response)
-        }).catch(error => { console.log(error) })
-
-        setTimeout(() => { window.location.reload(false) }, 1000)
-    }
-
-    function addItem(item) {
-        item.key = item.key + "_" + cart.length
-        setCart([...cart, item])
-        setTotal(total + item.price)
-
-        updateCart([...cart, item], (total + item.price))
+                console.log(order)
+                localStorage.setItem('order', JSON.stringify(order))
+                setClientSecret(data.data.clientSecret)
+            })
+        } catch(e) { 
+            console.error(e)
+            dispatch(resetUser())
+            alert("your session has expired.")
+        }
     }
 
     function toggleDrawer(item, edit = false, addToCart = false) {
         setItem(item)
         setEditState(edit)
         setDrawerState(!drawerState)
-        // addItem(item)
-        // console.log(cart.find(i => i.key === item.key))
-        // if (cart.find(i => i.key === item.key) !== undefined && !addToCart) {
-        //     removeItem(item)
-        // }
-    }
-
-    function editItem(item) {
-        const indx = cart.findIndex(i => i.key === item.key);
-
-        let items = [...cart];
-        let tempItem = { ...items[indx] };
-        let prevPrice = tempItem.price;
-        console.log(tempItem)
-
-        items[indx] = item;
-        setCart(items);
-        console.log(item.price)
-        console.log(prevPrice)
-        setTotal(total + (item.price - prevPrice))
-        updateCart(items, (total + (item.price - prevPrice)))
-        toggleDrawer(null)
-    }
-
-    function removeItem(item) {
-        const indx = cart.findIndex(i => i.key === item.key);
-
-        cart.splice(indx, 1)
-        setTotal(total - item.price)
-        updateCart(cart, (total - item.price))
-    }
-
-    const updateCart = async (cart, total) => {
-        try {
-            await publicRequest.put("/user/updateCart/" + session.id, { cart: { items: cart, total: total } }, { headers: { token: "Bearer " + session.token } })
-        } catch (err) {
-            setCart([])
-            setTotal(0)
-            setNumItems(0)
-            setSession({ id: null, token: null })
-            alert("your session has expired.")
-        }
     }
 
     const startOrder = async () => {
         const data = await axios.post("http://localhost:3001/api/auth/createGuest")
-        setSession({ id: data.data._id, token: data.data.accessToken })
+
+        let user = {
+            userId: data.data._id, 
+            userToken: data.data.accessToken,
+            sessionInfo: {
+                email: null,
+                paid: false,
+                pickupTime: session.sessionInfo.pickupTime
+            },
+            cart: {
+                items: [],
+                total: 0,
+                numItems: 0,
+                numHalfs: 0,
+                isLoading: true
+            }
+        }
+
+        dispatch(setUser({user: user}))
+        localStorage.setItem('order', null)
         togglessState()
     }
 
     return (
         <Container drawerState={drawerState} className='Italic'>
-            <div className='ctn'>
-                <NavBar cartLen={cart.length} />
+                { clientSecret ? 
+                <Elements options={options} stripe={stripePromise}>
+                    <Checkout clientSecret={clientSecret} />
+                </Elements> : 
+                <div className='ctn'>
+                <NavBar cartLen={session.cart.items.length} />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/menu" element={<Menu 
-                        addItem={item => addItem(item)}
                         drawerState={drawerState}
                         toggleDrawer={item => toggleDrawer(item)}
                         editState={editState}
-                        chickenItems={chickenItems}
-                        sideItems={sideItems}
                         togglessState={togglessState}
-                        token={session.token}
                     />} />
                     <Route path="/lunch-bar" element={<LunchBar />} />
                     <Route path="/cart" element={<Cart
-                        cart={cart}
                         item={item}
-                        numItems={cart.length}
-                        total={total}
                         toggleDrawer={item => toggleDrawer(item, true)}
                         drawerState={drawerState}
                         editState={editState}
-                        editItem={item => editItem(item)}
-                        removeItem={item => removeItem(item)}
                         checkout={custInfo => checkout(custInfo)}
-                        chickenItems={chickenItems}
-                        sideItems={sideItems}
                         dates={dates}
                         times={times}
-                        pickupInfo={pickupInfo}
                         ssState={ssState}
-                        changeTime={changeTime}
-                        changeDate={changeDate}
-                        token={session.token}
                         togglessState={togglessState}
                         discount={discount}
                     />} />
                     <Route path="/contact-us" element={<ContactUs />} />
+                    <Route path="/success" element={<Success />}/>
                 </Routes>
                 {/* <Callout /> */}
                 <Footer />
@@ -334,13 +274,9 @@ export default function Layout() {
                     togglessState={togglessState}
                     dates={dates}
                     times={times}
-                    setTime={time => changeTime(time)}
-                    setDate={date => changeDate(date)}
-                    pickupInfo={pickupInfo}
-                    token={session.token}
                     startOrder={startOrder}
                 />
-            </div>
+            </div> }
         </Container>
     )
 }
