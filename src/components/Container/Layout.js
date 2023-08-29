@@ -17,13 +17,14 @@ import { ImageList } from '@material-ui/core';
 import Callout from './Callout';
 import StoreSelector from '../Cart/StoreSelector';
 import Backdrop from '../Menu/Drawer/Backdrop';
-import { getCart, setEmail, setCart, resetUser, setUser, setPickupTime, setCartAmount, resetCart } from '../../features/user/userSlice';
+import { getCart, setEmail, setCart, resetUser, setUser, setPickupTime, setCartAmount, resetCart, setOverLoad } from '../../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { getChickenItems, getSideItems } from '../../features/menu/menuSlice';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Checkout from '../Checkout/Checkout';
 import Success from '../Success/Success';
+import Modal from '../Modal/Modal';
 
 const Container = styled.div`
     width: 100%;
@@ -41,6 +42,11 @@ export default function Layout() {
     const [dates, setDates] = useState([])
     const [times, setTimes] = useState([])
     const [clientSecret, setClientSecret] = useState("")
+    const [asapTime, setAsapTime] = useState({
+        offset: 0,
+        overload: 0
+    });
+    const [timeAvailable, setTimeAvailable] = useState(true)
     const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY)
     const appearance = {
         theme: 'night'
@@ -53,16 +59,44 @@ export default function Layout() {
 
     const dispatch = useDispatch()
 
+    async function setAvailableTimes() {
+        const _times = await publicRequest.get('/times')
+        const _dates = await publicRequest.get('/dates')
+
+        let i = 0
+        while(_times.data[i].available === false) {
+            i++;
+        }
+
+        setAsapTime({...asapTime, offset: i})
+        dispatch(setPickupTime({time: moment(_dates.data[0]).add(_times.data[i].time).format('YYYY-MM-DD HH:mm')}))
+    }
+
     useEffect(() => {
         const fetchTimes = async () => {
             try {
                 const _times = await publicRequest.get('/times')
+                let i = 0
+
+                while(_times.data[i].available === false) {
+                    i++;
+                }
+
+                setAsapTime({...asapTime, offset: i})
+
+                const overload = JSON.parse(localStorage.getItem('session')).cart.overload
+
+                while(i < (i + overload)) {
+                    _times.data[i].available = false
+                }
+
                 setTimes(_times.data)
 
                 const _dates = await publicRequest.get('/dates')
                 setDates(_dates.data)
 
-                const defaultDate = moment(_dates.data[0]).add(_times.data[0].time)
+
+                const defaultDate = moment(_dates.data[0]).add(_times.data[overload].time)
 
                 const pickupTime = JSON.parse(localStorage.getItem('session')).sessionInfo.pickupTime
                 if(pickupTime === null) return
@@ -88,14 +122,11 @@ export default function Layout() {
                         total: res.data.cart.total,
                         numItems: res.data.cart.numItems,
                         numHalfs: res.data.cart.numHalfs,
+                        overload: res.data.cart.overload,
                         loading: false
                     }
 
                     let pickupTime = currSession.sessionInfo.pickupTime
-                    if(pickupTime === null || pickupTime === undefined) {
-                        const _times = await publicRequest.get('/times')
-                        pickupTime = moment().startOf('day').add(_times.data[0].time).format('YYYY-MM-DD HH:mm')
-                    }
 
                     const user = {
                         userId: currSession.userId,
@@ -114,24 +145,31 @@ export default function Layout() {
 
                     dispatch(setUser({user: user}))
                 } catch (err) {
+                    if(!currentUrl.includes("success")) {
+                        alert("Your session as expired.")
+                    }
                     dispatch(resetUser())
                 }
             } else {
-                const _times = await publicRequest.get('/times')
-                const _dates = await publicRequest.get('/dates')
-                dispatch(setPickupTime({time: moment(_dates.data[0]).add(_times.data[0].time).format('YYYY-MM-DD HH:mm')}))
+                setAvailableTimes()
             }
         }
         fetchTimes()
         updateSession()
         setInterval(() => {
-            fetchTimes(session)
-        }, 60000);
+            fetchTimes()
+        }, 6000);
     }, [])
 
     useEffect(() => {
         localStorage.setItem('session', JSON.stringify(session))
     }, [session])
+
+    useEffect(async () => {
+        if(session.userToken === null) {
+            await setAvailableTimes()
+        }
+    }, [session.userToken])
 
     useEffect(() => {
         let marinated = 0
@@ -140,8 +178,10 @@ export default function Layout() {
         let cart = session.cart.items
 
         for (let i in cart) {
-            if (cart[i].chickenType === "marinated") marinated += 1
-            else if (cart[i].chickenType === "non_marinated") nonMarinated += 1
+            if(cart[i].type === "chicken" && cart[i].size === "half") {
+                if (cart[i].chickenType === "marinated") marinated += 1
+                else if (cart[i].chickenType === "non_marinated") nonMarinated += 1
+            }
         }
 
         let mariLeftOver = marinated % 2;
@@ -158,6 +198,17 @@ export default function Layout() {
         if (mariLeftOver === 1 && nonMariLeftOver === 1) {
             discount += 2
         }
+        
+        if(times.length > 0) {
+            dispatch(setOverLoad({overload: Math.floor(session.cart.numHalfs / 5)}))
+            for(let i = 0; i < asapTime.offset + Math.floor(session.cart.numHalfs / 5); i++) {
+                console.log(times[i])
+                times[i].available = false;
+            }
+
+            // if(session.sessionInfo.pickupTime === moment().startOf('d').add())
+            // dispatch(setPickupTime({time: moment(session.sessionInfo.pickupTime).startOf('d').add(times[asapTime.offset + (session.cart.numHalfs / 4)].time).format('YYYY-MM-DD HH:mm')}))
+        }
 
         setDiscount(discount)
     }, [session.cart])
@@ -169,6 +220,18 @@ export default function Layout() {
     async function checkout(info) {
         // Get the user's cart from the database, also checks if the user's session has expired
         try {
+            const timeAvailable = await publicRequest.post("/order/timeAvailable", {
+                numHalfs: session.cart.numHalfs,
+                pickupTime: session.sessionInfo.pickupTime
+            });
+
+            if(timeAvailable.data.leftover > 0) {
+                let offset = Math.ceil(timeAvailable.data.leftover / 4)
+
+                setTimeAvailable(false)
+                return
+            }
+
             const data = await publicRequest.get("/user/" + session.userId, { headers: { token: "Bearer " + session.userToken } })
     
             const cart = data.data.cart.items
@@ -210,7 +273,8 @@ export default function Layout() {
     }
 
     const startOrder = async () => {
-        const data = await axios.post("http://localhost:3001/api/auth/createGuest")
+        const data = await publicRequest.post("/auth/createGuest")
+        //const data = await axios.post("http://localhost:3001/api/auth/createGuest")
 
         let user = {
             userId: data.data._id, 
@@ -225,6 +289,7 @@ export default function Layout() {
                 total: 0,
                 numItems: 0,
                 numHalfs: 0,
+                overload: 0,
                 isLoading: true
             }
         }
@@ -254,6 +319,8 @@ export default function Layout() {
                     <Route path="/cart" element={<Cart
                         item={item}
                         toggleDrawer={item => toggleDrawer(item, true)}
+                        toggleTimeAvailable={() => setTimeAvailable(true)}
+                        timeAvailable={!timeAvailable}
                         drawerState={drawerState}
                         editState={editState}
                         checkout={custInfo => checkout(custInfo)}
@@ -275,6 +342,7 @@ export default function Layout() {
                     dates={dates}
                     times={times}
                     startOrder={startOrder}
+                    asap={asapTime}
                 />
             </div> }
         </Container>

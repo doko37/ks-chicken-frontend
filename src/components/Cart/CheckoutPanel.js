@@ -103,10 +103,10 @@ const theme = createTheme({
 
 export default function CheckoutPanel(props) {
   const [custInfo, setCustInfo] = useState({
-    fn: '',
-    ln: '',
-    email: '',
-    phno: ''
+    fn: 'asd',
+    ln: 'asd',
+    email: 'kschicken.ltd@gmail.com',
+    phno: '0215679123'
   })
 
   const [firstAttempt, setFirstAttempt] = useState(true)
@@ -119,7 +119,7 @@ export default function CheckoutPanel(props) {
 
   const checkout = () => {
     setFirstAttempt(false)
-    if (custInfo.fn !== '' && custInfo.ln !== '' && custInfo.email !== '' && custInfo.phno !== '') {
+    if (custInfo.fn !== '' && custInfo.ln !== '' && custInfo.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) && custInfo.phno.match(/^02[0-2,6-9]\d{6,8}$/)) {
       props.checkout(custInfo)
     }
   }
@@ -128,7 +128,7 @@ export default function CheckoutPanel(props) {
     <Body>
       <Ctn>
         <SubCtn>
-          <Label>PICK UP INFO</Label>
+          <Label>PICK UP INFORMATION</Label>
           <FlexCtn>
             <PinDrop style={{ color: 'white', fontSize: '26px' }} />
             <div>
@@ -147,7 +147,7 @@ export default function CheckoutPanel(props) {
         </SubCtn>
         <Divider />
         <SubCtn>
-          <Label>CONTACT INFO</Label>
+          <Label>CUSTOMER INFORMATION</Label>
           <ThemeProvider theme={theme}>
             <TextField
               label="First Name"
@@ -179,18 +179,18 @@ export default function CheckoutPanel(props) {
               value={custInfo.email}
               onChange={handleChange}
               type="email"
-              error={!firstAttempt && custInfo.email === ''}
+              error={!firstAttempt && !custInfo.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)}
               required
             />
             <TextField
-              label="Phone Number"
+              label="Mobile Number"
               name="phno"
               variant="standard"
               style={{ width: '100%', margin: '0.5rem 0 0.5rem 2px' }}
               value={custInfo.phno}
               onChange={handleChange}
               type="number"
-              error={!firstAttempt && custInfo.phno === ''}
+              error={!firstAttempt && !custInfo.phno.match(/^02[0-2,6-9]\d{6,8}$/)}
               required
             />
           </ThemeProvider>
@@ -209,11 +209,11 @@ export default function CheckoutPanel(props) {
             })}
           </div>
           <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>SUB TOTAL: ${cart.total.toFixed(2)}</Label>
-          <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>+ CREDIT CARD CHARGE FEE: ${((((cart.total - props.discount) / (1 - 0.029)) - (cart.total - props.discount)) + 0.31).toFixed(2)}</Label>
+          <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>+ CARD CHARGE & SERVICE FEE: ${((((cart.total - props.discount) / (1 - 0.029)) - (cart.total - props.discount)) + 0.31).toFixed(2)}</Label>
           {props.discount === 0 ? null : <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>- HALF AND HALF DISCOUNT: ${props.discount}</Label>}
           <Label style={{ fontSize: '20px', marginTop: '1rem' }}>TOTAL: ${(((cart.total - props.discount)/(1-0.029)) + 0.31).toFixed(2)}</Label>
         </SubCtn>
-        <Button onClick={checkout}>Checkout</Button>
+        <Button onClick={checkout} style={{fontFamily: 'coffee_rg'}}>CHECKOUT</Button>
       </Ctn>
     </Body>
   )

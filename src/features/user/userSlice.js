@@ -14,6 +14,7 @@ const initialState = {
         total: 0,
         numItems: 0,
         numHalfs: 0,
+        overload: 0,
         isLoading: true
     }
 }
@@ -35,7 +36,7 @@ export const updateCart = createAsyncThunk('users/updateCart' , async (_, { getS
             items: state.user.cart.items,
             total: state.user.cart.total,
             numItems: state.user.cart.numItems,
-            numHalfs: state.user.cart.numHalfs 
+            numHalfs: state.user.cart.numHalfs
         } }, { headers: { token: "Bearer " + state.user.userToken } })
     return res
 })
@@ -57,7 +58,8 @@ const userSlice = createSlice({
                 total: 0,
                 numItems: 0,
                 numHalfs: 0,
-                isLoading: true
+                overload: 0,
+                isLoading: false
             }
         },
         resetCart: (state) => {
@@ -66,7 +68,8 @@ const userSlice = createSlice({
                 total: 0,
                 numItems: 0,
                 numHalfs: 0,
-                isLoading: true
+                overload: 0,
+                isLoading: false
             }
         },
         setUser: (state, { payload }) => {
@@ -81,7 +84,6 @@ const userSlice = createSlice({
             state.cart = payload.cart
         },
         setCartAmount: (state, { payload }) => {
-            console.log(payload.amount)
             state.cart.total = payload.amount
         },
         setEmail: (state, { payload }) => {
@@ -92,6 +94,9 @@ const userSlice = createSlice({
         },
         setPickupTime: (state, { payload }) => {
             state.sessionInfo.pickupTime = payload.time
+        },
+        setOverLoad: (state, { payload }) => {
+            state.cart.overload = payload.overload
         },
         addItemToCart: (state, { payload }) => {
             let item = payload.item
@@ -135,10 +140,28 @@ const userSlice = createSlice({
             state.cart.isLoading = true
         })
         .addCase(updateCart.fulfilled, (state, action) => {
+            console.log("update cart fulfilled")
             state.cart.isLoading = false
         }) 
         .addCase(updateCart.rejected, (state, action) => {
-            state.cart.isLoading = false
+            console.log("update cart rejected")
+            state.userId = null
+            state.userToken = null
+            state.sessionInfo = {
+                email: null,
+                paid: false,
+                pickupTime: null
+            }
+            state.cart = {
+                items: [],
+                total: 0,
+                numItems: 0,
+                numHalfs: 0,
+                overload: 0,
+                isLoading: false
+            }
+
+            alert("Your session has expired");
         })
         .addCase(getCart.pending, (state) => {
             state.cart.isLoading = true
@@ -155,6 +178,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { resetUser, resetCart, setUser, setCart, setCartAmount, setEmail, setPaymentStatus, setPickupTime, addItemToCart, removeItemFromCart, editItemInCart } = userSlice.actions
+export const { resetUser, resetCart, setUser, setCart, setCartAmount, setEmail, setPaymentStatus, setPickupTime, setOverLoad, addItemToCart, removeItemFromCart, editItemInCart } = userSlice.actions
 
 export default userSlice.reducer;

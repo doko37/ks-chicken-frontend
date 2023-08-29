@@ -1,18 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import Item from './Item/Item'
-import { Chicken, Sides } from '../Data'
 import './Menu.css'
 import '../../App.css'
 import Drawer from './Drawer/Drawer'
 import Backdrop from './Drawer/Backdrop'
-import axios from 'axios'
 import publicRequest from '../../api/requestMethod'
-import StoreSelector from '../Cart/StoreSelector'
-import chicken from '../../Images/halfandhalfchicken.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemToCart, updateCart } from "../../features/user/userSlice"
 import { ArrowUpward } from '@material-ui/icons'
+import Modal from '../Modal/Modal'
 
 const Container = styled.div`
     width: auto;
@@ -116,7 +113,7 @@ export const CategoryTitle = styled.h3`
 `
 
 const ScrollToTopButton = styled.button`
-    display: flex;
+    display: ${props => props.yPos > 500 ? 'flex' : 'none'};
     align-items: center;
     justify-content: center;
     position: fixed;
@@ -143,15 +140,15 @@ const ScrollToTopButton = styled.button`
 export default function Menu(props) {
     const [inView, setInView] = useState('chicken')
     const [item, setItem] = useState(null)
-    const chicken = useSelector((store) => store.menu.chicken.items)
-    const sides = useSelector((store) => store.menu.sides.items)
     const [items, setItems] = useState({
         chicken: [],
         sides: []
     })
+    const [modalState, setModalState] = useState(null)
     const chickenRef = useRef(null)
     const sidesRef = useRef(null)
     const dispatch = useDispatch()
+    const [yPos, setYPos] = useState(0)
 
     useEffect(() => {
         const getItems = async () => {
@@ -172,6 +169,7 @@ export default function Menu(props) {
             } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
                 setInView('sides')
             }
+            setYPos(window.scrollY)
         }
 
         window.addEventListener('scroll', detectYPos, false)
@@ -190,6 +188,8 @@ export default function Menu(props) {
     const addItem = (item) => {
         dispatch(addItemToCart({ item: item }))
         dispatch(updateCart())
+        setItem(null)
+        setModalState(item)
         props.toggleDrawer(null)
     }
 
@@ -267,9 +267,10 @@ export default function Menu(props) {
                 token={props.token}
                 togglessState={props.togglessState}
             />
-            <ScrollToTopButton onClick={() => window.scrollTo(0,0)}>
+            <ScrollToTopButton yPos={yPos} onClick={() => window.scrollTo(0,0)}>
                 <ArrowUpward />
             </ScrollToTopButton>
+            <Modal item={item} mode={"add"} modalState={modalState} toggleModalState={() => setModalState(null)}/>
         </div>
     )
 }

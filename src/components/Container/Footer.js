@@ -95,7 +95,7 @@ export default function Footer(props) {
     <Body className='Normal'>
       <Ctn>
         <Left>
-          <Text><Link href="/">Home</Link> | <Link href="/menu">Menu</Link> | <Link href="/lunch-bar">Lunch Bar</Link> | <Link href="/contact-us">Contact Us</Link> | <Link href="/order">Order</Link></Text>
+          <Text><Link href="/">Home</Link> | <Link href="/menu">Menu</Link> | <Link href="/lunch-bar">Lunch Bar</Link> | <Link href="/contact-us">Contact Us</Link></Text>
           <Text copyright>© 2022 KS Chicken. All Rights Reserved.</Text>
         </Left>
         <Right>

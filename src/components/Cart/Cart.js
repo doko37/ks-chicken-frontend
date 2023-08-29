@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getCart, updateCart, removeItemFromCart, editItemInCart } from '../../features/user/userSlice'
 import { Body as CheckoutPanelBody } from './CheckoutPanel'
 import { Button as DrawerButton } from '../Menu/Drawer/Drawer'
+import Modal from '../Modal/Modal'
+import { AlertModal } from './AlertModal'
 
 const Body = styled.div`
   background-color: #252425;
@@ -128,6 +130,8 @@ const ButtonText = styled.a`
 
 export default function Cart(props) {
   const [cartDisplay, setCartDisplay] = useState(true)
+  const [modalMode, setModalMode] = useState("")
+  const [modalState, setModalState] = useState(null)
   const mState = MobileState()
   const session = useSelector((store) => store.user)
   const cart = session.cart
@@ -143,17 +147,22 @@ export default function Cart(props) {
   const removeItem = (item) => {
     dispatch(removeItemFromCart({item: item}))
     dispatch(updateCart())
+    setModalMode("remove")
+    setModalState(item)
   }
 
   const editItem = (item) => {
     dispatch(editItemInCart({item: item}))
     dispatch(updateCart())
     props.toggleDrawer(null)
+    setModalMode("edit")
+    setModalState(item)
   }
 
   return (
     <Body className='Italic'>
       <Wrapper>
+        <Modal mode={modalMode} modalState={modalState} toggleModalState={() => setModalState(null)}/>
         <TitleCtn onClick={toggleCartDisplay}>
           <Title>YOUR CART</Title>
           <Down style={{color: 'white', transform: cartDisplay ? 'rotate(180deg)' : 'rotate(0deg)', cursor: 'pointer', display: mState ? cart.items.length > 0 ? '' : 'none' : 'none'}}/>
@@ -174,9 +183,9 @@ export default function Cart(props) {
                   )
                 }) : <p>Your cart is empty</p>}
                 <CheckoutPanelBody style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'rgb(0,0,0,0.2)', boxShadow: 'none'}}>
-                  <Text>Forgot something?</Text>
+                  <Text style={{fontFamily: 'coffee_rg'}}>Forgot something?</Text>
                   <DrawerButton style={{width: 'fit-content', padding: '0.25rem 1rem'}}>
-                    <ButtonText href="/menu">Go back to menu</ButtonText>
+                    <ButtonText href="/menu" style={{fontFamily: 'coffee_rg'}}>GO BACK TO MENU</ButtonText>
                   </DrawerButton>
                 </CheckoutPanelBody>
                 <Backdrop active={props.drawerState} toggleDrawer={() => props.toggleDrawer(null)} />
@@ -201,6 +210,7 @@ export default function Cart(props) {
                 discount={props.discount}
               />
             </Ctn>
+            <AlertModal toggleTimeAvailable={props.toggleTimeAvailable} timeAvailable={props.timeAvailable}/>
           </>
           :
           <Ctn style={{ display: 'block' }}>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { Done } from '@material-ui/icons'
-import { useSelector } from 'react-redux'
+import { Done, AccessTime as Time, DateRange as Date } from '@material-ui/icons'
+import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import publicRequest from '../../api/requestMethod'
 import { Button } from '../Menu/Drawer/Drawer'
+import '../../App.css'
+import { resetUser } from '../../features/user/userSlice'
 
 const Ctn = styled.div`
     background-color: #252425;
@@ -30,6 +32,7 @@ const Text = styled.p`
 export default function Success(props) {
     const [orderExists, setOrderExists] = useState("loading")
     const order = JSON.parse(localStorage.getItem('order'))
+    const dispatch = useDispatch()
 
     let orderNo
     if (order) {
@@ -43,13 +46,14 @@ export default function Success(props) {
                 const order = await publicRequest.get(`/order/orderExists/${orderNo}`)
                 console.log(order.data)
                 setOrderExists(order.data.orderExists)
+                dispatch(resetUser())
             } catch(err) { console.log("Order not found") }
 
         }
 
         if(orderNo) setTimeout(function() {
             getOrder()
-        }, 1000)
+        }, 2000)
     }, [])
 
   return (
@@ -58,17 +62,25 @@ export default function Success(props) {
             { orderExists === "loading" ? <Text>Loading...</Text> : orderExists ?
             <div>
                 <Done style={{color: 'white', fontSize: '36px', border: '3px solid white', borderRadius: '100%'}}/>
-                <Text top>Order successful!</Text> 
+                <Text top style={{fontFamily: 'coffee_rg_it'}}>Order successful!</Text> 
                 <Text>Your order # is {orderNo}</Text>
                 <Text>A confirmation email has been sent to: <span style={{textDecoration: 'underline'}}>{order.email}</span></Text>
-                <Text><span>Your pickup time is:</span> {moment(order.pickupTime).format("h:mm a")}<br/>{moment(order.pickupTime).format('dddd, MMM Do')}</Text>
-            </div> : <Text>Invalid session</Text>
-            }
-            <Button style={{width: 'fit-content', padding: '0.5rem 0', margin: '1rem auto'}}>
-                <a href="/" style={{textDecoration: 'none', color: 'white', height: '100%', width: '100%', display: 'flex', alignItems: 'center', padding: '0.5rem 1rem', borderRadius: '2rem'}}>
+                <Text style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.5rem'}}><span style={{marginRight: '0.25rem'}}><Time /></span> {moment(order.pickupTime).format("h:mm a")}</Text>
+                <Text style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '0.5rem'}}><span style={{marginRight: '0.25rem'}}><Date /></span>{moment(order.pickupTime).format('dddd, MMM Do')}</Text>
+                <Button style={{width: 'fit-content', padding: '0.5rem 0', margin: '1rem auto'}}>
+                <a href="/" style={{textDecoration: 'none', color: 'white', height: '100%', width: '100%', display: 'flex', alignItems: 'center', padding: '0.5rem 1rem', borderRadius: '2rem', fontFamily: 'coffee_rg'}}>
                     Back to Home Page
                 </a>
-            </Button>
+                </Button>
+            </div> : <div>
+                    <Text>Invalid session</Text>
+                    <Button style={{width: 'fit-content', padding: '0.5rem 0', margin: '1rem auto'}}>
+                        <a href="/" style={{textDecoration: 'none', color: 'white', height: '100%', width: '100%', display: 'flex', alignItems: 'center', padding: '0.5rem 1rem', borderRadius: '2rem', fontFamily: 'coffee_rg'}}>
+                            Back to Home Page
+                        </a>
+                    </Button>
+                </div>
+            }
         </div>
     </Ctn>
   )

@@ -7,7 +7,6 @@ import Category from './Category/Category'
 import { ScreenHeight } from '../../hooks/ScreenHeight'
 import { useDispatch, useSelector } from 'react-redux'
 import publicRequest from '../../../api/requestMethod'
-import { updatePrice } from '../../../features/item/itemSlice'
 
 export const Body = styled.main`
     width: 80%;
@@ -396,10 +395,11 @@ export default function Drawer(props) {
             type={props.item.type}
           />
         </Ctn> : null}
+        <p style={{display: item.type === 'chicken' ? item.quantity * (item.size === 'half' ? 1 : 2) > 4 ? 'block' : 'none' : 'none', position: 'relative', zIndex: 150, color: 'gray', margin: '-0.25rem 0 0 1rem', textAlign: 'left'}}>*Larger orders will take more time.</p>
         <Footer active={props.active}>
           <Title style={{ marginLeft: '1rem' }}>TOTAL: ${item.price.toFixed(2)}</Title>
-          {userToken ? <Button onClick={() => props.addItem(item)}>{props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
-            <Button onClick={props.togglessState} style={{ backgroundColor: '#808080' }}>START ORDER</Button>}
+          {userToken ? <Button onClick={() => props.addItem(item)} style={{fontFamily: 'coffee_rg'}}>{props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
+            <Button onClick={props.togglessState} style={{ backgroundColor: '#808080', fontFamily: 'coffee_rg' }}>START ORDER</Button>}
         </Footer>
       </main>
     </Body>

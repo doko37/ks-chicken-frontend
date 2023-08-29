@@ -11,6 +11,7 @@ import KSLogo from '../../Images/logo.svg'
 import StripeLogo from './stripeLogo.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { resetCart, setPaymentStatus } from '../../features/user/userSlice';
+import '../../App.css'
 
 const FormCtn = styled.div`
   width: fit-content;
@@ -75,6 +76,17 @@ const Stripelogo = styled.img`
   height: 40px;
 `
 
+const Cancel = styled.a`
+  text-decoration: none;
+  box-shadow: 0px 0px 4px 1px black;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+
+  &:active {
+    box-shadow: 0px 0px 1px 1px black;
+  }
+`
+
 export default function CheckoutForm() {
   const stripe = useStripe()
   const elements = useElements()
@@ -120,21 +132,23 @@ export default function CheckoutForm() {
 
     setIsLoading(true)
 
-    const { error } = await stripe.confirmPayment({
+    await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: 'http://localhost:3000/success'
       }
-    }).then(() => {
-      dispatch(resetCart())
-      dispatch(setPaymentStatus({paid: true}))
+    }).then((result) => {
+      if(!result.error) {
+        dispatch(resetCart())
+        dispatch(setPaymentStatus({paid: true}))
+      }
     })
 
-    if(error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message)
-    } else {
-      setMessage("An unexpected error occurred")
-    }
+    // if(result.error.type === "card_error" || result.error.type === "validation_error") {
+    //   setMessage(result.error.message)
+    // } else {
+    //   setMessage("An unexpected error occurred")
+    // }
 
     setIsLoading(false)
   }
@@ -147,7 +161,7 @@ export default function CheckoutForm() {
     <main style={{backgroundColor: '#252425', position: 'relative', width: '100vw', height: '100vh', margin: '0', padding: '0rem 0'}}>
       <div style={{height: 'fit-content'}}>
         <StripeLogoCtn>
-          <span style={{color: 'white', height: '100%', fontSize: '16px'}}>Powered by </span>
+          <span style={{color: 'white', height: '100%', fontSize: '16px', fontFamily: 'coffee_rg'}}></span>
           <Stripelogo src={StripeLogo} alt="Stripe Logo"/>
         </StripeLogoCtn>
         <FormCtn>
@@ -161,8 +175,8 @@ export default function CheckoutForm() {
             </PayButton>
           </form>
           <p style={{color: 'white', fontFamily: 'sans-serif', marginBottom: '1rem', marginTop: '2rem', fontWeight: '600'}}>{message}</p>
-          <p style={{textAlign: 'end', margin: '0'}}>
-            <a href="/cart" style={{color: 'white', fontFamily: 'sans-serif', textDecoration: 'none'}}>Cancel</a>
+          <p style={{textAlign: 'center', margin: '0', marginBottom: '0.5rem'}}>
+            <Cancel href="/cart" style={{color: 'white', fontFamily: 'coffee_rg', fontSize: '14px'}}>CANCEL</Cancel>
           </p>
         </FormCtn>
       </div>
