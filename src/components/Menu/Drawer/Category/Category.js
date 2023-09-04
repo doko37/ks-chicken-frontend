@@ -54,7 +54,7 @@ const CategoryTitleCtn = styled.div`
 
 const Text = styled.p`
   margin-left: ${props => props.noImg ? '0.5rem' : '1rem'};
-  margin-top: ${props => props.sub ? '-1rem' : '1rem'};
+  margin: ${props => props.sub ? '-0.5rem 1rem 0.5rem 0.5rem' : '0.5rem'};
   color: ${props => props.sub ? 'gray' : 'white'};
 `
 
@@ -297,6 +297,59 @@ export default function Category(props) {
                     name="sauce"
                     value={sauce.key}
                     onChange={() => props.handleChange('sauce', sauce.key)}
+                    style={{ color: 'white' }}
+                  />
+                </ItemCtn>
+              )
+            })}
+          </CategoryCtn>
+        </CategoryBody>
+        <CategoryBody zIndex={105} temp />
+      </div> : props.item.type === "drinks" ? <div>
+      <CategoryBody zIndx={101}>
+          <CategoryTitleCtn onClick={() => props.toggleCtg('drinksSize')}>
+            <CategoryTitle>SIZE</CategoryTitle>
+            <Arrow style={{ transform: props.activeCtg.drinksSize ? 'rotate(180deg)' : 'none', transition: 'all 0.25s' }} />
+          </CategoryTitleCtn>
+          <CategoryCtn active={props.activeCtg.drinksSize}>
+            {props.item.sizes.map(size => {
+              return (
+                <ItemCtn onClick={() => props.handleChange('size', size.size)} key={size.size} noImg>
+                  <ItemCtn sub noImg>
+                    <div>
+                      <Text>{size.size}</Text>
+                      {size.price > 0 ? <Text sub>+ ${size.price.toFixed(2)}</Text> : null}
+                    </div>
+                  </ItemCtn>
+                  <Radio
+                    checked={props.item.size === size.size}
+                    name="drinksSize"
+                    value={size.size}
+                    onChange={() => props.handleChange('size', size.size)}
+                    style={{ color: 'white' }}
+                  />
+                </ItemCtn>
+              )
+            })}
+          </CategoryCtn>
+        </CategoryBody>
+        <CategoryBody zIndx={102} style={{display: props.item.drinks.length < 1 ? 'none' : 'block'}}>
+          <CategoryTitleCtn onClick={() => props.toggleCtg('drink')}>
+            <CategoryTitle>DRINK CHOICE</CategoryTitle>
+            <Arrow style={{ transform: props.activeCtg.drink ? 'rotate(180deg)' : 'none', transition: 'all 0.25s' }} />
+          </CategoryTitleCtn>
+          <CategoryCtn active={props.activeCtg.drink}>
+            {props.item.drinks.map(drink => {
+              return (
+                <ItemCtn onClick={() => props.handleChange('drink', drink)} key={drink} noImg>
+                  <ItemCtn sub noImg>
+                    <Text>{drink.toUpperCase()}</Text>
+                  </ItemCtn>
+                  <Radio
+                    checked={props.item.drink.toUpperCase() === drink.toUpperCase()}
+                    name="drink"
+                    value={drink}
+                    onChange={() => props.handleChange('drink', drink)}
                     style={{ color: 'white' }}
                   />
                 </ItemCtn>

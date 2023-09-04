@@ -91,7 +91,6 @@ const LoaderCtn = styled.div`
 `
 
 export default function StoreSelector(props) {
-    const [date, setDate] = useState(props.dates[0])
     const [boxState, setBoxState] = useState("default")
     const token = useSelector((store) => store.user.userToken)
     const pickupTime = useSelector((store) => store.user.sessionInfo.pickupTime)
@@ -100,8 +99,11 @@ export default function StoreSelector(props) {
 
     const changeDate = (date) => {
         setBoxState("default")
-        let time = moment(pickupTime).format('HH:mm')
-        dispatch(setPickupTime({time: moment(date).add(time).format('YYYY-MM-DD HH:mm')}))
+        if(date.split(' ')[0] !== pickupTime.split(' ')[0]) {
+            console.log(date.split(' ')[0], pickupTime.split(' ')[0])
+            dispatch(setPickupTime({time: moment(date).format('YYYY-MM-DD HH:mm')}))
+            props.dateChanged(date)
+        }
     }
 
     const changeTime = (time) => {
@@ -114,10 +116,6 @@ export default function StoreSelector(props) {
             setBoxState("default")
         }
     }, [props.ssState])
-
-    useEffect(() => {
-        setDate(props.dates[0])
-    }, [props.dates])
 
     return (
         <Body active={props.ssState} className='drawer'>
@@ -139,7 +137,7 @@ export default function StoreSelector(props) {
                         <Text>33B Triton Drive, Rosedale, 0632</Text>
                     </div>
                 </FlexCtn>
-                <Text style={{ fontSize: '16px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() > 20 || (moment().hour() === 20 && moment().minute() > 15)) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
+                <Text style={{ fontSize: '16px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() >= 20 || (moment().hour() === 19 && moment().minute() >= 50)) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
                 <FlexCtn>
                     <DateRange style={{ color: 'white' }} />
                     <Text>{moment(pickupTime).format('dddd, MMM Do')}</Text>
@@ -147,11 +145,13 @@ export default function StoreSelector(props) {
                 </FlexCtn>
                 <FlexCtn>
                     <AccessTime style={{ color: 'white' }} />
-                    <Text>{props.times[0] && moment(pickupTime).format("H:mm") === props.times[props.asap.offset + props.asap.overload].time ? "ASAP (" + moment(pickupTime).format("h:mm A") + ")" : moment(pickupTime).format("h:mm A")}</Text>
+                    {props.times[0] ? moment(pickupTime).format("H:mm") === props.times[props.asap.offset + props.asap.overload].time ? 
+                        <Text>{"ASAP (" + moment(pickupTime).format("h:mm A") + ")"}</Text> : <Text>{moment(pickupTime).format("h:mm A")}</Text> :
+                        <Loader color="#ffffff" loading={props.times.length === 0} size={8} style={{marginLeft: '1rem'}}/>}
                     <Text style={{ marginLeft: 'auto', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => setBoxState("time")}>Change</Text>
                 </FlexCtn>
                 {!token ? <Footer active={props.ssState}>
-                    <Button onClick={props.startOrder} style={{ width: '100%', padding: '0.25rem 0', marginLeft: '1rem', fontFamily: 'coffee_rg' }}>START ORDER</Button>
+                    <Button onClick={props.startOrder} style={{ width: '100%', padding: '0.5rem 0', marginLeft: '1rem', fontFamily: 'coffee_rg' }}>START ORDER</Button>
                 </Footer> : null}
             </div> : boxState === "date" ? <div>
                 <Text>WHAT DAY ARE YOU PICKING UP?</Text>

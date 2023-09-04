@@ -45,7 +45,7 @@ export const AlertModal = (props) => {
             <p>Please choose another time.</p>
             <Btn onClick={props.toggleTimeAvailable}>CLOSE</Btn>
         </Ctn>
-        <Backdrop active={props.timeAvailable} toggleDrawer={props.toggleTimeAvailable}/>
+        {/* <Backdrop active={props.timeAvailable} toggleDrawer={props.toggleTimeAvailable}/> */}
     </>
   )
 }

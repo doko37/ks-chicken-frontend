@@ -58,7 +58,7 @@ export default function Success(props) {
 
   return (
     <Ctn>
-        <div style={{border: orderExists !== "loading" ? 'solid white 2px' : 'none', borderRadius: '1rem', padding: '1.5rem', margin: '0 1rem'}}>
+        <div style={{border: orderExists !== "loading" ? 'double lightgray 4px' : 'none', borderRadius: '1rem', padding: '1.5rem', margin: '0 1rem'}}>
             { orderExists === "loading" ? <Text>Loading...</Text> : orderExists ?
             <div>
                 <Done style={{color: 'white', fontSize: '36px', border: '3px solid white', borderRadius: '100%'}}/>

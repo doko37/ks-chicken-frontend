@@ -6,7 +6,7 @@ import './Item.css'
 
 const Container = styled.div`
     width: auto;
-    height: 120px;
+    height: fit-content;
     margin: 0 1rem 2rem 1rem;
     display: flex;
     position: relative;
@@ -14,21 +14,26 @@ const Container = styled.div`
     overflow: hidden;
     cursor: pointer;
     transition: all 0.5s;
+    padding: ${props => props.type === 'drinks' ? '1rem' : '0'};
 
     &:hover {
         background-color: ${props => props.type === 'lunch' ? 'none' : 'rgba(0,0,0,0.4)'};
     }
 
     @media(min-width: 700px) {
-        height: 170px;
+        height: fit-content;
     }
 `
 
 const ImageContainer = styled.div`
     width: auto;
-    height: 100%;
+    height: 120px;
     overflow: hidden;
     border-radius: 1rem;
+
+    @media(min-width: 700px) {
+        height: 160px;
+    }
 `
 
 const Image = styled.img`
@@ -71,7 +76,7 @@ export default function Item(props) {
     return (
         <Container className='Ctn' onClick={props.toggleDrawer} type={props.type}>
             <AddBox style={{ color: 'white', position: 'absolute', bottom: '0', right: '0', margin: '0.5rem', display: props.type === 'lunch' ? 'none' : 'block' }} />
-            <ImageContainer className='SubCtn'>
+            <ImageContainer className='SubCtn' style={{display: props.img ? 'block' : 'none'}}>
                 <Image src={props.img} className='Img' />
             </ImageContainer>
             <div>
@@ -109,6 +114,11 @@ export default function Item(props) {
                             <Desc>LARGE - $9.00</Desc>
                         </div> : <Desc>${props.price} PER SERVING</Desc>}
                     </div> : null}
+                {props.type === "drinks" ? 
+                    <div>
+                        <Desc>${props.price.toFixed(2)} EACH</Desc>
+                    </div> : null
+                }
             </div>
         </Container>
     )

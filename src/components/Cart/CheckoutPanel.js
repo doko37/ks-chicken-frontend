@@ -97,7 +97,7 @@ const theme = createTheme({
     type: 'dark'
   },
   typography: {
-    fontFamily: "coffee_rg_it"
+    fontFamily: "coffee_rg"
   }
 })
 
@@ -203,7 +203,7 @@ export default function CheckoutPanel(props) {
               return (
                 <FlexCtn key={item.key} style={{ justifyContent: 'space-between' }}>
                   <Text item>{item.quantity} x {item.name.toUpperCase()}</Text>
-                  <Text>${item.price.toFixed(2)}</Text>
+                  <Text>${(item.price * item.quantity).toFixed(2)}</Text>
                 </FlexCtn>
               )
             })}

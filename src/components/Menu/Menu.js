@@ -142,11 +142,13 @@ export default function Menu(props) {
     const [item, setItem] = useState(null)
     const [items, setItems] = useState({
         chicken: [],
-        sides: []
+        sides: [],
+        drinks: []
     })
     const [modalState, setModalState] = useState(null)
     const chickenRef = useRef(null)
     const sidesRef = useRef(null)
+    const drinksRef = useRef(null)
     const dispatch = useDispatch()
     const [yPos, setYPos] = useState(0)
 
@@ -155,7 +157,8 @@ export default function Menu(props) {
             try {
                 let chicken = await publicRequest.get("/items/chicken")
                 let sides = await publicRequest.get("/items/sides")
-                setItems({chicken: chicken.data, sides: sides.data})
+                let drinks = await publicRequest.get("/items/drinks")
+                setItems({chicken: chicken.data, sides: sides.data, drinks: drinks.data})
             } catch(err) { }
         }
 
@@ -168,6 +171,8 @@ export default function Menu(props) {
                 setInView('chicken')
             } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
                 setInView('sides')
+            } else if (drinksRef.current.getBoundingClientRect().top > 0 && drinksRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
+                setInView('drinks')
             }
             setYPos(window.scrollY)
         }
@@ -204,8 +209,8 @@ export default function Menu(props) {
                         <NavBarItemContainer active={inView === 'sides' ? true : false} onClick={() => scrollMenu('sides')}>
                             <NavBarItem>Sides</NavBarItem>
                         </NavBarItemContainer>
-                        <NavBarItemContainer active={inView === 'drinks' ? true : false} temp>
-                            <NavBarItem temp>Drinks</NavBarItem>
+                        <NavBarItemContainer active={inView === 'drinks' ? true : false} onClick={() => scrollMenu('drinks')}>
+                            <NavBarItem>Drinks</NavBarItem>
                         </NavBarItemContainer>
                     </NavBar>
                 </NavBarContainer>
@@ -253,6 +258,23 @@ export default function Menu(props) {
                                 )
                             })}
                         </CategoryContainer>
+                        <CategoryTitle ref={drinksRef}>DRINKS</CategoryTitle>
+                        <CategoryContainer id="drinks">
+                            {items.drinks.map(item => {
+                                item.type = 'drinks'
+                                return (
+                                    <Item
+                                        img={null}
+                                        title={item.name.toUpperCase()}
+                                        price={item.price}
+                                        type={'drinks'}
+                                        itemKey={item.key}
+                                        key={item.key}
+                                        toggleDrawer={() => toggleDrawer(item)}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
                     </ItemContainer>
                 </Container>
             </Body>
@@ -264,6 +286,7 @@ export default function Menu(props) {
                 editState={props.editState}
                 chickenItems={items.chickenItems}
                 sideItems={items.sideItems}
+                items={items}
                 token={props.token}
                 togglessState={props.togglessState}
             />

@@ -73,11 +73,12 @@ const NavContainer = styled.div`
 const NavItems = styled.a`
     color: white;
     margin-left: ${props => props.mobile ? '0' : '1rem'};
+    text-align: center;
     width: auto;
     text-decoration: none;
     font-size: 16px;
     display: ${props => props.mState ? '' : 'none'};
-    padding: 0.75rem 0 0.75rem 1rem;
+    padding: '0.75rem 0 0.75rem 0rem';
     display: block;
     font-weight: 300;
     cursor: pointer;

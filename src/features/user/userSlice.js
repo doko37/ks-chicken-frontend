@@ -100,9 +100,17 @@ const userSlice = createSlice({
         },
         addItemToCart: (state, { payload }) => {
             let item = payload.item
+            if(item.type === "sides" && (item.key !== "chips" && item.key !== "sauce")) {
+                const indx = state.cart.items.findIndex(i => i.key.includes(item.key))
+                if(indx !== -1) {
+                    state.cart.items[indx].quantity += item.quantity
+                    state.cart.total += (item.price * item.quantity)
+                    return
+                }
+            }
             item.key = item.key + "_" + state.cart.items.length
             state.cart.items.push(item)
-            state.cart.total += item.price
+            state.cart.total += (item.price * item.quantity)
             state.cart.numItems += 1
             if(item.type === "chicken") {
                 state.cart.numHalfs += (item.size === "half" ? 1 : 2) * item.quantity
@@ -112,7 +120,7 @@ const userSlice = createSlice({
             const tempItem = payload.item
             const itemIndex = state.cart.items.findIndex(i => i.key === tempItem.key)
             state.cart.items.splice(itemIndex, 1)
-            state.cart.total -= tempItem.price
+            state.cart.total -= (tempItem.price * tempItem.quantity)
             state.cart.numItems -= 1
             if(tempItem.type === "chicken") {
                 state.cart.numHalfs -= (tempItem.size === "half" ? 1 : 2) * tempItem.quantity
@@ -124,11 +132,11 @@ const userSlice = createSlice({
 
             let items = [...state.cart.items];
             let tempItem = { ...items[indx] };
-            let prevPrice = tempItem.price;
+            let prevPrice = tempItem.price * tempItem.quantity;
 
             items[indx] = item;
             state.cart.items = items
-            state.cart.total += (item.price - prevPrice)
+            state.cart.total += ((item.price * item.quantity) - prevPrice)
             if(item.type === "chicken") {
                 state.cart.numHalfs += ((item.size === "half" ? 1 : 2) * item.quantity) - ((tempItem.size === "half" ? 1 : 2) * tempItem.quantity)
             }

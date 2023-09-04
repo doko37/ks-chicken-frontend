@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Desc, Title } from '../Menu/Item/Item'
 import { KeyboardArrowDown as Down } from '@material-ui/icons'
+import '../../App.css'
 
 const Body = styled.div`
     border-radius: 1rem;
@@ -104,15 +105,18 @@ export default function CartItem(props) {
               <Desc>{props.item.cut.toUpperCase()}</Desc>
               <Desc>SIDES: {props.item.sides.side1.toUpperCase()}{props.item.sides.side2 === "nosides" ? null : ", " + props.item.sides.side2.toUpperCase()}</Desc>
             </div> : null}
-          </div> : props.item.key.includes("sauce") ? <Desc>{props.item.sauce.toUpperCase()}</Desc> : null : null}
+          </div> : props.item.key.includes("sauce") ? <Desc>{props.item.sauce.toUpperCase()}</Desc> : props.item.type === "drinks" ? <div>
+            <Desc>{props.item.size}</Desc>
+            { props.item.drink ? <Desc>{props.item.drink.toUpperCase()}</Desc> : null}  
+          </div> : null : null}
         </div>
       </TopCtn>
       <BottomCtn>
         <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'end', alignSelf: 'end' }}>
-          <Text onClick={props.removeItem} style={{ color: 'white', textDecoration: 'underline', cursor: 'pointer' }}>REMOVE</Text>
-          <Text onClick={props.toggleDrawer} style={{ color: 'white', textDecoration: 'underline', cursor: 'pointer', marginLeft: '1rem' }}>EDIT</Text>
+          <Text onClick={props.removeItem} style={{ color: 'white', textDecoration: 'underline', cursor: 'pointer', fontFamily: 'coffee_rg' }}>REMOVE</Text>
+          <Text onClick={props.toggleDrawer} style={{ color: 'white', textDecoration: 'underline', cursor: 'pointer', marginLeft: '1rem', fontFamily: 'coffee_rg' }}>EDIT</Text>
         </div>
-        <Text price style={{ color: 'white', gridRowStart: '-1', justifySelf: 'end' }}>${props.item.price.toFixed(2)}</Text>
+        <Text price style={{ color: 'white', gridRowStart: '-1', justifySelf: 'end', fontFamily: 'coffee_rg' }}>${(props.item.price * props.item.quantity).toFixed(2)}</Text>
       </BottomCtn>
     </Body>
   )

@@ -7,24 +7,21 @@ import NavBar from '../NavBar';
 import { Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 import Footer from './Footer';
-import moment from 'moment'
+import moment from 'moment-timezone'
 import LunchBar from '../LunchBar/LunchBar';
 import '../../App.css'
 import './Layout.css'
 import Cart from '../Cart/Cart';
 import publicRequest from '../../api/requestMethod'
 import { ImageList } from '@material-ui/core';
-import Callout from './Callout';
 import StoreSelector from '../Cart/StoreSelector';
 import Backdrop from '../Menu/Drawer/Backdrop';
 import { getCart, setEmail, setCart, resetUser, setUser, setPickupTime, setCartAmount, resetCart, setOverLoad } from '../../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux'
-import { getChickenItems, getSideItems } from '../../features/menu/menuSlice';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Checkout from '../Checkout/Checkout';
 import Success from '../Success/Success';
-import Modal from '../Modal/Modal';
 
 const Container = styled.div`
     width: 100%;
@@ -60,7 +57,7 @@ export default function Layout() {
     const dispatch = useDispatch()
 
     async function setAvailableTimes() {
-        const _times = await publicRequest.get('/times')
+        const _times = await publicRequest.get('/times', { params: { date: session.sessionInfo.pickupTime } })
         const _dates = await publicRequest.get('/dates')
 
         let i = 0
@@ -72,10 +69,28 @@ export default function Layout() {
         dispatch(setPickupTime({time: moment(_dates.data[0]).add(_times.data[i].time).format('YYYY-MM-DD HH:mm')}))
     }
 
+    const dateChange = async (date) => {
+        if(session.sessionInfo.pickupTime !== null) {
+            console.log("date changed")
+            setTimes([])
+            const _times = await publicRequest.get('/times', { params: { date } })
+            let i = 0
+            while(_times.data[i].available === false) {
+                i++;
+            }
+            console.log(date)
+            dispatch(setPickupTime({time: moment(date).startOf('d').add(_times.data[i].time).format('YYYY-MM-DD HH:mm')}))
+            setAsapTime({...asapTime, offset: i})
+            setTimes(_times.data)
+        }
+    }
+
     useEffect(() => {
         const fetchTimes = async () => {
             try {
-                const _times = await publicRequest.get('/times')
+                const session = JSON.parse(localStorage.getItem('session'))
+                console.log(session.sessionInfo.pickupTime)
+                const _times = await publicRequest.get('/times', { params: { date: session.sessionInfo.pickupTime } })
                 let i = 0
 
                 while(_times.data[i].available === false) {
@@ -84,7 +99,8 @@ export default function Layout() {
 
                 setAsapTime({...asapTime, offset: i})
 
-                const overload = JSON.parse(localStorage.getItem('session')).cart.overload
+                const overload = session.cart.overload
+                console.log(overload)
 
                 while(i < (i + overload)) {
                     _times.data[i].available = false
@@ -96,7 +112,7 @@ export default function Layout() {
                 setDates(_dates.data)
 
 
-                const defaultDate = moment(_dates.data[0]).add(_times.data[overload].time)
+                const defaultDate = moment(_dates.data[0]).add(_times.data[i].time)
 
                 const pickupTime = JSON.parse(localStorage.getItem('session')).sessionInfo.pickupTime
                 if(pickupTime === null) return
@@ -105,6 +121,7 @@ export default function Layout() {
                 if(setDate.valueOf() < defaultDate.valueOf()) {
                     console.log("update date")
                     dispatch(setPickupTime({time: defaultDate.format('YYYY-MM-DD HH:mm')}))
+                    setDate(_dates.data[0])
                 }
             } catch (err) {
                 console.log(err)
@@ -114,63 +131,65 @@ export default function Layout() {
         const updateSession = async () => {
             const currentUrl = window.location.href
             const currSession = JSON.parse(localStorage.getItem('session'))
-            if (currSession.userId !== null) {
-                try {
-                    const res = await publicRequest.get("/user/" + currSession.userId, { headers: { token: "Bearer " + currSession.userToken } })
-                    const cart = {
-                        items: res.data.cart.items,
-                        total: res.data.cart.total,
-                        numItems: res.data.cart.numItems,
-                        numHalfs: res.data.cart.numHalfs,
-                        overload: res.data.cart.overload,
-                        loading: false
+            try {
+                if (currSession.userId !== null) {
+                    try {
+                        const res = await publicRequest.get("/user/" + currSession.userId, { headers: { token: "Bearer " + currSession.userToken } })
+                        const cart = {
+                            items: res.data.cart.items,
+                            total: res.data.cart.total,
+                            numItems: res.data.cart.numItems,
+                            numHalfs: res.data.cart.numHalfs,
+                            overload: currSession.cart.overload,
+                            loading: false
+                        }
+    
+                        let pickupTime = currSession.sessionInfo.pickupTime
+    
+                        const user = {
+                            userId: currSession.userId,
+                            userToken: currSession.userToken,
+                            sessionInfo: {
+                                email: currSession.sessionInfo.email,
+                                paid: currSession.sessionInfo.paid,
+                                pickupTime: pickupTime
+                            },
+                            cart: cart
+                        }
+    
+                        if(!currentUrl.includes("success")) {
+                            localStorage.setItem('order', null)
+                        }
+    
+                        dispatch(setUser({user: user}))
+                    } catch (err) {
+                        if(!currentUrl.includes("success")) {
+                            alert("Your session as expired.")
+                            await setAvailableTimes()
+                        }
+                        dispatch(resetUser())
                     }
-
-                    let pickupTime = currSession.sessionInfo.pickupTime
-
-                    const user = {
-                        userId: currSession.userId,
-                        userToken: currSession.userToken,
-                        sessionInfo: {
-                            email: currSession.sessionInfo.email,
-                            paid: currSession.sessionInfo.paid,
-                            pickupTime: pickupTime
-                        },
-                        cart: cart
-                    }
-
-                    if(!currentUrl.includes("success")) {
-                        localStorage.setItem('order', null)
-                    }
-
-                    dispatch(setUser({user: user}))
-                } catch (err) {
-                    if(!currentUrl.includes("success")) {
-                        alert("Your session as expired.")
-                    }
-                    dispatch(resetUser())
+                } else {
+                    setAvailableTimes()
                 }
-            } else {
+            } catch(err) {
                 setAvailableTimes()
             }
         }
         fetchTimes()
         updateSession()
-        setInterval(() => {
-            fetchTimes()
-        }, 6000);
+        if(moment.tz('Pacific/Auckland').hour() >= 11 && moment.tz('Pacific/Auckland').hour() < 20) {
+            setInterval(() => {
+                fetchTimes()
+                console.log('hi')
+            }, 60000);
+        }
     }, [])
 
     useEffect(() => {
         localStorage.setItem('session', JSON.stringify(session))
     }, [session])
-
-    useEffect(async () => {
-        if(session.userToken === null) {
-            await setAvailableTimes()
-        }
-    }, [session.userToken])
-
+    
     useEffect(() => {
         let marinated = 0
         let nonMarinated = 0
@@ -205,9 +224,6 @@ export default function Layout() {
                 console.log(times[i])
                 times[i].available = false;
             }
-
-            // if(session.sessionInfo.pickupTime === moment().startOf('d').add())
-            // dispatch(setPickupTime({time: moment(session.sessionInfo.pickupTime).startOf('d').add(times[asapTime.offset + (session.cart.numHalfs / 4)].time).format('YYYY-MM-DD HH:mm')}))
         }
 
         setDiscount(discount)
@@ -220,17 +236,17 @@ export default function Layout() {
     async function checkout(info) {
         // Get the user's cart from the database, also checks if the user's session has expired
         try {
-            const timeAvailable = await publicRequest.post("/order/timeAvailable", {
-                numHalfs: session.cart.numHalfs,
-                pickupTime: session.sessionInfo.pickupTime
-            });
+            // const timeAvailable = await publicRequest.post("/order/timeAvailable", {
+            //     numHalfs: session.cart.numHalfs,
+            //     pickupTime: session.sessionInfo.pickupTime
+            // });
 
-            if(timeAvailable.data.leftover > 0) {
-                let offset = Math.ceil(timeAvailable.data.leftover / 4)
+            // if(timeAvailable.data.leftover > 0) {
+            //     let offset = Math.ceil(timeAvailable.data.leftover / 4)
 
-                setTimeAvailable(false)
-                return
-            }
+            //     setTimeAvailable(false)
+            //     return
+            // }
 
             const data = await publicRequest.get("/user/" + session.userId, { headers: { token: "Bearer " + session.userToken } })
     
@@ -239,7 +255,7 @@ export default function Layout() {
             dispatch(setEmail({email: info.email}))
 
             // Call API to create a new payment intent
-            await axios.post("http://localhost:3001/api/stripe/create-payment-intent/" + session.userId, {
+            await publicRequest.post("/stripe/create-payment-intent/" + session.userId, {
                 fn: info.fn,
                 ln: info.ln,
                 email: info.email,
@@ -263,6 +279,7 @@ export default function Layout() {
             console.error(e)
             dispatch(resetUser())
             alert("your session has expired.")
+            await setAvailableTimes()
         }
     }
 
@@ -274,7 +291,6 @@ export default function Layout() {
 
     const startOrder = async () => {
         const data = await publicRequest.post("/auth/createGuest")
-        //const data = await axios.post("http://localhost:3001/api/auth/createGuest")
 
         let user = {
             userId: data.data._id, 
@@ -335,7 +351,7 @@ export default function Layout() {
                 </Routes>
                 {/* <Callout /> */}
                 <Footer />
-                <Backdrop active={ssState} toggleDrawer={togglessState} />
+                <Backdrop active={ssState || drawerState} toggleDrawer={ssState ? togglessState : () => toggleDrawer(null, false)} />
                 <StoreSelector
                     ssState={ssState}
                     togglessState={togglessState}
@@ -343,6 +359,7 @@ export default function Layout() {
                     times={times}
                     startOrder={startOrder}
                     asap={asapTime}
+                    dateChanged={date => dateChange(date)}
                 />
             </div> }
         </Container>

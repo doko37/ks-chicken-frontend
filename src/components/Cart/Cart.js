@@ -19,7 +19,7 @@ import { AlertModal } from './AlertModal'
 
 const Body = styled.div`
   background-color: #252425;
-  z-index: 50;
+  //z-index: 50;
   padding: 1rem 0;
   position: relative;
   min-height: ${window.innerHeight - 320}px;
@@ -188,7 +188,6 @@ export default function Cart(props) {
                     <ButtonText href="/menu" style={{fontFamily: 'coffee_rg'}}>GO BACK TO MENU</ButtonText>
                   </DrawerButton>
                 </CheckoutPanelBody>
-                <Backdrop active={props.drawerState} toggleDrawer={() => props.toggleDrawer(null)} />
                 <Drawer
                   active={props.drawerState}
                   item={props.item}
@@ -215,9 +214,9 @@ export default function Cart(props) {
           :
           <Ctn style={{ display: 'block' }}>
             <Notice>
-              <Text style={{fontSize: '34px'}}>YOUR CART IS EMPTY. START AN ORDER?</Text>
+              <Text style={{fontSize: '34px'}}>YOUR CART IS EMPTY. <br />START AN ORDER?</Text>
               <div style={{ display: 'flex', justifyContent: 'start' }}>
-                <StartButton className='Italic'><a href="/menu" style={{ textDecoration: 'none', color: 'white', padding: '1rem 2rem', position: 'relative' }}>GO TO MENU</a></StartButton>
+                <StartButton className='Normal'><a href="/menu" style={{ textDecoration: 'none', color: 'white', padding: '1rem 2rem', position: 'relative' }}>GO TO MENU</a></StartButton>
               </div>
             </Notice>
           </Ctn>

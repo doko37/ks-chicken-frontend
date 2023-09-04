@@ -22,7 +22,7 @@ export default function Map(props) {
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={15} 
+            zoom={18} 
             
         >
             <Marker position={center} />
