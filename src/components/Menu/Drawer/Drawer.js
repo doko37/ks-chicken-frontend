@@ -166,6 +166,23 @@ export default function Drawer(props) {
   })
 
   const [price, setPrice] = useState(props.item ? props.item.half_price : 0)
+  const [items, setItems] = useState({
+    chicken: [],
+    sides: [],
+    drinks: []
+  })
+
+  useEffect(() => {
+    const getItems = async () => {
+      const chicken = await publicRequest.get("/items/chicken")
+      const sides = await publicRequest.get("/items/sides")
+      const drinks = await publicRequest.get("/items/drinks")
+
+      setItems({chicken: chicken.data, sides: sides.data, drinks: drinks.data})
+    }
+
+    getItems()
+  }, [])
 
   function hasNumber(key) {
     return /\d/.test(key);
@@ -320,9 +337,13 @@ export default function Drawer(props) {
     if (props.item !== null) {
       let originItem = null
       if (hasNumber(props.item.key)) {
-        if (item.type === "chicken") { originItem = props.items.chicken.find(i => i.key === keyWithoutNum(item.key)) }
-        else if (item.type === "sides") { originItem = props.items.sides.find(i => i.key === keyWithoutNum(item.key)) }
-        else { originItem = props.items.drinks.find(i => i.key === keyWithoutNum(item.key)) }
+        if (item.type === "chicken") {
+          originItem = items.chicken.find(i => i.key === keyWithoutNum(item.key)) 
+        } else if (item.type === "sides") { 
+          originItem = items.sides.find(i => i.key === keyWithoutNum(item.key)) 
+        } else if (item.type === "drinks") { 
+          originItem = items.drinks.find(i => i.key === keyWithoutNum(item.key)) 
+        }
       } else {
         originItem = props.item
       }

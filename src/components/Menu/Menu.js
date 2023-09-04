@@ -284,9 +284,6 @@ export default function Menu(props) {
                 toggleDrawer={() => toggleDrawer(null)}
                 addItem={item => addItem(item)}
                 editState={props.editState}
-                chickenItems={items.chickenItems}
-                sideItems={items.sideItems}
-                items={items}
                 token={props.token}
                 togglessState={props.togglessState}
             />
