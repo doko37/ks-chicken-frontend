@@ -89,7 +89,6 @@ export default function Layout() {
         const fetchTimes = async () => {
             try {
                 const session = JSON.parse(localStorage.getItem('session'))
-                console.log(session.sessionInfo.pickupTime)
                 const _times = await publicRequest.get('/times', { params: { date: session.sessionInfo.pickupTime } })
                 let i = 0
 
@@ -100,7 +99,6 @@ export default function Layout() {
                 setAsapTime({...asapTime, offset: i})
 
                 const overload = session.cart.overload
-                console.log(overload)
 
                 while(i < (i + overload)) {
                     _times.data[i].available = false

@@ -78,7 +78,7 @@ const NavItems = styled.a`
     text-decoration: none;
     font-size: 16px;
     display: ${props => props.mState ? '' : 'none'};
-    padding: '0.75rem 0 0.75rem 0rem';
+    padding: 0.75rem 0 0.75rem 0;
     display: block;
     font-weight: 300;
     cursor: pointer;
