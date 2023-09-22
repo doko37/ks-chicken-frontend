@@ -135,7 +135,7 @@ export default function CheckoutForm() {
     await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/success'
+        return_url: 'https://leepeter.com/success'
       }
     }).then((result) => {
       if(!result.error) {
