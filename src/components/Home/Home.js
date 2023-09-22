@@ -111,13 +111,13 @@ const MenuCtn = styled.div`
 
 const Button = styled.div`
     display: flex;
-    height: 16rem;
     width: auto;
-    margin: 1rem 0;
+    height: 13rem;
+    margin: 1rem;
     position: relative;
     justify-content: center;
     align-items: center;
-    border-radius: 1rem;
+    border-radius: 2rem;
     overflow: hidden;
 
     @media(min-width: 700px) {
@@ -131,7 +131,7 @@ const Button = styled.div`
 const Image = styled.img`
     height: 100%;
     width: auto;
-    border-radius: 1rem;
+    border-radius: 2rem;
     transition: all 0.5s;
 
     @media(min-width: 700px) {
@@ -147,7 +147,7 @@ const ButtonTxt = styled.a`
     text-decoration: none;
     width: 100%;
     height: 100%;
-    border-radius: 1rem;
+    border-radius: 2rem;
     background-color: rgba(0,0,0,0.3);
     display: flex;
     justify-content: center;

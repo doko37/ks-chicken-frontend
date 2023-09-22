@@ -16,6 +16,7 @@ import { Body as CheckoutPanelBody } from './CheckoutPanel'
 import { Button as DrawerButton } from '../Menu/Drawer/Drawer'
 import Modal from '../Modal/Modal'
 import { AlertModal } from './AlertModal'
+import chickenIcon from '../../Images/YOU-GOOD-CHICKEN.png'
 
 const Body = styled.div`
   background-color: #252425;
@@ -128,6 +129,21 @@ const ButtonText = styled.a`
   }
 `
 
+const ConfusedChicken = styled.img`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 1rem;
+  height: 40%;
+  
+  @media(min-width: 700px) {
+    height: 70%;
+    top: 0;
+    margin: auto;
+    margin-right: 2rem;
+  }
+`
+
 export default function Cart(props) {
   const [cartDisplay, setCartDisplay] = useState(true)
   const [modalMode, setModalMode] = useState("")
@@ -214,10 +230,11 @@ export default function Cart(props) {
           :
           <Ctn style={{ display: 'block' }}>
             <Notice>
-              <Text style={{fontSize: '34px'}}>YOUR CART IS EMPTY. <br />START AN ORDER?</Text>
+              <Text style={{fontSize: mState ? '38px' : '48px'}}>YOUR CART IS EMPTY. <br />START AN ORDER?</Text>
               <div style={{ display: 'flex', justifyContent: 'start' }}>
                 <StartButton className='Normal'><a href="/menu" style={{ textDecoration: 'none', color: 'white', padding: '1rem 2rem', position: 'relative' }}>GO TO MENU</a></StartButton>
               </div>
+              <ConfusedChicken src={chickenIcon} alt="Confused Chicken"/>
             </Notice>
           </Ctn>
         }

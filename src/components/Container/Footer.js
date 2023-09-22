@@ -6,7 +6,7 @@ import logo from './headerlogo.png'
 const Body = styled.div`
   width: 100%;
   height: 250px;
-  background-color: #1c1c1c;
+  background-color: ${window.location.href.includes("lunch") ? 'white' : '#1c1c1c'};
   color: white;
   transition: left 0.25s ease;
   z-index: 10;
@@ -48,6 +48,7 @@ const Left = styled.div`
 const Text = styled.p`
   margin: 0;
   margin-bottom: 1rem;
+  color: ${window.location.href.includes("lunch") ? 'black' : 'white'};
   font-size: ${props => props.copyright ? '12px' : '16px'};
 
   @media(min-width: 700px) {
@@ -58,7 +59,7 @@ const Text = styled.p`
 const Link = styled.a`
   margin: 0;
   font-size: 16px;
-  color: white;
+  color: ${window.location.href.includes("lunch") ? 'black' : 'white'};
   text-decoration: none;
 
   @media(min-width: 700px) {

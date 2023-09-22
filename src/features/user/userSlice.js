@@ -58,7 +58,6 @@ const userSlice = createSlice({
                 total: 0,
                 numItems: 0,
                 numHalfs: 0,
-                overload: 0,
                 isLoading: false
             }
         },
@@ -68,7 +67,6 @@ const userSlice = createSlice({
                 total: 0,
                 numItems: 0,
                 numHalfs: 0,
-                overload: 0,
                 isLoading: false
             }
         },
@@ -94,9 +92,6 @@ const userSlice = createSlice({
         },
         setPickupTime: (state, { payload }) => {
             state.sessionInfo.pickupTime = payload.time
-        },
-        setOverLoad: (state, { payload }) => {
-            state.cart.overload = payload.overload
         },
         addItemToCart: (state, { payload }) => {
             let item = payload.item
@@ -165,7 +160,6 @@ const userSlice = createSlice({
                 total: 0,
                 numItems: 0,
                 numHalfs: 0,
-                overload: 0,
                 isLoading: false
             }
 
@@ -186,6 +180,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { resetUser, resetCart, setUser, setCart, setCartAmount, setEmail, setPaymentStatus, setPickupTime, setOverLoad, addItemToCart, removeItemFromCart, editItemInCart } = userSlice.actions
+export const { resetUser, resetCart, setUser, setCart, setCartAmount, setEmail, setPaymentStatus, setPickupTime, addItemToCart, removeItemFromCart, editItemInCart } = userSlice.actions
 
 export default userSlice.reducer;

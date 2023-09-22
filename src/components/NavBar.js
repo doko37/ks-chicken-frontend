@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import logo from '../Images/logo.svg'
+import logo_black from '../Images/logo_black.svg'
 import { Menu } from '@material-ui/icons'
 import '../App.css'
 import { ShoppingCart } from '@material-ui/icons'
@@ -19,9 +20,12 @@ const Container = styled.div`
 
 const Bar = styled.div`
     height: 80px;
-    background-color: #201e1f;
+    background-color: ${window.location.href.includes("lunch") ? 'white' : '#201e1f'};
+    transition: all 1s;
     display: flex;
     justify-content: center;
+    position: relative;
+    transition: background-color 1s;
 
     @media(min-width: 700px) {
         height: 80px;
@@ -30,7 +34,7 @@ const Bar = styled.div`
 
 const SubBar = styled.div`
     position: relative;
-    background-color: #292829;
+    background-color: ${window.location.href.includes("lunch") ? '#FFFCF1' : '#292829'};
     height: ${props => props.dropBarState ? '173px' : '0px'};
     width: auto;
     text-align: left;
@@ -71,7 +75,7 @@ const NavContainer = styled.div`
 `
 
 const NavItems = styled.a`
-    color: white;
+    color: ${window.location.href.includes("lunch") ? 'black' : 'white'};
     margin-left: ${props => props.mobile ? '0' : '1rem'};
     text-align: center;
     width: auto;
@@ -102,6 +106,8 @@ const Logo = styled.img`
     height: 60%;
     margin-left: 0;
     cursor: pointer;
+    position: relative;
+    color: black;
 
     @media(min-width: 700px) {
         height: 80%;
@@ -203,13 +209,13 @@ export default function NavBar(props) {
                     <NavContainer>
                         <MenuContainer dropBarState={dropBarState}>
                             <Menu onClick={toggleDropBar} style={{
-                                color: 'white',
+                                color: window.location.href.includes("lunch") ? 'black' : 'white',
                                 fontSize: '30px'
                             }} />
                         </MenuContainer>
                     </NavContainer>
                     <LogoLink href="/">
-                        <Logo src={logo} alt="Logo" />
+                        <Logo src={window.location.href.includes("lunch") ? logo_black : logo} alt="Logo" />
                     </LogoLink>
                     <OrderButtonContainer>
                         <OrderButton>
@@ -225,7 +231,7 @@ export default function NavBar(props) {
                 </ContentContainer> :
                     <ContentContainer>
                         <LogoLink href="/">
-                            <Logo src={logo} alt="Logo" />
+                            <Logo src={window.location.href.includes("lunch") ? logo_black : logo} alt="Logo" />
                         </LogoLink>
                         <NavContainer>
                             <NavItems href="/menu" mState={!mState}>MENU</NavItems>

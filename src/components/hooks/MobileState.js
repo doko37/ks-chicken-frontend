@@ -15,5 +15,6 @@ export function MobileState(lunch=false) {
 
         window.addEventListener('resize', handleResize)
     })
+    
     return mobileState;
 }

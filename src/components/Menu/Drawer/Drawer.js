@@ -405,7 +405,8 @@ export default function Drawer(props) {
           <Add style={{ borderRadius: '1rem', backgroundColor: 'rgba(0,0,0,0.6)', cursor: 'pointer', color: 'white', fontSize: '32px' }} onClick={() => setItem({ ...item, quantity: item.quantity + 1 })} />
         </QuantityCtn>
         <Footer>
-          {userToken ? <Button onClick={() => props.addItem(item)} style={{fontFamily: 'coffee_rg'}}>${(item.price * item.quantity).toFixed(2)} {props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
+          {userToken ? (item.type === "chicken" && (item.size === "half" ? item.quantity > 10 ? true : false : item.quantity > 5 ? true : false )) ? 
+          <Button style={{ backgroundColor: '#808080', fontFamily: 'coffee_rg' }}>ORDER LIMIT REACHED</Button> : <Button onClick={() => props.addItem(item)} style={{fontFamily: 'coffee_rg'}}>${(item.price * item.quantity).toFixed(2)} {props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
             <Button onClick={props.togglessState} style={{ backgroundColor: '#808080', fontFamily: 'coffee_rg' }}>START ORDER</Button>}
         </Footer>
       </main>

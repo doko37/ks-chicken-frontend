@@ -53,7 +53,7 @@ export const Title = styled.h3`
     font-size: 20px;
     font-weight: 300;
     margin: 0.5rem;
-    color: white;
+    color: ${props => props.type === "lunch" ? 'black' : 'white'};
     text-align: left;
 
     @media(min-width: 700px) {

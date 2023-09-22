@@ -100,7 +100,6 @@ export default function StoreSelector(props) {
     const changeDate = (date) => {
         setBoxState("default")
         if(date.split(' ')[0] !== pickupTime.split(' ')[0]) {
-            console.log(date.split(' ')[0], pickupTime.split(' ')[0])
             dispatch(setPickupTime({time: moment(date).format('YYYY-MM-DD HH:mm')}))
             props.dateChanged(date)
         }
@@ -137,7 +136,7 @@ export default function StoreSelector(props) {
                         <Text>33B Triton Drive, Rosedale, 0632</Text>
                     </div>
                 </FlexCtn>
-                <Text style={{ fontSize: '16px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() >= 20 || (moment().hour() === 19 && moment().minute() >= 50)) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
+                <Text style={{ fontSize: '18px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() >= 20 || (moment().hour() === 19 && moment().minute() >= 50)) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
                 <FlexCtn>
                     <DateRange style={{ color: 'white' }} />
                     <Text>{moment(pickupTime).format('dddd, MMM Do')}</Text>

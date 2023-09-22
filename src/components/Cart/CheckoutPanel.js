@@ -77,7 +77,7 @@ const Change = styled.p`
 
 const Button = styled.div`
   height: 50px;
-  background-color: #cf8334;
+  background-color: ${props => props.numHalfs > 10 ? '#808080' : '#cf8334'};
   border-radius: 1rem;
   color: white;
   display: flex;
@@ -88,7 +88,7 @@ const Button = styled.div`
   cursor: pointer;
 
   &:active {
-    background-color: #A56829;
+    background-color: ${props => props.numHalfs > 10 ? '#808080' : '#A56829'};
   }
 `
 
@@ -213,7 +213,11 @@ export default function CheckoutPanel(props) {
           {props.discount === 0 ? null : <Label style={{ fontSize: '18px', marginTop: '1rem', color: 'gray' }}>- HALF AND HALF DISCOUNT: ${props.discount}</Label>}
           <Label style={{ fontSize: '20px', marginTop: '1rem' }}>TOTAL: ${(((cart.total - props.discount)/(1-0.029)) + 0.31).toFixed(2)}</Label>
         </SubCtn>
-        <Button onClick={checkout} style={{fontFamily: 'coffee_rg'}}>CHECKOUT</Button>
+        <Button onClick={cart.numHalfs > 10 ? null : checkout} style={{fontFamily: 'coffee_rg'}} numHalfs={cart.numHalfs}>CHECKOUT</Button>
+        <Text style={{ textAlign: 'center', fontFamily: 'coffee_rg_it', fontSize: '18px', margin: '1rem 0', color: 'gray', display: cart.numHalfs > 10 ? 'block' : 'none' }}>
+          Online order limit is 5 fulls (or 10 halfs).
+          <br/>
+          If you would like to order more, please <a style={{margin: '0', width: 'fit-content', color: 'gray'}} href="/contact-us">call us.</a></Text>
       </Ctn>
     </Body>
   )

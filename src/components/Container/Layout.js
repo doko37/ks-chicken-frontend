@@ -5,7 +5,6 @@ import Menu from '../Menu/Menu';
 import ContactUs from '../ContactUs/ContactUs'
 import NavBar from '../NavBar';
 import { Routes, Route } from 'react-router-dom'
-import axios from 'axios'
 import Footer from './Footer';
 import moment from 'moment-timezone'
 import LunchBar from '../LunchBar/LunchBar';
@@ -13,20 +12,33 @@ import '../../App.css'
 import './Layout.css'
 import Cart from '../Cart/Cart';
 import publicRequest from '../../api/requestMethod'
-import { ImageList } from '@material-ui/core';
 import StoreSelector from '../Cart/StoreSelector';
 import Backdrop from '../Menu/Drawer/Backdrop';
-import { getCart, setEmail, setCart, resetUser, setUser, setPickupTime, setCartAmount, resetCart, setOverLoad } from '../../features/user/userSlice';
+import { getCart, setEmail, setCart, resetUser, setUser, setPickupTime, setCartAmount, resetCart } from '../../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Checkout from '../Checkout/Checkout';
 import Success from '../Success/Success';
+import Loader from 'react-spinners/FadeLoader'
+import { store } from '../../store'
 
 const Container = styled.div`
     width: 100%;
-    height: 100%;
     display: block;
+`
+
+const LoadScreen = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: ${props => props.active ? 'flex' : 'none'};
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(200, 200, 200, 0.2);
+    z-index: 300;
 `
 
 export default function Layout() {
@@ -44,6 +56,7 @@ export default function Layout() {
         overload: 0
     });
     const [timeAvailable, setTimeAvailable] = useState(true)
+    const [timeReady, setTimeReady] = useState(false)
     const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY)
     const appearance = {
         theme: 'night'
@@ -56,7 +69,7 @@ export default function Layout() {
 
     const dispatch = useDispatch()
 
-    async function setAvailableTimes() {
+    const setAvailableTimes = async () => {
         const _times = await publicRequest.get('/times', { params: { date: session.sessionInfo.pickupTime } })
         const _dates = await publicRequest.get('/dates')
 
@@ -69,63 +82,98 @@ export default function Layout() {
         dispatch(setPickupTime({time: moment(_dates.data[0]).add(_times.data[i].time).format('YYYY-MM-DD HH:mm')}))
     }
 
-    const dateChange = async (date) => {
-        if(session.sessionInfo.pickupTime !== null) {
-            console.log("date changed")
-            setTimes([])
-            const _times = await publicRequest.get('/times', { params: { date } })
-            let i = 0
-            while(_times.data[i].available === false) {
-                i++;
+    const updateDiscountAndOverload = async (date = null) => {
+        console.log("updateDiscountAndOverload")
+        let marinated = 0
+        let nonMarinated = 0
+        let discount = 0
+        let state = store.getState()
+        let cart = state.user.cart.items
+        let currentTime = state.user.sessionInfo.pickupTime
+        let numHalfs = state.user.cart.numHalfs
+        
+        for (let i in cart) {
+            if(cart[i].type === "chicken" && cart[i].size === "half") {
+                if (cart[i].chickenType === "marinated") marinated += 1
+                else if (cart[i].chickenType === "non_marinated") nonMarinated += 1
             }
-            console.log(date)
-            dispatch(setPickupTime({time: moment(date).startOf('d').add(_times.data[i].time).format('YYYY-MM-DD HH:mm')}))
-            setAsapTime({...asapTime, offset: i})
-            setTimes(_times.data)
         }
+
+        let mariLeftOver = marinated % 2;
+        let nonMariLeftOver = nonMarinated % 2;
+
+        if (marinated >= 2) {
+            discount += ((marinated - mariLeftOver) / 2) * 3
+        }
+
+        if (nonMarinated >= 2) {
+            discount += ((nonMarinated - nonMariLeftOver) / 2) * 1
+        }
+
+        if (mariLeftOver === 1 && nonMariLeftOver === 1) {
+            discount += 2
+        }
+        
+        setDiscount(discount)
+
+        setTimes([])
+        setTimeReady(false)
+        const _times = await publicRequest.get('/times', { params: { date: (date ? date : currentTime ? currentTime : undefined) } })
+        let i = 0
+        while(_times.data[i].available === false) {
+            i++;
+        }
+
+        if(numHalfs > 4) {
+            let overload = Math.floor(numHalfs / 5)
+
+            let lastUnavailableIndx = i - 1
+            console.log(overload)
+            for(let j = 0; j < _times.data.length; j++) {
+                console.log("loop: " + _times.data[j].time)
+                if(_times.data[j].available === false) {
+                    console.log("lastUnavailbleIndex: " + lastUnavailableIndx)
+                    lastUnavailableIndx = j
+                    continue
+                }
+                
+                if(lastUnavailableIndx >= (j - overload)) {
+                    console.log("overload: " + overload + " j - overload: " + (j - overload) + " lastUnavailableIndex: " + lastUnavailableIndx)
+                    console.log("making unavailable: " + _times.data[j].time)
+                    _times.data[j].available = false
+                }
+            }
+        }
+
+        let timeIndx = 0
+        while(_times.data[timeIndx].available === false) {
+            console.log(_times.data[timeIndx])
+            timeIndx++
+        }
+
+        console.log(_times.data[timeIndx])
+        console.log(state.user.sessionInfo.pickupTime)
+        if(currentTime) {
+            let selectedTime = _times.data.find(i => i.time === currentTime.split(' ')[1])
+            if(selectedTime) {
+                if(selectedTime.available === false) {
+                    console.log("currentTime defined, selectedTime unavailable")
+                    dispatch(setPickupTime({ time: moment((date ? date : currentTime)).startOf('d').add(_times.data[timeIndx].time).format('YYYY-MM-DD HH:mm') }))
+                } else {
+                    console.log("currentTime defined, selectedTime available")
+                }
+            } else {
+                console.log("currentTime defined, selectedTime undefined")
+                dispatch(setPickupTime({ time: moment((date ? date : currentTime)).startOf('d').add(_times.data[timeIndx].time).format('YYYY-MM-DD HH:mm') }))
+            }
+        }
+
+        setAsapTime({...asapTime, offset: i})
+        setTimes(_times.data)
+        setTimeReady(true)
     }
 
     useEffect(() => {
-        const fetchTimes = async () => {
-            try {
-                const session = JSON.parse(localStorage.getItem('session'))
-                const _times = await publicRequest.get('/times', { params: { date: session.sessionInfo.pickupTime } })
-                let i = 0
-
-                while(_times.data[i].available === false) {
-                    i++;
-                }
-
-                setAsapTime({...asapTime, offset: i})
-
-                const overload = session.cart.overload
-
-                while(i < (i + overload)) {
-                    _times.data[i].available = false
-                }
-
-                setTimes(_times.data)
-
-                const _dates = await publicRequest.get('/dates')
-                setDates(_dates.data)
-
-
-                const defaultDate = moment(_dates.data[0]).add(_times.data[i].time)
-
-                const pickupTime = JSON.parse(localStorage.getItem('session')).sessionInfo.pickupTime
-                if(pickupTime === null) return
-                const setDate = moment(pickupTime)
-
-                if(setDate.valueOf() < defaultDate.valueOf()) {
-                    console.log("update date")
-                    dispatch(setPickupTime({time: defaultDate.format('YYYY-MM-DD HH:mm')}))
-                    setDate(_dates.data[0])
-                }
-            } catch (err) {
-                console.log(err)
-            }
-        }
-
         const updateSession = async () => {
             const currentUrl = window.location.href
             const currSession = JSON.parse(localStorage.getItem('session'))
@@ -138,7 +186,6 @@ export default function Layout() {
                             total: res.data.cart.total,
                             numItems: res.data.cart.numItems,
                             numHalfs: res.data.cart.numHalfs,
-                            overload: currSession.cart.overload,
                             loading: false
                         }
     
@@ -174,57 +221,35 @@ export default function Layout() {
                 setAvailableTimes()
             }
         }
-        fetchTimes()
-        updateSession()
-        if(moment.tz('Pacific/Auckland').hour() >= 11 && moment.tz('Pacific/Auckland').hour() < 20) {
-            setInterval(() => {
-                fetchTimes()
-                console.log('hi')
-            }, 60000);
+
+        const updateInfo = async () => {
+            await updateSession()
+            const _dates = await publicRequest.get('/dates')
+            setDates(_dates.data)
+            if(moment.tz('Pacific/Auckland').hour() >= 11 && moment.tz('Pacific/Auckland').hour() < 20) {
+                let intervalId = setInterval(async () => {
+                    await updateDiscountAndOverload()
+    
+                    if(moment.tz('Pacific/Auckland').hour() < 11 || moment.tz('Pacific/Auckland').hour() > 20) {
+                        clearInterval(intervalId)
+                    }
+                }, 60000);
+            } else {
+                await updateDiscountAndOverload()
+            }
         }
+
+        updateInfo()
     }, [])
 
     useEffect(() => {
         localStorage.setItem('session', JSON.stringify(session))
     }, [session])
-    
+
     useEffect(() => {
-        let marinated = 0
-        let nonMarinated = 0
-        let discount = 0
-        let cart = session.cart.items
-
-        for (let i in cart) {
-            if(cart[i].type === "chicken" && cart[i].size === "half") {
-                if (cart[i].chickenType === "marinated") marinated += 1
-                else if (cart[i].chickenType === "non_marinated") nonMarinated += 1
-            }
+        if(session.userId !== null) {
+            updateDiscountAndOverload()
         }
-
-        let mariLeftOver = marinated % 2;
-        let nonMariLeftOver = nonMarinated % 2;
-
-        if (marinated >= 2) {
-            discount += ((marinated - mariLeftOver) / 2) * 3
-        }
-
-        if (nonMarinated >= 2) {
-            discount += ((nonMarinated - nonMariLeftOver) / 2) * 1
-        }
-
-        if (mariLeftOver === 1 && nonMariLeftOver === 1) {
-            discount += 2
-        }
-        
-        if(times.length > 0) {
-            dispatch(setOverLoad({overload: Math.floor(session.cart.numHalfs / 5)}))
-            for(let i = 0; i < asapTime.offset + Math.floor(session.cart.numHalfs / 5); i++) {
-                console.log(times[i])
-                times[i].available = false;
-            }
-        }
-
-        setDiscount(discount)
     }, [session.cart])
 
     function togglessState() {
@@ -234,21 +259,20 @@ export default function Layout() {
     async function checkout(info) {
         // Get the user's cart from the database, also checks if the user's session has expired
         try {
-            // const timeAvailable = await publicRequest.post("/order/timeAvailable", {
-            //     numHalfs: session.cart.numHalfs,
-            //     pickupTime: session.sessionInfo.pickupTime
-            // });
-
-            // if(timeAvailable.data.leftover > 0) {
-            //     let offset = Math.ceil(timeAvailable.data.leftover / 4)
-
-            //     setTimeAvailable(false)
-            //     return
-            // }
-
             const data = await publicRequest.get("/user/" + session.userId, { headers: { token: "Bearer " + session.userToken } })
     
             const cart = data.data.cart.items
+            
+            const overload = await publicRequest.post("/order/numHalfs", {
+                pickupTime: session.sessionInfo.pickupTime
+            })
+
+            if(overload.data.numHalfs >= 4) {
+                console.log("order time not available")
+                setTimeAvailable(false)
+                updateDiscountAndOverload()
+                return
+            }
 
             dispatch(setEmail({email: info.email}))
 
@@ -303,7 +327,6 @@ export default function Layout() {
                 total: 0,
                 numItems: 0,
                 numHalfs: 0,
-                overload: 0,
                 isLoading: true
             }
         }
@@ -320,45 +343,52 @@ export default function Layout() {
                     <Checkout clientSecret={clientSecret} />
                 </Elements> : 
                 <div className='ctn'>
-                <NavBar cartLen={session.cart.items.length} />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/menu" element={<Menu 
-                        drawerState={drawerState}
-                        toggleDrawer={item => toggleDrawer(item)}
-                        editState={editState}
-                        togglessState={togglessState}
-                    />} />
-                    <Route path="/lunch-bar" element={<LunchBar />} />
-                    <Route path="/cart" element={<Cart
-                        item={item}
-                        toggleDrawer={item => toggleDrawer(item, true)}
-                        toggleTimeAvailable={() => setTimeAvailable(true)}
-                        timeAvailable={!timeAvailable}
-                        drawerState={drawerState}
-                        editState={editState}
-                        checkout={custInfo => checkout(custInfo)}
-                        dates={dates}
-                        times={times}
+                    <LoadScreen active={!timeReady && ((window.location.href.includes("cart") && session.cart.items.length > 0))}>
+                        <Loader
+                            color="#FFFFFF"
+                            loading={!timeReady && ((window.location.href.includes("cart") && session.cart.items.length > 0))}
+                            size={50}
+                        />
+                    </LoadScreen>
+                    <NavBar cartLen={session.cart.items.length} />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/menu" element={<Menu 
+                            drawerState={drawerState}
+                            toggleDrawer={item => toggleDrawer(item)}
+                            editState={editState}
+                            togglessState={togglessState}
+                        />} />
+                        <Route path="/lunch-bar" element={<LunchBar />} />
+                        <Route path="/cart" element={<Cart
+                            item={item}
+                            toggleDrawer={item => toggleDrawer(item, true)}
+                            toggleTimeAvailable={() => setTimeAvailable(true)}
+                            timeAvailable={!timeAvailable}
+                            drawerState={drawerState}
+                            editState={editState}
+                            checkout={custInfo => checkout(custInfo)}
+                            dates={dates}
+                            times={times}
+                            ssState={ssState}
+                            togglessState={togglessState}
+                            discount={discount}
+                        />} />
+                        <Route path="/contact-us" element={<ContactUs />} />
+                        <Route path="/success" element={<Success />}/>
+                    </Routes>
+                    {/* <Callout /> */}
+                    <Footer />
+                    <Backdrop active={ssState || drawerState || !timeAvailable} toggleDrawer={ssState ? togglessState : () => toggleDrawer(null, false)} />
+                    <StoreSelector
                         ssState={ssState}
                         togglessState={togglessState}
-                        discount={discount}
-                    />} />
-                    <Route path="/contact-us" element={<ContactUs />} />
-                    <Route path="/success" element={<Success />}/>
-                </Routes>
-                {/* <Callout /> */}
-                <Footer />
-                <Backdrop active={ssState || drawerState} toggleDrawer={ssState ? togglessState : () => toggleDrawer(null, false)} />
-                <StoreSelector
-                    ssState={ssState}
-                    togglessState={togglessState}
-                    dates={dates}
-                    times={times}
-                    startOrder={startOrder}
-                    asap={asapTime}
-                    dateChanged={date => dateChange(date)}
-                />
+                        dates={dates}
+                        times={times}
+                        startOrder={startOrder}
+                        asap={asapTime}
+                        dateChanged={date => updateDiscountAndOverload(date)}
+                    />
             </div> }
         </Container>
     )

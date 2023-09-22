@@ -9,7 +9,7 @@ import { HeroTitleCtn, Title } from '../Home/Home'
 
 const Body = styled.div`
     position: relative;
-    background-color: #252425;
+    background-color: #FFFCF1;
     padding-bottom: 1rem;
 `
 
@@ -54,12 +54,12 @@ export default function LunchBar() {
         <Body className='Italic'>
             <InfoHeader mState={mState}>
                 <LunchPicture src="https://i.ibb.co/cJqNqsD/DSC-6926.jpg" mState={MobileState(true)}/>
-                <HeroTitleCtn>
-                    <Title top>Available Weekdays from 10:30AM ~ 2:00PM!</Title>
+                <HeroTitleCtn style={{borderRadius: '0'}}>
+                    <Title top style={{marginTop: '1rem'}}>Available Weekdays from 10:30AM ~ 2:00PM!</Title>
                 </HeroTitleCtn>
             </InfoHeader>
             <Container>
-            <CategoryTitle>Meat Options</CategoryTitle>
+            <CategoryTitle style={{color: 'black'}}>Meat Options</CategoryTitle>
             <ItemContainer>
                 {Lunch.Chicken.map(item => {
                     return(
@@ -72,7 +72,7 @@ export default function LunchBar() {
                     )
                 })}
             </ItemContainer>
-            <CategoryTitle>Salad Options</CategoryTitle>
+            <CategoryTitle style={{color: 'black'}}>Salad Options</CategoryTitle>
             <ItemContainer>
                 {Lunch.Salad.map(item => {
                     return(
