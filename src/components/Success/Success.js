@@ -53,9 +53,13 @@ export default function Success(props) {
 
         }
 
-        if(orderNo) setTimeout(function() {
-            getOrder()
-        }, 2000)
+        if(orderNo) {
+            setTimeout(function() {
+                getOrder()
+            }, 2000)
+        } else {
+            orderExists = false
+        } 
     }, [])
 
   return (
@@ -64,23 +68,25 @@ export default function Success(props) {
             { orderExists === "loading" ? <Text>Loading...</Text> : orderExists ?
             <div>
                 <Done style={{color: 'green', fontSize: '46px', border: '3px solid green', borderRadius: '100%'}}/>
-                <Text top style={{fontFamily: 'coffee_rg_it'}}>Order successful!</Text> 
-                <Text>Your order # is {orderNo}</Text>
-                <Text>A confirmation email has been sent to: <span style={{textDecoration: 'underline'}}>{order.email}</span></Text>
-                <Text style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.5rem'}}>
-                    <span style={{marginRight: '0.25rem', height: 'min-content', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Time style={{fontSize: mState ? '26px' : '32px'}}/></span>{moment(order.pickupTime).format("h:mm a")}
-                </Text>
-                <Text style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '0.5rem'}}>
-                    <span style={{marginRight: '0.25rem', height: 'min-content', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Date style={{fontSize: mState ? '26px' : '32px'}}/></span>{moment(order.pickupTime).format('dddd, MMM Do')}
-                </Text>
-                <Button style={{width: 'fit-content', padding: '0.5rem 0', margin: '1.5rem auto'}}>
-                <a href="/" style={{textDecoration: 'none', color: 'white', height: '100%', width: '100%', display: 'flex', alignItems: 'center', padding: '0.5rem 1rem', borderRadius: '2rem', fontFamily: 'coffee_rg'}}>
-                    Back to Home Page
-                </a>
+                <Text top style={{fontFamily: 'coffee_rg_it'}}>Order successful!</Text>
+                <div style={{fontFamily: 'coffee_rg'}}>
+                    <Text>Your order # is {orderNo}</Text>
+                    <Text>A confirmation email has been sent to: <span style={{textDecoration: 'underline'}}>{order.email}</span></Text>
+                    <Text style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.5rem'}}>
+                        <span style={{marginRight: '0.25rem', height: 'min-content', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Time style={{fontSize: mState ? '26px' : '32px'}}/></span>{moment(order.pickupTime).format("h:mm a")}
+                    </Text>
+                    <Text style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '0.5rem'}}>
+                        <span style={{marginRight: '0.25rem', height: 'min-content', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Date style={{fontSize: mState ? '26px' : '32px'}}/></span>{moment(order.pickupTime).format('dddd, MMM Do')}
+                    </Text>
+                </div>
+                <Button style={{width: 'fit-content', padding: '1rem', margin: '1.5rem auto', marginTop: '3rem', borderRadius: '3rem'}}>
+                    <a href="/" style={{textDecoration: 'none', color: 'white', height: '100%', width: '100%', display: 'flex', alignItems: 'center', padding: '0.5rem 1rem', borderRadius: '3rem', fontFamily: 'coffee_rg'}}>
+                        Back to Home Page
+                    </a>
                 </Button>
             </div> : <div>
                     <Text>Invalid session</Text>
-                    <Button style={{width: 'fit-content', padding: '0.5rem 0', margin: '1.5rem auto'}}>
+                    <Button style={{width: 'fit-content', padding: '1rem', margin: '1.5rem auto'}}>
                         <a href="/" style={{textDecoration: 'none', color: 'white', height: '100%', width: '100%', display: 'flex', alignItems: 'center', padding: '0.5rem 1rem', borderRadius: '2rem', fontFamily: 'coffee_rg'}}>
                             Back to Home Page
                         </a>

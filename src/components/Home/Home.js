@@ -112,7 +112,7 @@ const MenuCtn = styled.div`
 const Button = styled.div`
     display: flex;
     width: auto;
-    height: 13rem;
+    height: auto;
     margin: 1rem;
     position: relative;
     justify-content: center;
@@ -130,7 +130,7 @@ const Button = styled.div`
 
 const Image = styled.img`
     height: 100%;
-    width: auto;
+    width: 100%;
     border-radius: 2rem;
     transition: all 0.5s;
 

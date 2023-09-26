@@ -135,20 +135,23 @@ export default function CheckoutForm() {
     await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'https://leepeter.com/success'
+        //return_url: 'https://leepeter.com/success'
+        return_url: 'http://localhost:3000/success'
       }
     }).then((result) => {
       if(!result.error) {
         dispatch(resetCart())
         dispatch(setPaymentStatus({paid: true}))
+      } else {
+        console.log(result)
+
+        if(result.error.type === "card_error" || result.error.type === "validation_error") {
+          setMessage(result.error.message)
+        } else {
+          setMessage("An unexpected error occurred")
+        }
       }
     })
-
-    // if(result.error.type === "card_error" || result.error.type === "validation_error") {
-    //   setMessage(result.error.message)
-    // } else {
-    //   setMessage("An unexpected error occurred")
-    // }
 
     setIsLoading(false)
   }
@@ -174,7 +177,7 @@ export default function CheckoutForm() {
               </ButtonText>
             </PayButton>
           </form>
-          <p style={{color: 'white', fontFamily: 'sans-serif', marginBottom: '1rem', marginTop: '2rem', fontWeight: '600'}}>{message}</p>
+          <p style={{color: '#990000', fontFamily: 'sans-serif', margin: '2rem 0', fontWeight: '600'}}>{message}</p>
           <p style={{textAlign: 'center', margin: '0', marginBottom: '0.5rem'}}>
             <Cancel href="/cart" style={{color: 'white', fontFamily: 'coffee_rg', fontSize: '14px'}}>CANCEL</Cancel>
           </p>

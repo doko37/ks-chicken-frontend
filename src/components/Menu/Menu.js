@@ -8,7 +8,8 @@ import Backdrop from './Drawer/Backdrop'
 import publicRequest from '../../api/requestMethod'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemToCart, updateCart } from "../../features/user/userSlice"
-import { ArrowUpward } from '@material-ui/icons'
+import { ShoppingCart } from '@material-ui/icons'
+import { Badge } from '@material-ui/core'
 import Modal from '../Modal/Modal'
 
 const Container = styled.div`
@@ -112,8 +113,10 @@ export const CategoryTitle = styled.h3`
     color: ${props => props.lunch ? 'black' : 'white'};
 `
 
-const ScrollToTopButton = styled.button`
-    display: ${props => props.yPos > 500 ? 'flex' : 'none'};
+const CartButton = styled.a`
+    display: flex;
+    opacity: ${props => props.yPos > 500 ? '100%' : '0%'};
+    transition: all 0.25s ease;
     align-items: center;
     justify-content: center;
     position: fixed;
@@ -123,8 +126,8 @@ const ScrollToTopButton = styled.button`
     background-color: #cf8334;
     width: 40px;
     height: 40px;
-    border-radius: 100%;
-    z-index: 50;
+    border-radius: 0.5rem;
+    z-index: ${props => props.yPos > 500 ? 50 : -1};
     color: white;
     border: none;
     
@@ -151,6 +154,7 @@ export default function Menu(props) {
     const drinksRef = useRef(null)
     const dispatch = useDispatch()
     const [yPos, setYPos] = useState(0)
+    const cart = useSelector((store) => store.user).cart
 
     useEffect(() => {
         const getItems = async () => {
@@ -287,9 +291,11 @@ export default function Menu(props) {
                 token={props.token}
                 togglessState={props.togglessState}
             />
-            <ScrollToTopButton yPos={yPos} onClick={() => window.scrollTo(0,0)}>
-                <ArrowUpward />
-            </ScrollToTopButton>
+            <CartButton yPos={yPos} href="/cart">
+                <Badge badgeContent={cart.numItems} color="primary">
+                    <ShoppingCart />
+                </Badge>
+            </CartButton>
             <Modal item={item} mode={"add"} modalState={modalState} toggleModalState={() => setModalState(null)}/>
         </div>
     )

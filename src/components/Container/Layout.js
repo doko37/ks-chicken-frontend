@@ -80,6 +80,7 @@ export default function Layout() {
 
         setAsapTime({...asapTime, offset: i})
         dispatch(setPickupTime({time: moment(_dates.data[0]).add(_times.data[i].time).format('YYYY-MM-DD HH:mm')}))
+        setTimeReady(true)
     }
 
     const updateDiscountAndOverload = async (date = null) => {
@@ -215,6 +216,7 @@ export default function Layout() {
                         dispatch(resetUser())
                     }
                 } else {
+                    console.log("no userId")
                     setAvailableTimes()
                 }
             } catch(err) {
@@ -226,17 +228,22 @@ export default function Layout() {
             await updateSession()
             const _dates = await publicRequest.get('/dates')
             setDates(_dates.data)
-            if(moment.tz('Pacific/Auckland').hour() >= 11 && moment.tz('Pacific/Auckland').hour() < 20) {
-                let intervalId = setInterval(async () => {
-                    await updateDiscountAndOverload()
-    
-                    if(moment.tz('Pacific/Auckland').hour() < 11 || moment.tz('Pacific/Auckland').hour() > 20) {
+            if((moment.tz('Pacific/Auckland').hour() >= 11 || (moment.tz('Pacific/Auckland').hour() === 10 && moment.tz('Pacific/Auckland').minute() >= 50)) && moment.tz('Pacific/Auckland').hour() < 20) {
+                await updateDiscountAndOverload()
+                let intervalId = setInterval(() => {
+                    let now = moment.tz('Pacific/Auckland')
+                    if(now.hour() > 20) {
                         clearInterval(intervalId)
+                    } else {
+                        updateDiscountAndOverload()
                     }
+
                 }, 60000);
             } else {
                 await updateDiscountAndOverload()
             }
+
+            setTimeReady(true)
         }
 
         updateInfo()

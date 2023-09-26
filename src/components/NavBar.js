@@ -146,7 +146,7 @@ const OrderButtonContainer = styled.div`
 const OrderButton = styled.div`
     background-color: #cf8334;
     font-size: 10px;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,7 +156,7 @@ const OrderButton = styled.div`
         /* height: 35px;
         width: 70px; */
         font-size: 15px;
-        border-radius: 2rem;
+        border-radius: 0.5rem;
         transition: background-color 0.5s ease;
     }
 
@@ -172,7 +172,7 @@ const OrderLink = styled.a`
     text-decoration: none;
     height: 100%;
     width: 100%;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     color: white;
     font-weight: 300;
     font-size: 12.5px;
@@ -222,7 +222,7 @@ export default function NavBar(props) {
                             <OrderLink href="/cart">
                                 <Badge badgeContent={props.cartLen} color="primary">
                                     <ShoppingCart style={{
-                                        fontSize: '20px'
+                                        fontSize: '25px'
                                     }} />
                                 </Badge>
                             </OrderLink>

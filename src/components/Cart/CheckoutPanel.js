@@ -103,10 +103,10 @@ const theme = createTheme({
 
 export default function CheckoutPanel(props) {
   const [custInfo, setCustInfo] = useState({
-    fn: 'asd',
-    ln: 'asd',
-    email: 'kschicken.ltd@gmail.com',
-    phno: '0215679123'
+    fn: '',
+    ln: '',
+    email: '',
+    phno: ''
   })
 
   const [firstAttempt, setFirstAttempt] = useState(true)
