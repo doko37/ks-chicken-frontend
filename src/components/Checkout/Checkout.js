@@ -96,6 +96,7 @@ export default function CheckoutForm() {
   const [message, setMessage]= useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const total = useSelector((store) => store.user.cart.total)
+  const returnURL = process.env.NODE_ENV === 'production' ? 'https://leepeter.com/success' : 'http://localhost:3000/success'
 
   useEffect(() => {
     if(!stripe) return
@@ -135,8 +136,7 @@ export default function CheckoutForm() {
     await stripe.confirmPayment({
       elements,
       confirmParams: {
-        //return_url: 'https://leepeter.com/success',
-        return_url: 'http://localhost:3000/success'
+        return_url: returnURL
       }
     }).then((result) => {
       if(!result.error) {
