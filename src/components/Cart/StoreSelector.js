@@ -150,7 +150,15 @@ export default function StoreSelector(props) {
                     <Text style={{ marginLeft: 'auto', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => setBoxState("time")}>Change</Text>
                 </FlexCtn>
                 {!token ? <Footer active={props.ssState}>
-                    <Button onClick={props.startOrder} style={{ width: '100%', padding: '0.5rem 0', marginLeft: '1rem', fontFamily: 'coffee_rg' }}>START ORDER</Button>
+                    <Button onClick={props.times[0] ? props.startOrder : null} style={{ 
+                        width: '100%', 
+                        padding: '0.5rem 0', 
+                        marginLeft: '1rem', 
+                        fontFamily: 'coffee_rg',
+                        backgroundColor: props.times[0] ? '#cf8334' : 'gray'
+                    }}>
+                        START ORDER
+                    </Button>
                 </Footer> : null}
             </div> : boxState === "date" ? <div>
                 <Text>WHAT DAY ARE YOU PICKING UP?</Text>

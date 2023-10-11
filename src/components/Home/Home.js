@@ -133,6 +133,7 @@ const Image = styled.img`
     width: 100%;
     border-radius: 2rem;
     transition: all 0.5s;
+    object-fit: cover;
 
     @media(min-width: 700px) {
         border-radius: 2rem;

@@ -291,16 +291,17 @@ export default function Layout() {
                 phno: info.phno,
                 cart: cart, 
                 userId: session.userId, 
-                pickupTime: session.sessionInfo.pickupTime,
+                pickupDate: session.sessionInfo.pickupTime.split(' ')[0],
+                pickupTime: session.sessionInfo.pickupTime.split(' ')[1]
             }, { headers: { token: "Bearer " + session.userToken } }).then((data) => {
                 dispatch(setCartAmount({amount: (data.data.amount / 100)}))
                 const order = {
                     userId: data.data.userId,
                     email: data.data.email,
+                    pickupDate: data.data.pickupDate,
                     pickupTime: data.data.pickupTime,
                     orderNo: moment(session.sessionInfo.pickupTime).format('MMDD') + session.userId.substring(session.userId.length - 4)
                 }
-                console.log(order)
                 localStorage.setItem('order', JSON.stringify(order))
                 setClientSecret(data.data.clientSecret)
             })
