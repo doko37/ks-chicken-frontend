@@ -175,6 +175,7 @@ export default function Layout() {
     }
 
     useEffect(() => {
+        let time
         const updateSession = async () => {
             const currentUrl = window.location.href
             const currSession = JSON.parse(localStorage.getItem('session'))
@@ -246,7 +247,14 @@ export default function Layout() {
             setTimeReady(true)
         }
 
+        const resetTimer = () => {
+            clearTimeout(time)
+            time = setTimeout(updateSession, 200000)
+        }
+
         updateInfo()
+        window.addEventListener('mousemove', resetTimer, false)
+        window.addEventListener('scroll', resetTimer, false)
     }, [])
 
     useEffect(() => {

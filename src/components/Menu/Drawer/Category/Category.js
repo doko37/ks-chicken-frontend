@@ -20,6 +20,7 @@ const CategoryCtn = styled.div`
   transition: all 0.5s ease-in-out;
   margin: 0;
   padding-bottom: ${props => props.ep ? '40px' : '0'};
+  overflow-y: hidden;
 `
 
 const CategoryTitle = styled.h3`
@@ -39,6 +40,7 @@ const CategoryTitleCtn = styled.div`
   justify-content: space-between;
   border-radius: 1rem;
   padding: 0 0.5rem;
+  margin: 0.5rem 0;
   cursor: pointer;
 
   &:active {

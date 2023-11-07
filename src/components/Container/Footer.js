@@ -144,7 +144,7 @@ export default function Footer(props) {
             </div>
           </div>
           <TextCtn>
-            <Text style={{margin: '0'}}>(09) 476-1952</Text>
+            <Text style={{margin: '0'}}><a href="tel:094761952" style={{textDecoration: 'none', color: 'white'}}>(09) 476-1952</a></Text>
             <Text>33B Triton Drive, Rosedale, Auckland</Text>
             <Text copyright>© 2023 KS Chicken. All Rights Reserved.</Text>
           </TextCtn>

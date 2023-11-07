@@ -106,6 +106,7 @@ const MenuCtn = styled.div`
     @media(min-width: 700px) {
         display: flex;
         width: auto;
+        justify-content: space-around;
     }
 `
 
@@ -125,6 +126,7 @@ const Button = styled.div`
         width: auto;
         border-radius: 2rem;
         margin: 0.5rem;
+        flex: 1;
     }
 `
 
