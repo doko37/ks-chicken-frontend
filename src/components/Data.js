@@ -37,6 +37,7 @@ import radish from '../Images/radish.jpg'
 import sauce from '../Images/sauce.jpg'
 import chicken from '../Images/chicken.jpg'
 import quarter from '../Images/quarterquartersquare2.jpg'
+import cheeseball from '../Images/cheeseball.jpg'
 
 export const mSlides = [
     {
@@ -270,10 +271,10 @@ export const Sides = [
         img: chips,
         title: "Chips",
         type: "chips",
-        price: 6.00,
-        priceLabel: "From $6",
-        mediumPrice: 6.00,
-        largePrice: 8.00,
+        price: 7.00,
+        priceLabel: "From $7",
+        mediumPrice: 7.00,
+        largePrice: 9.00,
         key: "chips",
         details: true,
     },
@@ -313,4 +314,13 @@ export const Sides = [
         key: "sauce",
         details: true
     },
+    {
+        img: cheeseball,
+        title: "Cheese Balls",
+        type: "side",
+        price: 11.00,
+        priceLabel: "$11 for 4 pieces",
+        key: "cheeseball",
+        details: false
+    }
 ]

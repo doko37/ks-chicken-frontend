@@ -194,6 +194,8 @@ export default function Menu(props) {
                                     img={item.img}
                                     title={item.title.toUpperCase()}
                                     price={item.priceLabel}
+                                    mediumPrice={item.mediumPrice}
+                                    largePrice={item.largePrice}
                                     type="sides"
                                     itemKey={item.key}
                                     key={item.key}

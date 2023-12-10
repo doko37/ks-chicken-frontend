@@ -12,6 +12,13 @@ import '../Alert.css'
 import { Report } from '@material-ui/icons'
 import lights from './lights.png'
 import promotionImg from './promotion.jpg'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
+import { MobileState } from '../hooks/MobileState'
+import hoursMobile from './Images/hours_mobile.jpg'
+import hoursDesktop from './Images/hours_desktop.jpg'
+import dealMobile from './Images/deal_mobile.png'
+import dealDesktop from './Images/deal_desktop.png'
 
 const Body = styled.div`
     width: 100%;
@@ -103,21 +110,22 @@ const Description = styled.h2`
 
 const MenuCtn = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     width: fit-content;
     margin: auto;
     justify-content: center;
 
-    @media(min-width: 1168px) {
-        width: fit-content;
+    @media(min-width: 700px) {
+        width: auto;
+        grid-template-columns: 1fr 1fr 1fr;
     }
 `
 
 const Button = styled.div`
     display: flex;
-    height: 10rem;
-    width: 10rem;
-    margin: 0.5rem;
+    height: 12rem;
+    width: auto;
+    margin: 1rem;
     position: relative;
     justify-content: center;
     align-items: center;
@@ -189,7 +197,8 @@ const Top = styled.div`
     @media(min-width: 1168px) {
         width: 1168px;
         margin: auto;
-        height: 613.188px;
+        //height: 613.188px;
+        height: 770px;
         overflow-y: hidden;
         border-radius: 2rem;
         box-shadow: 0 0 4px 0 gray;
@@ -244,7 +253,7 @@ const BottomCtn = styled.div`
 
     @media(min-width: 700px) {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         margin: 0 3rem;
         max-height: 568px;
     }
@@ -286,14 +295,26 @@ const PromotionText = styled.p`
 `
 
 export default function Home() {
+    const mState = MobileState()
+
     return (
         <Body className='Italic'>
             {/* <Slider /> */}
             <Top>
-                <Hero src={hero} />
-                <HeroTitleCtn top>
-                    <Title top>The Best Korean Fried Chicken in Auckland!</Title>
-                </HeroTitleCtn>
+                <Carousel infiniteLoop={true} autoPlay={true}>
+                    <div>
+                        <Hero src={mState ? hoursMobile : hoursDesktop} />
+                    </div>
+                    <div>
+                        <Hero src={mState ? dealMobile : dealDesktop} />
+                    </div>
+                    <div>
+                        <Hero src={hero} />
+                        <HeroTitleCtn top>
+                            <Title top>The Best Korean Fried Chicken in Auckland!</Title>
+                        </HeroTitleCtn>
+                    </div>
+                </Carousel>
             </Top>
             <Bottom>
                 <DescCtn>
@@ -305,12 +326,6 @@ export default function Home() {
                     <Title>Our Menu</Title>
                 </TitleCtn>
                 <BottomCtn>
-                    <a href="/menu">
-                        <PromotionCtn>
-                            <PromotionText>New Menu Item!</PromotionText>
-                            <img src={promotionImg} style={{width: '100%', borderRadius: '2rem'}}/>
-                        </PromotionCtn>
-                    </a>
                     <MenuCtn>
                         <Button id='Cover'>
                             <Image src={chicken} id='Image' />
@@ -320,15 +335,15 @@ export default function Home() {
                             <Image src={chips} id='Image' />
                             <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
                         </Button>
-                        <Button id='Cover'>
+                        {/* <Button id='Cover'>
                             <Image src={cola} id='Image' />
                             <ButtonTxt href="/menu">DRINKS</ButtonTxt>
-                        </Button>
+                        </Button> */}
                         <Button id='Cover'>
                             <Image src={lunch} id='Image' />
                             <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
                         </Button>
-                    </MenuCtn> 
+                    </MenuCtn>
                 </BottomCtn>
                 <TitleCtn>
                     <Title>Where to find us</Title>

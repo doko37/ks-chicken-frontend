@@ -125,8 +125,8 @@ export default function Item(props) {
                 {props.type === "sides" ?
                     <div>
                         {props.itemKey === "chips" ? <div>
-                            <Desc>MEDIUM - $6</Desc>
-                            <Desc>LARGE - $8</Desc>
+                            <Desc>MEDIUM - ${props.mediumPrice}</Desc>
+                            <Desc>LARGE - ${props.largePrice}</Desc>
                         </div> : <Desc>{props.price}</Desc>}
                     </div> : null}
             </div>
@@ -138,7 +138,6 @@ export default function Item(props) {
                     marginLeft: '0.25rem',
                 }}/>
             </AddContainer> */}
-            { props.itemKey === "quarter" ? <NewLabel>New Item!</NewLabel> : null }
         </Container>
     )
 }
