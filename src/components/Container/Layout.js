@@ -229,12 +229,14 @@ export default function Layout() {
             await updateSession()
             const _dates = await publicRequest.get('/dates')
             setDates(_dates.data)
-            if((moment.tz('Pacific/Auckland').hour() >= 11 || (moment.tz('Pacific/Auckland').hour() === 10 && moment.tz('Pacific/Auckland').minute() >= 50)) && moment.tz('Pacific/Auckland').hour() < 20) {
+            let now = moment.tz('Pacific/Auckland')
+            if((now.hour() >= 11 || (now.hour() === 10 && now.minute() >= 50)) && (now.hour() < 20 || (now.hour() === 19 && now.minute() < 50))) {
                 await updateDiscountAndOverload()
                 let intervalId = setInterval(() => {
                     let now = moment.tz('Pacific/Auckland')
-                    if(now.hour() > 20) {
+                    if(now.hour() > 20 || (now.hour() === 19 && now.minute() >= 50)) {
                         clearInterval(intervalId)
+                        if(!alert('We are closed for today. Sorry!')) {window.location.reload()}
                     } else {
                         updateDiscountAndOverload()
                     }

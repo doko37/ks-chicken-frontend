@@ -112,7 +112,7 @@ export default function Item(props) {
                         {props.itemKey === "chips" ? <div>
                             <Desc>MEDIUM - $7.00</Desc>
                             <Desc>LARGE - $9.00</Desc>
-                        </div> : <Desc>${props.price} PER SERVING</Desc>}
+                        </div> : props.itemKey === "cheeseballs" ? <Desc>${props.price.toFixed(2)} FOR FOUR PIECES</Desc> : <Desc>${props.price.toFixed(2)} PER SERVING</Desc>}
                     </div> : null}
                 {props.type === "drinks" ? 
                     <div>

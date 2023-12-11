@@ -1,14 +1,16 @@
 .drawer ::-webkit-scrollbar {
-    width: 1.2rem;
-    display: block;
+    width: 0rem;
+    display: none;
 }
 
 ::-webkit-scrollbar-track {
-    background: #201e1f;
+    /* background: #201e1f; */
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: gray;
+    /* background: gray; */
+    background: transparent;
     border-radius: 100vw;
-    border: 4px solid #201e1f;
+    /* border: 4px solid #201e1f; */
 }
