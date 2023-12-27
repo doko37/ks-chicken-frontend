@@ -150,25 +150,26 @@ export default function Cart(props) {
   const [modalState, setModalState] = useState(null)
   const mState = MobileState()
   const session = useSelector((store) => store.user)
+  const closed = useSelector((store) => store.menu.closed)
   const cart = session.cart
   const userToken = session.userToken
   const dispatch = useDispatch()
 
   const toggleCartDisplay = () => {
-    if(mState) {
+    if (mState) {
       setCartDisplay(!cartDisplay)
     }
   }
 
   const removeItem = (item) => {
-    dispatch(removeItemFromCart({item: item}))
+    dispatch(removeItemFromCart({ item: item }))
     dispatch(updateCart())
     setModalMode("remove")
     setModalState(item)
   }
 
   const editItem = (item) => {
-    dispatch(editItemInCart({item: item}))
+    dispatch(editItemInCart({ item: item }))
     dispatch(updateCart())
     props.toggleDrawer(null)
     setModalMode("edit")
@@ -178,65 +179,71 @@ export default function Cart(props) {
   return (
     <Body className='Italic'>
       <Wrapper>
-        <Modal mode={modalMode} modalState={modalState} toggleModalState={() => setModalState(null)}/>
+        <Modal mode={modalMode} modalState={modalState} toggleModalState={() => setModalState(null)} />
         <TitleCtn onClick={toggleCartDisplay}>
           <Title>YOUR CART</Title>
-          <Down style={{color: 'white', transform: cartDisplay ? 'rotate(180deg)' : 'rotate(0deg)', cursor: 'pointer', display: mState ? cart.items.length > 0 ? '' : 'none' : 'none'}}/>
+          <Down style={{ color: 'white', transform: cartDisplay ? 'rotate(180deg)' : 'rotate(0deg)', cursor: 'pointer', display: mState ? cart.items.length > 0 ? '' : 'none' : 'none' }} />
         </TitleCtn>
-        {cart.items.length > 0 ?
-          <>
-            <Ctn>
-              <CartCtn cartDisplay={cartDisplay}>
-                {cart.items.length > 0 ? cart.items.map(item => {
-                  return (
-                    <CartItem
-                      item={item}
-                      img={item.img}
-                      key={item.key}
-                      toggleDrawer={() => props.toggleDrawer(item)}
-                      removeItem={() => removeItem(item)}
-                    />
-                  )
-                }) : <p>Your cart is empty</p>}
-                <CheckoutPanelBody style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'rgb(0,0,0,0.2)', boxShadow: 'none'}}>
-                  <Text style={{fontFamily: 'coffee_rg'}}>Forgot something?</Text>
-                  <DrawerButton style={{width: 'fit-content', padding: '0.25rem 1rem'}}>
-                    <ButtonText href="/menu" style={{fontFamily: 'coffee_rg'}}>GO BACK TO MENU</ButtonText>
-                  </DrawerButton>
-                </CheckoutPanelBody>
-                <Drawer
-                  active={props.drawerState}
-                  item={props.item}
-                  toggleDrawer={() => props.toggleDrawer(null)}
-                  editState={props.editState}
-                  addItem={item => editItem(item)}
-                  chickenItems={props.chickenItems}
-                  sideItems={props.sideItems}
-                  token={props.token}
-                />
-              </CartCtn>
-              <CheckoutPanel
-                cart={cart}
-                togglessState={props.togglessState}
-                checkout={(custInfo) => props.checkout(custInfo)}
-                dates={props.dates}
-                times={props.times}
-                pickupInfo={props.pickupInfo}
-                discount={props.discount}
-              />
-            </Ctn>
-            <AlertModal toggleTimeAvailable={props.toggleTimeAvailable} timeAvailable={props.timeAvailable}/>
-          </>
-          :
+        {closed ?
           <Ctn style={{ display: 'block' }}>
             <Notice>
-              <Text style={{fontSize: mState ? '38px' : '48px'}}>YOUR CART IS EMPTY. <br />START AN ORDER?</Text>
-              <div style={{ display: 'flex', justifyContent: 'start' }}>
-                <StartButton className='Normal'><a href="/menu" style={{ textDecoration: 'none', color: 'white', padding: '1rem 2rem', position: 'relative' }}>GO TO MENU</a></StartButton>
-              </div>
-              <ConfusedChicken src={chickenIcon} alt="Confused Chicken"/>
+              <Text style={{ fontSize: mState ? '38px' : '48px' }}>THE STORE IS CURRENTLY CLOSED, <br />SORRY ABOUT THAT.</Text>
+              <ConfusedChicken src={chickenIcon} alt="Confused Chicken" />
             </Notice>
-          </Ctn>
+          </Ctn> : cart.items.length > 0 ?
+            <>
+              <Ctn>
+                <CartCtn cartDisplay={cartDisplay}>
+                  {cart.items.length > 0 ? cart.items.map(item => {
+                    return (
+                      <CartItem
+                        item={item}
+                        img={item.img}
+                        key={item.key}
+                        toggleDrawer={() => props.toggleDrawer(item)}
+                        removeItem={() => removeItem(item)}
+                      />
+                    )
+                  }) : <p>Your cart is empty</p>}
+                  <CheckoutPanelBody style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'rgb(0,0,0,0.2)', boxShadow: 'none' }}>
+                    <Text style={{ fontFamily: 'coffee_rg' }}>Forgot something?</Text>
+                    <DrawerButton style={{ width: 'fit-content', padding: '0.25rem 1rem' }}>
+                      <ButtonText href="/menu" style={{ fontFamily: 'coffee_rg' }}>GO BACK TO MENU</ButtonText>
+                    </DrawerButton>
+                  </CheckoutPanelBody>
+                  <Drawer
+                    active={props.drawerState}
+                    item={props.item}
+                    toggleDrawer={() => props.toggleDrawer(null)}
+                    editState={props.editState}
+                    addItem={item => editItem(item)}
+                    chickenItems={props.chickenItems}
+                    sideItems={props.sideItems}
+                    token={props.token}
+                  />
+                </CartCtn>
+                <CheckoutPanel
+                  cart={cart}
+                  togglessState={props.togglessState}
+                  checkout={(custInfo) => props.checkout(custInfo)}
+                  dates={props.dates}
+                  times={props.times}
+                  pickupInfo={props.pickupInfo}
+                  discount={props.discount}
+                />
+              </Ctn>
+              <AlertModal toggleTimeAvailable={props.toggleTimeAvailable} timeAvailable={props.timeAvailable} />
+            </>
+            :
+            <Ctn style={{ display: 'block' }}>
+              <Notice>
+                <Text style={{ fontSize: mState ? '38px' : '48px' }}>YOUR CART IS EMPTY. <br />START AN ORDER?</Text>
+                <div style={{ display: 'flex', justifyContent: 'start' }}>
+                  <StartButton className='Normal'><a href="/menu" style={{ textDecoration: 'none', color: 'white', padding: '1rem 2rem', position: 'relative' }}>GO TO MENU</a></StartButton>
+                </div>
+                <ConfusedChicken src={chickenIcon} alt="Confused Chicken" />
+              </Notice>
+            </Ctn>
         }
       </Wrapper>
     </Body>

@@ -132,6 +132,7 @@ export default function Drawer(props) {
   const sh = ScreenHeight()
 
   const userToken = useSelector((store) => store.user.userToken)
+  const closed = useSelector((store) => store.menu.closed)
 
   const [activeCtg, setActiveCtg] = useState({
     size: false,
@@ -178,7 +179,7 @@ export default function Drawer(props) {
       const sides = await publicRequest.get("/items/sides")
       const drinks = await publicRequest.get("/items/drinks")
 
-      setItems({chicken: chicken.data, sides: sides.data, drinks: drinks.data})
+      setItems({ chicken: chicken.data, sides: sides.data, drinks: drinks.data })
     }
 
     getItems()
@@ -200,9 +201,9 @@ export default function Drawer(props) {
   function handleChange(type, value) {
     if (type === 'size' && props.item.type === "chicken") {
       if (value === 'half') {
-        setItem({ ...item, sides: {side1: item.sides.side1, side2: 'nosides'}, size: value})
+        setItem({ ...item, sides: { side1: item.sides.side1, side2: 'nosides' }, size: value })
       } else {
-        setItem({ ...item, sides: {side1: item.sides.side1, side2: 'coleslaw'}, size: value})
+        setItem({ ...item, sides: { side1: item.sides.side1, side2: 'coleslaw' }, size: value })
       }
     } else {
       setItem({ ...item, [type]: value })
@@ -338,11 +339,11 @@ export default function Drawer(props) {
       let originItem = null
       if (hasNumber(props.item.key)) {
         if (item.type === "chicken") {
-          originItem = items.chicken.find(i => i.key === keyWithoutNum(item.key)) 
-        } else if (item.type === "sides") { 
-          originItem = items.sides.find(i => i.key === keyWithoutNum(item.key)) 
-        } else if (item.type === "drinks") { 
-          originItem = items.drinks.find(i => i.key === keyWithoutNum(item.key)) 
+          originItem = items.chicken.find(i => i.key === keyWithoutNum(item.key))
+        } else if (item.type === "sides") {
+          originItem = items.sides.find(i => i.key === keyWithoutNum(item.key))
+        } else if (item.type === "drinks") {
+          originItem = items.drinks.find(i => i.key === keyWithoutNum(item.key))
         }
       } else {
         originItem = props.item
@@ -362,7 +363,7 @@ export default function Drawer(props) {
         if (item.toppings.snowy) price += (2 * (props.item.type === 'chicken' ? (item.size === 'half' ? 1 : 2) : 1))
         if (item.toppings.onion) price += (2 * (props.item.type === 'chicken' ? (item.size === 'half' ? 1 : 2) : 1))
       }
-      if(item.type === "drinks") {
+      if (item.type === "drinks") {
         let size = item.sizes.find(i => i.size === item.size)
         price = size.price + originItem.price
       }
@@ -385,10 +386,10 @@ export default function Drawer(props) {
             </Title>
             <Close onClick={props.toggleDrawer} style={{ cursor: 'pointer' }} />
           </TitleCtn>
-            <ImgCtn style={{display: props.item.type === "drinks" ? 'none' : 'block'}}>
-              <Image src={props.item.img} topImg />
-              <p style={{display: item.type === 'chicken' ? item.quantity * (item.size === 'half' ? 1 : 2) > 4 ? 'block' : 'none' : 'none', position: 'relative', zIndex: 150, color: 'gray', margin: '0', textAlign: 'left', backgroundColor: '#201e1f', paddingTop: '0.5rem'}}>*Larger orders will take more time.</p>
-            </ImgCtn>
+          <ImgCtn style={{ display: props.item.type === "drinks" ? 'none' : 'block' }}>
+            <Image src={props.item.img} topImg />
+            <p style={{ display: item.type === 'chicken' ? item.quantity * (item.size === 'half' ? 1 : 2) > 4 ? 'block' : 'none' : 'none', position: 'relative', zIndex: 150, color: 'gray', margin: '0', textAlign: 'left', backgroundColor: '#201e1f', paddingTop: '0.5rem' }}>*Larger orders will take more time.</p>
+          </ImgCtn>
           <Category
             item={item}
             activeCtg={activeCtg}
@@ -405,9 +406,9 @@ export default function Drawer(props) {
           <Add style={{ borderRadius: '1rem', backgroundColor: 'rgba(0,0,0,0.6)', cursor: 'pointer', color: 'white', fontSize: '32px' }} onClick={() => setItem({ ...item, quantity: item.quantity + 1 })} />
         </QuantityCtn>
         <Footer>
-          {userToken ? (item.type === "chicken" && (item.size === "half" ? item.quantity > 10 ? true : false : item.quantity > 5 ? true : false )) ? 
-          <Button style={{ backgroundColor: '#808080', fontFamily: 'coffee_rg' }}>ORDER LIMIT REACHED</Button> : <Button onClick={() => props.addItem(item)} style={{fontFamily: 'coffee_rg'}}>${(item.price * item.quantity).toFixed(2)} {props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
-            <Button onClick={props.togglessState} style={{ backgroundColor: '#808080', fontFamily: 'coffee_rg' }}>START ORDER</Button>}
+          {userToken ? (item.type === "chicken" && (item.size === "half" ? item.quantity > 10 ? true : false : item.quantity > 5 ? true : false)) ?
+            <Button style={{ backgroundColor: '#808080', fontFamily: 'coffee_rg' }}>ORDER LIMIT REACHED</Button> : <Button onClick={() => props.addItem(item)} style={{ fontFamily: 'coffee_rg' }}>${(item.price * item.quantity).toFixed(2)} {props.editState ? 'SAVE CHANGES' : 'ADD TO CART'}</Button> :
+            <Button onClick={closed ? null : props.togglessState} style={{ backgroundColor: '#808080', fontFamily: 'coffee_rg' }}>{closed ? "STORE CLOSED" : "START ORDER"}</Button>}
         </Footer>
       </main>
     </Body>
