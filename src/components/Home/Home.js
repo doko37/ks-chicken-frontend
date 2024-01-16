@@ -301,20 +301,20 @@ export default function Home() {
         <Body className='Italic'>
             {/* <Slider /> */}
             <Top>
-                <Carousel infiniteLoop={true} autoPlay={true}>
+                <div>
+                    <Hero src={hero} />
+                    <HeroTitleCtn top>
+                        <Title top>The Best Korean Fried Chicken in Auckland!</Title>
+                    </HeroTitleCtn>
+                </div>
+                {/* <Carousel infiniteLoop={true} autoPlay={true}>
                     <div>
                         <Hero src={mState ? hoursMobile : hoursDesktop} />
                     </div>
                     <div>
                         <Hero src={mState ? dealMobile : dealDesktop} />
                     </div>
-                    <div>
-                        <Hero src={hero} />
-                        <HeroTitleCtn top>
-                            <Title top>The Best Korean Fried Chicken in Auckland!</Title>
-                        </HeroTitleCtn>
-                    </div>
-                </Carousel>
+                </Carousel> */}
             </Top>
             <Bottom>
                 <DescCtn>
