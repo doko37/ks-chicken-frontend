@@ -93,22 +93,22 @@ export default function CheckoutForm() {
   const dispatch = useDispatch()
 
   const [email, setEmail] = useState('')
-  const [message, setMessage]= useState(null)
+  const [message, setMessage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const total = useSelector((store) => store.user.cart.total)
-  const returnURL = process.env.NODE_ENV === 'production' ? 'https://leepeter.com/success' : 'http://localhost:3000/success'
+  const returnURL = process.env.NODE_ENV === 'production' ? 'https://kschicken.co.nz/success' : 'http://localhost:3000/success'
 
   useEffect(() => {
-    if(!stripe) return
+    if (!stripe) return
 
     const clientSecret = new URLSearchParams(window.location.search).get(
       "payment_intent_client_secret"
     )
 
-    if(!clientSecret) return
+    if (!clientSecret) return
 
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch(paymentIntent.status) {
+      switch (paymentIntent.status) {
         case "succeeded":
           setMessage("Payment succeeded")
           break;
@@ -129,7 +129,7 @@ export default function CheckoutForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if(!stripe || !elements) return
+    if (!stripe || !elements) return
 
     setIsLoading(true)
 
@@ -139,13 +139,13 @@ export default function CheckoutForm() {
         return_url: returnURL
       }
     }).then((result) => {
-      if(!result.error) {
+      if (!result.error) {
         dispatch(resetCart())
-        dispatch(setPaymentStatus({paid: true}))
+        dispatch(setPaymentStatus({ paid: true }))
       } else {
         console.log(result)
 
-        if(result.error.type === "card_error" || result.error.type === "validation_error") {
+        if (result.error.type === "card_error" || result.error.type === "validation_error") {
           setMessage(result.error.message)
         } else {
           setMessage("An unexpected error occurred")
@@ -161,15 +161,15 @@ export default function CheckoutForm() {
   }
 
   return (
-    <main style={{backgroundColor: '#252425', position: 'relative', width: '100vw', height: '100vh', margin: '0', padding: '0rem 0'}}>
-      <div style={{height: 'fit-content'}}>
+    <main style={{ backgroundColor: '#252425', position: 'relative', width: '100vw', height: '100vh', margin: '0', padding: '0rem 0' }}>
+      <div style={{ height: 'fit-content' }}>
         <StripeLogoCtn>
-          <span style={{color: 'white', height: '100%', fontSize: '16px', fontFamily: 'coffee_rg'}}></span>
-          <Stripelogo src={StripeLogo} alt="Stripe Logo"/>
+          <span style={{ color: 'white', height: '100%', fontSize: '16px', fontFamily: 'coffee_rg' }}></span>
+          <Stripelogo src={StripeLogo} alt="Stripe Logo" />
         </StripeLogoCtn>
         <FormCtn>
-          <Logo src={KSLogo} alt="KS Logo"/>
-          <form id="payment-form" onSubmit={handleSubmit} style={{position: 'relative'}}>
+          <Logo src={KSLogo} alt="KS Logo" />
+          <form id="payment-form" onSubmit={handleSubmit} style={{ position: 'relative' }}>
             <PaymentElement id="payment-element" options={paymentElementOptions} />
             <PayButton disabled={isLoading || !stripe || !elements} id="submit">
               <ButtonText id="button-text">
@@ -177,9 +177,9 @@ export default function CheckoutForm() {
               </ButtonText>
             </PayButton>
           </form>
-          <p style={{color: '#990000', fontFamily: 'sans-serif', margin: '2rem 0', fontWeight: '600'}}>{message}</p>
-          <p style={{textAlign: 'center', margin: '0', marginBottom: '0.5rem'}}>
-            <Cancel href="/cart" style={{color: 'white', fontFamily: 'coffee_rg', fontSize: '14px'}}>CANCEL</Cancel>
+          <p style={{ color: '#990000', fontFamily: 'sans-serif', margin: '2rem 0', fontWeight: '600' }}>{message}</p>
+          <p style={{ textAlign: 'center', margin: '0', marginBottom: '0.5rem' }}>
+            <Cancel href="/cart" style={{ color: 'white', fontFamily: 'coffee_rg', fontSize: '14px' }}>CANCEL</Cancel>
           </p>
         </FormCtn>
       </div>

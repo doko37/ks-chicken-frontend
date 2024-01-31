@@ -134,14 +134,14 @@ export default function Layout() {
             for (let j = 0; j < _times.data.length; j++) {
                 console.log("loop: " + _times.data[j].time)
                 if (_times.data[j].available === false) {
-                    console.log("lastUnavailbleIndex: " + lastUnavailableIndx)
+                    //console.log("lastUnavailbleIndex: " + lastUnavailableIndx)
                     lastUnavailableIndx = j
                     continue
                 }
 
                 if (lastUnavailableIndx >= (j - overload)) {
-                    console.log("overload: " + overload + " j - overload: " + (j - overload) + " lastUnavailableIndex: " + lastUnavailableIndx)
-                    console.log("making unavailable: " + _times.data[j].time)
+                    //console.log("overload: " + overload + " j - overload: " + (j - overload) + " lastUnavailableIndex: " + lastUnavailableIndx)
+                    //console.log("making unavailable: " + _times.data[j].time)
                     _times.data[j].available = false
                 }
             }
@@ -159,13 +159,10 @@ export default function Layout() {
             let selectedTime = _times.data.find(i => i.time === currentTime.split(' ')[1])
             if (selectedTime) {
                 if (selectedTime.available === false) {
-                    console.log("currentTime defined, selectedTime unavailable")
                     dispatch(setPickupTime({ time: moment((date ? date : currentTime)).startOf('d').add(_times.data[timeIndx].time).format('YYYY-MM-DD HH:mm') }))
                 } else {
-                    console.log("currentTime defined, selectedTime available")
                 }
             } else {
-                console.log("currentTime defined, selectedTime undefined")
                 dispatch(setPickupTime({ time: moment((date ? date : currentTime)).startOf('d').add(_times.data[timeIndx].time).format('YYYY-MM-DD HH:mm') }))
             }
         }
