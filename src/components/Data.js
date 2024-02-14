@@ -1,66 +1,35 @@
-import mimg1 from '../Images/mSlide1.png'
-import mimg2 from '../Images/mSlide2.jpg'
-import img1 from '../Images/slide1.png'
-import img2 from '../Images/slide2.png'
 import original from '../Images/original.jpg'
-import crispy from '../Images/crispy.jpg'
-import korean from '../Images/korean.jpg'
-import sweetchilly from '../Images/sweetchilly.jpg'
-import spicy from '../Images/spicy.jpg'
-import hotandspicy from '../Images/hotandspicy.jpg'
-import soy from '../Images/soy.jpg'
-import spicysoy from '../Images/spicysoy.jpg'
-import honey from '../Images/honeybutter.jpg'
-import snowy from '../Images/snowy.jpg'
-import onion from '../Images/onion.jpg'
-import padak from '../Images/padak.jpg'
-import teriyaki from '../Images/Lunch/teriyaki.jpg'
-import bulgogi from '../Images/Lunch/bulgogi.jpg'
-import popcorn from '../Images/Lunch/popcorn.jpg'
-import lunchspicy from '../Images/Lunch/spicy.jpg'
-import lunchhoney from '../Images/Lunch/honeybutter.jpg'
-import bbq from '../Images/Lunch/bbq.jpg'
-import garlic from '../Images/Lunch/garlicsoy.jpg'
-import lunchonion from '../Images/Lunch/onion.jpg'
-import broccoli from '../Images/Lunch/broccoli.jpg'
-import pasta from '../Images/Lunch/pasta.jpg'
-import mac from '../Images/Lunch/macandcheese.jpg'
-import potato from '../Images/Lunch/potatoandbacon.jpg'
-import lunchcoleslaw from '../Images/Lunch/coleslaw.jpg'
-import salad from '../Images/Lunch/salad.jpg'
-import udon from '../Images/Lunch/udonsalad.jpg'
-import spicyudon from '../Images/Lunch/spicy_udon.jpg'
-import chips from '../Images/chips.JPG'
-import coleslaw from '../Images/coleslaw.jpg'
-import rice from '../Images/rice.jpg'
-import radish from '../Images/radish.jpg'
-import sauce from '../Images/sauce.jpg'
 import chicken from '../Images/chicken.jpg'
-import quarter from '../Images/quarterquartersquare2.jpg'
-import cheeseball from '../Images/cheeseball.jpg'
+import boneless from '../Images/boneless.jpg'
+import nibble from '../Images/nibble.jpg'
+import halfchicken from '../Images/halfchicken.png'
 
-export const mSlides = [
+export const Cut = [
     {
-        img: mimg1,
-        key: mimg1
+        img: "https://i.ibb.co/DDbT9sZ/original.jpg",
+        title: "Whole Chicken",
+        key: 'whole'
     },
-]
-
-export const slides = [
     {
-        img: img1,
-        key: img1
+        img: boneless,
+        title: "Boneless Chicken",
+        key: 'boneless'
+    },
+    {
+        img: nibble,
+        title: "Chicken Nibbles",
+        key: 'nibble'
     },
 ]
 
 export const OrderChicken = [
     {
-        img: chicken,
+        img: halfchicken,
         title: "1/2 Chicken",
         type: "halfchicken",
         price: null,
         priceLabel: "From $19",
-        key: "halfchicken",
+        key: "half",
         details: true
     },
     {
@@ -69,258 +38,157 @@ export const OrderChicken = [
         type: "fullchicken",
         price: null,
         priceLabel: "From $35",
-        key: "fullchicken",
+        key: "full",
         details: true
     }
 ]
 
-export const Chicken = [
+export const ChickenSides = [
     {
-        img: quarter,
-        title: "Boneless Quarter Quarter",
-        halfprice: 26,
-        key: "quarter"
+        title: "No Sides",
+        key: "nosides",
     },
     {
-        img: original,
-        title: "Original Fried Chicken",
-        halfprice: 21,
-        fullprice: 39,
-        key: "original"
+        img: "https://i.ibb.co/kMC9B7F/radish.jpg",
+        title: "Pickled Radish",
+        key: "radish",
     },
     {
-        img: crispy,
-        title: "Crispy Fried Chicken",
-        halfprice: 21,
-        fullprice: 39,
-        key: "crispy"
+        img: "https://i.ibb.co/ZHLNNpj/coleslaw.jpg",
+        title: "Coleslaw",
+        key: "coleslaw",
+    },
+]
+
+export const Toppings = [
+    {
+        title: 'Sesame',
+        key: 'sesame'
     },
     {
-        img: korean,
-        title: "Korean Fried Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "korean"
+        title: 'Peanuts',
+        key: 'peanuts'
     },
     {
-        img: spicy,
-        title: "Spicy Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "spicy"
+        title: 'Parsley',
+        key: 'parsley'
     },
     {
-        img: hotandspicy,
-        title: "Hot and Spicy Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "hotandspicy"
-    },
-    {
-        img: sweetchilly,
-        title: "Sweet Chilly Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "sweetchilly"
-    },
-    {
-        img: soy,
-        title: "Soy Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "soy"
-    },
-    {
-        img: soy,
-        title: "Garlic Soy Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "garlicsoy"
-    },
-    {
-        img: spicysoy,
-        title: "Spicy Soy Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "spicysoy"
-    },
-    {
-        img: soy,
-        title: "BBQ Chicken",
-        halfprice: 22,
-        fullprice: 41,
-        key: "bbq"
-    },
-    {
-        img: honey,
-        title: "Honey Butter Chicken",
-        halfprice: 23,
-        fullprice: 46,
-        key: "honey"
-    },
-    {
-        img: padak,
-        title: "Padak Chicken",
-        halfprice: 26,
-        fullprice: 46,
-        key: "padak"
-    },
-    {
-        img: snowy,
+        img: "https://i.ibb.co/svjCrz4/snowy.jpg",
         title: "Snowy Cheese Topping",
-        halfprice: 2,
+        price: 2,
         key: "snowy"
     },
     {
-        img: onion,
+        img: "https://i.ibb.co/mtbRYM4/onion.jpg",
         title: "Onion Seasoning Topping",
-        halfprice: 2,
+        price: 2,
         key: "onion"
     },
 ]
 
-export const Lunch = {
-    Chicken: [
-        {
-            img: teriyaki,
-            title: "Teriyaki Chicken",
-            key: "teriyaki"
-        },
-        {
-            img: bulgogi,
-            title: "Bulgogi",
-            key: "bulgogi"
-        },
-        {
-            img: popcorn,
-            title: "Popcorn Chicken",
-            key: "popcorn"
-        },
-        {
-            img: lunchspicy,
-            title: "Spicy Chicken",
-            key: "lunchspicy"
-        },
-        {
-            img: lunchhoney,
-            title: "Honey Butter Chicken",
-            key: "lunchhoney"
-        },
-        {
-            img: bbq,
-            title: "BBQ Chicken",
-            key: "lunchbbq"
-        },
-        {
-            img: garlic,
-            title: "Garlic Soy Chicken",
-            key: "lunchgarlic"
-        },
-        {
-            img: lunchonion,
-            title: "Onion Seasoning Chicken",
-            key: "lunchonion"
-        },
-    ],
-    Salad: [
-        {
-            img: broccoli,
-            title: "Broccoli Salad",
-            key: "broccoli"
-        },
-        {
-            img: pasta,
-            title: "Pasta Salad",
-            key: "pasta"
-        },
-        {
-            img: mac,
-            title: "Mac and Cheese",
-            key: "mac"
-        },
-        {
-            img: potato,
-            title: "Potato and Bacon",
-            key: "potato"
-        },
-        {
-            img: lunchcoleslaw,
-            title: "Coleslaw",
-            key: "lunchcoleslaw"
-        },
-        {
-            img: salad,
-            title: "Balsamic and Vineger Salad",
-            key: "salad"
-        },
-        {
-            img: udon,
-            title: "Udon Salad",
-            key: "udon"
-        },
-        {
-            img: spicyudon,
-            title: "Spicy Udon Salad",
-            key: "spicyudon"
-        }
-    ]
-}
+// export const Lunch = {
+//     Chicken: [
+//         {
+//             img: teriyaki,
+//             title: "Teriyaki Chicken",
+//             key: "teriyaki"
+//         },
+//         {
+//             img: bulgogi,
+//             title: "Bulgogi",
+//             key: "bulgogi"
+//         },
+//         {
+//             img: popcorn,
+//             title: "Popcorn Chicken",
+//             key: "popcorn"
+//         },
+//         {
+//             img: lunchspicy,
+//             title: "Spicy Chicken",
+//             key: "lunchspicy"
+//         },
+//         {
+//             img: lunchhoney,
+//             title: "Honey Butter Chicken",
+//             key: "lunchhoney"
+//         },
+//         {
+//             img: bbq,
+//             title: "BBQ Chicken",
+//             key: "lunchbbq"
+//         },
+//         {
+//             img: garlic,
+//             title: "Garlic Soy Chicken",
+//             key: "lunchgarlic"
+//         },
+//         {
+//             img: lunchonion,
+//             title: "Onion Seasoning Chicken",
+//             key: "lunchonion"
+//         },
+//     ],
+//     Salad: [
+//         {
+//             img: broccoli,
+//             title: "Broccoli Salad",
+//             key: "broccoli"
+//         },
+//         {
+//             img: pasta,
+//             title: "Pasta Salad",
+//             key: "pasta"
+//         },
+//         {
+//             img: mac,
+//             title: "Mac and Cheese",
+//             key: "mac"
+//         },
+//         {
+//             img: potato,
+//             title: "Potato and Bacon",
+//             key: "potato"
+//         },
+//         {
+//             img: lunchcoleslaw,
+//             title: "Coleslaw",
+//             key: "lunchcoleslaw"
+//         },
+//         {
+//             img: salad,
+//             title: "Balsamic and Vineger Salad",
+//             key: "salad"
+//         },
+//         {
+//             img: udon,
+//             title: "Udon Salad",
+//             key: "udon"
+//         },
+//         {
+//             img: spicyudon,
+//             title: "Spicy Udon Salad",
+//             key: "spicyudon"
+//         }
+//     ]
+// }
 
-export const Sides = [
+export const Sauces = [
     {
-        img: chips,
-        title: "Chips",
-        type: "chips",
-        price: 7.00,
-        priceLabel: "From $7",
-        mediumPrice: 7.00,
-        largePrice: 9.00,
-        key: "chips",
-        details: true,
+        title: "Korean",
+        key: 'korean'
     },
     {
-        img: rice,
-        title: "Rice",
-        type: "side",
-        price: 3.00,
-        priceLabel: "$3 per serving",
-        key: "rice",
-        details: false
+        title: "Spicy",
+        key: 'spicy'
     },
     {
-        img: radish,
-        title: "Pickled Radish",
-        type: "side",
-        price: 3.00,
-        priceLabel: "$3 per serving",
-        key: "radish",
-        details: false
+        title: "Hot and Spicy",
+        key: 'hotandspicy'
     },
     {
-        img: coleslaw,
-        title: "Coleslaw",
-        type: "side",
-        price: 3.00,
-        priceLabel: "$3 per serving",
-        key: "coleslaw",
-        details: false
+        title: "Sweet Chilly",
+        key: 'sweetchilly'
     },
-    {
-        img: sauce,
-        title: "Sauce",
-        type: "sauce",
-        price: 3.00,
-        priceLabel: "$3 per serving",
-        key: "sauce",
-        details: true
-    },
-    {
-        img: cheeseball,
-        title: "Cheese Balls",
-        type: "side",
-        price: 11.00,
-        priceLabel: "$11 for 4 pieces",
-        key: "cheeseball",
-        details: false
-    }
 ]

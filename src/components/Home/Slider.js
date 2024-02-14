@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { mSlides, slides } from '../Data'
+//import { mSlides, slides } from '../Data'
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons"
 
 const Container = styled.div`
@@ -54,7 +54,7 @@ export default function Slider() {
 
     useEffect(() => {
         function handleResize() {
-            if(window.innerWidth < 700) {
+            if (window.innerWidth < 700) {
                 setMobileState(true)
             } else {
                 setMobileState(false)
@@ -65,7 +65,7 @@ export default function Slider() {
     })
 
     function handleClick(direction) {
-        if(direction === "right") {
+        if (direction === "right") {
             setSlideState(slideState < (mSlides.length - 1) ? slideState + 1 : 0)
         } else {
             setSlideState(slideState > 0 ? slideState - 1 : (mSlides.length - 1))
@@ -81,11 +81,11 @@ export default function Slider() {
             <Wrapper slideState={slideState}>
                 {mobileState ? mSlides.map(slide => {
                     return (
-                        <Slide src={slide.img} key={slide.key}/>
+                        <Slide src={slide.img} key={slide.key} />
                     )
                 }) : slides.map(slide => {
                     return (
-                        <Slide src={slide.img} key={slide.key}/>
+                        <Slide src={slide.img} key={slide.key} />
                     )
                 })}
             </Wrapper>

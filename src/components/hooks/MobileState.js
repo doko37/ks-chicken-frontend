@@ -1,11 +1,12 @@
 import {useState, useEffect} from 'react'
 
-export function MobileState() {
-    const [mobileState, setMobileState] = useState(window.innerWidth < 700 ? true : false)
+export function MobileState(lunch=false) {
+    const width = lunch ? 980 : 700
+    const [mobileState, setMobileState] = useState((window.innerWidth < width) ? true : false)
 
     useEffect(() => {
         function handleResize() {
-            if(window.innerWidth < 700) {
+            if(window.innerWidth < width) {
                 setMobileState(true)
             } else {
                 setMobileState(false)
@@ -14,5 +15,6 @@ export function MobileState() {
 
         window.addEventListener('resize', handleResize)
     })
+    
     return mobileState;
 }

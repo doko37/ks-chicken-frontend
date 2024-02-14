@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import Slider from './Slider'
-import chicken from '../../Images/chicken.jpg'
-import chips from '../../Images/chips.JPG'
-import cola from '../../Images/cola.PNG'
+//import Slider from './Slider'
+import chicken from '../../Images/KSChicken_KoreanFC.jpg'
+import chips from '../../Images/KSChicken_Chips.jpg'
+import cola from '../../Images/cola.jpg'
 import lunch from '../../Images/lunchsummary.jpg'
-import Map from '../ContactUs/Map'
-import hero from './hero.jpg'
+import hero from './KSChicken_Hero.jpg'
 import './Home.css'
 import '../Alert.css'
 import { Report } from '@material-ui/icons'
@@ -54,7 +53,7 @@ const TitleCtn = styled.div`
     position: relative;
 `
 
-const HeroTitleCtn = styled.div`
+export const HeroTitleCtn = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
@@ -71,14 +70,14 @@ const HeroTitleCtn = styled.div`
     }
 `
 
-const Title = styled.h1`
+export const Title = styled.h1`
     margin: 0;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     color: white;
     font-weight: 300;
     text-align: center;
-    font-size: ${props => props.top ? '24px' : '22px'};
+    font-size: ${props => props.top ? '26px' : '22px'};
     border-top: 4px white double;
     border-bottom: 4px white double;
     width: fit-content;
@@ -109,41 +108,46 @@ const Description = styled.h2`
 `
 
 const MenuCtn = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
+    /* display: grid;
+    grid-template-columns: 1fr 1fr; */
+    display: block;
     width: fit-content;
     margin: auto;
     justify-content: center;
 
     @media(min-width: 700px) {
+        display: flex;
         width: auto;
-        grid-template-columns: 1fr 1fr 1fr;
+        justify-content: space-around;
     }
 `
 
 const Button = styled.div`
     display: flex;
-    height: 12rem;
     width: auto;
+    height: auto;
     margin: 1rem;
     position: relative;
     justify-content: center;
     align-items: center;
-    border-radius: 1rem;
+    border-radius: 2rem;
     overflow: hidden;
 
     @media(min-width: 700px) {
-        height: auto;
+        height: 16rem;
         width: auto;
         border-radius: 2rem;
+        margin: 0.5rem;
+        flex: 1;
     }
 `
 
 const Image = styled.img`
-    height: auto;
+    height: 100%;
     width: 100%;
-    border-radius: 1rem;
+    border-radius: 2rem;
     transition: all 0.5s;
+    object-fit: cover;
 
     @media(min-width: 700px) {
         border-radius: 2rem;
@@ -152,13 +156,13 @@ const Image = styled.img`
 
 const ButtonTxt = styled.a`
     color: white;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 300;
     position: absolute;
     text-decoration: none;
     width: 100%;
     height: 100%;
-    border-radius: 1rem;
+    border-radius: 2rem;
     background-color: rgba(0,0,0,0.3);
     display: flex;
     justify-content: center;
@@ -177,7 +181,9 @@ const ButtonTxt = styled.a`
 
 const Hero = styled.img`
     position: relative;
+    height: auto;
     width: 100%;
+    object-fit: cover;
     top: 0;
     left: 0;
     z-index: 0;
@@ -185,21 +191,21 @@ const Hero = styled.img`
 
     @media(min-width: 1168px) {
         border-radius: 2rem;
+        height: 100%;
     }
 `
 
 const Top = styled.div`
     height: auto;
     position: relative;
+    height: auto;
     width: 100%;
     border-radius: 0;
 
     @media(min-width: 1168px) {
         width: 1168px;
         margin: auto;
-        //height: 613.188px;
-        height: 770px;
-        overflow-y: hidden;
+        height: 760px;
         border-radius: 2rem;
         box-shadow: 0 0 4px 0 gray;
     }
@@ -300,6 +306,7 @@ export default function Home() {
     return (
         <Body className='Italic'>
             {/* <Slider /> */}
+            {/* <h1 style={{color: 'white', fontWeight: '300', fontSize: '42px'}}>KS Chicken</h1> */}
             <Top>
                 <Hero src={hero} />
                 <HeroTitleCtn top>
@@ -323,26 +330,24 @@ export default function Home() {
                 <TitleCtn>
                     <Title>Our Menu</Title>
                 </TitleCtn>
-                <BottomCtn>
-                    <MenuCtn>
-                        <Button id='Cover'>
-                            <Image src={chicken} id='Image' />
-                            <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
-                        </Button>
-                        <Button id='Cover'>
-                            <Image src={chips} id='Image' />
-                            <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
-                        </Button>
-                        {/* <Button id='Cover'>
-                            <Image src={cola} id='Image' />
-                            <ButtonTxt href="/menu">DRINKS</ButtonTxt>
-                        </Button> */}
-                        <Button id='Cover'>
-                            <Image src={lunch} id='Image' />
-                            <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
-                        </Button>
-                    </MenuCtn>
-                </BottomCtn>
+                <MenuCtn>
+                    <Button id='Cover'>
+                        <Image src={chicken} id='Image' />
+                        <ButtonTxt href="./menu">CHICKEN</ButtonTxt>
+                    </Button>
+                    <Button id='Cover'>
+                        <Image src={chips} id='Image' />
+                        <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
+                    </Button>
+                    {/* <Button id='Cover'>
+                        <Image src={cola} id='Image' />
+                        <ButtonTxt href="/menu">DRINKS</ButtonTxt>
+                    </Button> */}
+                    <Button id='Cover'>
+                        <Image src={lunch} id='Image' />
+                        <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
+                    </Button>
+                </MenuCtn>
                 <TitleCtn>
                     <Title>Where to find us</Title>
                 </TitleCtn>

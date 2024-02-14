@@ -18,7 +18,7 @@
 
 .Italic {
   text-align: center;
-  font-family: "coffee_rg_it";
+  font-family: "bluehighway";
   scroll-behavior: smooth;
 }
 
@@ -29,4 +29,14 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+.ctn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  scroll-behavior: smooth;
+  margin: 0;
 }

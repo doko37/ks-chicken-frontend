@@ -1,10 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import Item from './Item'
-import { Chicken, Sides } from '../Data'
+import Item from './Item/Item'
 import './Menu.css'
 import '../../App.css'
+<<<<<<< HEAD
 import { ReportOutlined as Warning } from '@material-ui/icons'
+=======
+import Drawer from './Drawer/Drawer'
+import Backdrop from './Drawer/Backdrop'
+import publicRequest from '../../api/requestMethod'
+import { useDispatch, useSelector } from 'react-redux'
+import { addItemToCart, updateCart } from "../../features/user/userSlice"
+import { ShoppingCart } from '@material-ui/icons'
+import { Badge } from '@material-ui/core'
+import Modal from '../Modal/Modal'
+>>>>>>> beta
 
 const Container = styled.div`
     width: auto;
@@ -31,7 +41,6 @@ const NavBarContainer = styled.div`
     justify-content: center;
     align-items: center;
     background-color: #201e1f;
-    //border-bottom: 1px white solid;
     z-index: 10;
 `
 
@@ -55,7 +64,10 @@ const NavBarItemContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+<<<<<<< HEAD
     //margin-top: ${props => props.active ? '1px' : '0'};
+=======
+>>>>>>> beta
     border-bottom: ${props => props.active ? '2px solid white' : '2px solid #201e1f'};
     cursor: ${props => !props.temp ? 'pointer' : 'default'};
 
@@ -86,6 +98,7 @@ const CategoryContainer = styled.div`
     margin-top: -110px;
     padding-top: 110px;
     display: block;
+    position: relative;
 
     @media(min-width: 700px) {
         display: grid;
@@ -108,6 +121,7 @@ export const CategoryTitle = styled.h3`
     color: ${props => props.lunch ? 'black' : 'white'};
 `
 
+<<<<<<< HEAD
 const Alert = styled.div`
     width: auto;
     background-color: #cf8334;
@@ -127,33 +141,103 @@ const AlertWrapper = styled.div`
     @media(min-width: 1200px) {
         width: 1176px;
         margin: 0.25rem auto;
+=======
+const CartButton = styled.a`
+    display: flex;
+    opacity: ${props => props.yPos > 500 ? '100%' : '0%'};
+    transition: all 0.25s ease;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 1rem;
+    background-color: #cf8334;
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    z-index: ${props => props.yPos > 500 ? 50 : -1};
+    color: white;
+    border: none;
+    
+    &:active {
+        background-color: #A56829;
+    }
+
+    @media(min-width: 700px) {
+        display: none;
+>>>>>>> beta
     }
 `
 
 export default function Menu(props) {
     const [inView, setInView] = useState('chicken')
+    const [item, setItem] = useState(null)
+    const [items, setItems] = useState({
+        chicken: [],
+        sides: [],
+        drinks: []
+    })
+    const [modalState, setModalState] = useState(null)
     const chickenRef = useRef(null)
     const sidesRef = useRef(null)
-    const ctnRef = useRef(null)
+    const drinksRef = useRef(null)
+    const dispatch = useDispatch()
+    const [yPos, setYPos] = useState(0)
+    const cart = useSelector((store) => store.user).cart
+
+    useEffect(() => {
+        const getItems = async () => {
+            try {
+                let chicken = await publicRequest.get("/items/chicken")
+                let sides = await publicRequest.get("/items/sides")
+                let drinks = await publicRequest.get("/items/drinks")
+                setItems({chicken: chicken.data, sides: sides.data, drinks: drinks.data})
+            } catch(err) { }
+        }
+
+        getItems()
+    }, [])
 
     useEffect(() => {
         function detectYPos() {
+<<<<<<< HEAD
             if (chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2 || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
+=======
+            if ((chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2) || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
+>>>>>>> beta
                 setInView('chicken')
             } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
                 setInView('sides')
+            } else if (drinksRef.current.getBoundingClientRect().top > 0 && drinksRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
+                setInView('drinks')
             }
+            setYPos(window.scrollY)
         }
 
         window.addEventListener('scroll', detectYPos, false)
-    },)
+    }, [])
 
     function scrollMenu(category) {
         const el = document.getElementById(category)
         el.scrollIntoView()
     }
 
+    function toggleDrawer(item) {
+        setItem(item)
+        props.toggleDrawer(item)
+    }
+
+    const addItem = (item) => {
+        dispatch(addItemToCart({ item: item }))
+        dispatch(updateCart())
+        setItem(null)
+        setModalState(item)
+        props.toggleDrawer(null)
+    }
+
     return (
+<<<<<<< HEAD
         <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
             <NavBarContainer>
                 <NavBar>
@@ -208,5 +292,102 @@ export default function Menu(props) {
             {/* <ItemBox itemSelectedState={itemSelectedState} itemSelected={itemSelected} selectedItem={selectedItem} addItem={item => addItem(item)}/>
                 <OrderFooter toggleCart={props.toggleCart} numItems={props.numItems}/> */}
         </Body>
+=======
+        <div>
+            <Body id="body" cartState={props.cartState} className='Italic' drawerState={props.drawerState}>
+                <NavBarContainer>
+                    <NavBar>
+                        <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
+                            <NavBarItem>Chicken</NavBarItem>
+                        </NavBarItemContainer>
+                        <NavBarItemContainer active={inView === 'sides' ? true : false} onClick={() => scrollMenu('sides')}>
+                            <NavBarItem>Sides</NavBarItem>
+                        </NavBarItemContainer>
+                        <NavBarItemContainer active={inView === 'drinks' ? true : false} onClick={() => scrollMenu('drinks')}>
+                            <NavBarItem>Drinks</NavBarItem>
+                        </NavBarItemContainer>
+                    </NavBar>
+                </NavBarContainer>
+                <Container>
+                    <ItemContainer>
+                        <CategoryTitle ref={chickenRef}>CHICKEN</CategoryTitle>
+                        <CategoryContainer id="chicken">
+                            {items.chicken.map(item => {
+                                item.type = 'chicken'
+                                if (item.key === "original" || item.key === "crispy") {
+                                    item.chickenType = "non_marinated"
+                                } else if (item.key !== "honey" && item.key !== "padak") {
+                                    item.chickenType = "marinated"
+                                } else {
+                                    item.chickenType = "special"
+                                }
+                                return (
+                                    <Item
+                                        img={item.img}
+                                        title={item.name.toUpperCase()}
+                                        halfprice={item.half_price}
+                                        fullprice={item.full_price}
+                                        type={'chicken'}
+                                        itemKey={item.key}
+                                        key={item.key}
+                                        toggleDrawer={() => toggleDrawer(item)}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                        <CategoryTitle ref={sidesRef}>SIDES</CategoryTitle>
+                        <CategoryContainer id="sides">
+                            {items.sides.map(item => {
+                                item.type = 'sides'
+                                return (
+                                    <Item
+                                        img={item.img}
+                                        title={item.name.toUpperCase()}
+                                        price={item.price}
+                                        type={'sides'}
+                                        itemKey={item.key}
+                                        key={item.key}
+                                        toggleDrawer={() => toggleDrawer(item)}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                        <CategoryTitle ref={drinksRef}>DRINKS</CategoryTitle>
+                        <CategoryContainer id="drinks">
+                            {items.drinks.map(item => {
+                                item.type = 'drinks'
+                                return (
+                                    <Item
+                                        img={null}
+                                        title={item.name.toUpperCase()}
+                                        price={item.price}
+                                        type={'drinks'}
+                                        itemKey={item.key}
+                                        key={item.key}
+                                        toggleDrawer={() => toggleDrawer(item)}
+                                    />
+                                )
+                            })}
+                        </CategoryContainer>
+                    </ItemContainer>
+                </Container>
+            </Body>
+            <Backdrop active={props.drawerState} toggleDrawer={() => toggleDrawer(null)} />
+            <Drawer active={props.drawerState}
+                item={item}
+                toggleDrawer={() => toggleDrawer(null)}
+                addItem={item => addItem(item)}
+                editState={props.editState}
+                token={props.token}
+                togglessState={props.togglessState}
+            />
+            <CartButton yPos={yPos} href="/cart">
+                <Badge badgeContent={cart.numItems} color="primary">
+                    <ShoppingCart />
+                </Badge>
+            </CartButton>
+            <Modal item={item} mode={"add"} modalState={modalState} toggleModalState={() => setModalState(null)}/>
+        </div>
+>>>>>>> beta
     )
 }

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import logo from '../Images/logo.svg'
+import logo_black from '../Images/logo_black.svg'
 import { Menu } from '@material-ui/icons'
-import OrderFooter from './OrderPage/OrderFooter'
 import '../App.css'
+import { ShoppingCart } from '@material-ui/icons'
+import { Badge } from '@material-ui/core'
 
 const Container = styled.div`
     display: block;
     position: relative;
-    left: ${props => props.cartState ? `-${window.innerWidth}px` : '0px'};
     transition: left 0.25s ease;
     z-index: 0;
 
@@ -19,9 +20,12 @@ const Container = styled.div`
 
 const Bar = styled.div`
     height: 80px;
-    background-color: #201e1f;
+    background-color: ${window.location.href.includes("lunch") ? 'white' : '#201e1f'};
+    transition: all 1s;
     display: flex;
     justify-content: center;
+    position: relative;
+    transition: background-color 1s;
 
     @media(min-width: 700px) {
         height: 80px;
@@ -30,7 +34,7 @@ const Bar = styled.div`
 
 const SubBar = styled.div`
     position: relative;
-    background-color: #292829;
+    background-color: ${window.location.href.includes("lunch") ? '#FFFCF1' : '#292829'};
     height: ${props => props.dropBarState ? '173px' : '0px'};
     width: auto;
     text-align: left;
@@ -55,16 +59,6 @@ const ContentContainer = styled.div`
     }
 `
 
-const Filler = styled.div`
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: right;
-    margin-right: 1em;
-    flex: 1;
-    position: relative;
-`
-
 const NavContainer = styled.div`
     display: block;
     height: 100%;
@@ -81,13 +75,14 @@ const NavContainer = styled.div`
 `
 
 const NavItems = styled.a`
-    color: white;
+    color: ${window.location.href.includes("lunch") ? 'black' : 'white'};
     margin-left: ${props => props.mobile ? '0' : '1rem'};
-    width: ${window.innerWidth - 16}px;
+    text-align: center;
+    width: auto;
     text-decoration: none;
     font-size: 16px;
     display: ${props => props.mState ? '' : 'none'};
-    padding: 0.75rem 0 0.75rem 1rem;
+    padding: 0.75rem 0 0.75rem 0;
     display: block;
     font-weight: 300;
     cursor: pointer;
@@ -105,12 +100,14 @@ const NavItems = styled.a`
             background-color: transparent;
         }
     }
-` 
+`
 
 const Logo = styled.img`
     height: 60%;
     margin-left: 0;
     cursor: pointer;
+    position: relative;
+    color: black;
 
     @media(min-width: 700px) {
         height: 80%;
@@ -140,20 +137,26 @@ const OrderButtonContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: right;
+
+    @media(min-width: 700px) {
+        flex: none;
+    }
 `
 
 const OrderButton = styled.div`
-    height: 30px;
-    width: 60px;
     background-color: #cf8334;
     font-size: 10px;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
     @media (min-width: 700px) {
-        height: 40px;
-        width: 90px;
+        /* height: 35px;
+        width: 70px; */
         font-size: 15px;
-        border-radius: 2rem;
+        border-radius: 0.5rem;
         transition: background-color 0.5s ease;
     }
 
@@ -169,6 +172,7 @@ const OrderLink = styled.a`
     text-decoration: none;
     height: 100%;
     width: 100%;
+    padding: 0.5rem;
     color: white;
     font-weight: 300;
     font-size: 12.5px;
@@ -184,11 +188,11 @@ export default function NavBar(props) {
 
     useEffect(() => {
         function handleResize() {
-            if(window.innerWidth < 700) {
+            if (window.innerWidth < 700) {
                 setMState(true)
             } else {
                 setMState(false)
-            } 
+            }
         }
 
         window.addEventListener('resize', handleResize)
@@ -199,46 +203,58 @@ export default function NavBar(props) {
     }
 
     return (
-        <Container cartState={props.cartState} className='Italic'>
+        <Container className='Italic'>
             <Bar>
                 {mState ? <ContentContainer>
                     <NavContainer>
                         <MenuContainer dropBarState={dropBarState}>
                             <Menu onClick={toggleDropBar} style={{
-                                color: 'white',
+                                color: window.location.href.includes("lunch") ? 'black' : 'white',
                                 fontSize: '30px'
-                            }}/>
+                            }} />
                         </MenuContainer>
                     </NavContainer>
                     <LogoLink href="/">
-                        <Logo src={logo} alt="Logo"/>
+                        <Logo src={window.location.href.includes("lunch") ? logo_black : logo} alt="Logo" />
                     </LogoLink>
                     <OrderButtonContainer>
                         <OrderButton>
-                            <OrderLink href="/order">Order Now</OrderLink>
+                            <OrderLink href="/cart">
+                                <Badge badgeContent={props.cartLen} color="primary">
+                                    <ShoppingCart style={{
+                                        fontSize: '25px'
+                                    }} />
+                                </Badge>
+                            </OrderLink>
                         </OrderButton>
                     </OrderButtonContainer>
-                </ContentContainer> : 
-                <ContentContainer>
-                    <LogoLink href="/">
-                        <Logo src={logo} alt="Logo"/>
-                    </LogoLink>
-                    <NavContainer>
-                        <NavItems href="/menu" mState={!mState}>MENU</NavItems>
-                        <NavItems href="/lunch-bar" mState={!mState}>LUNCH BAR</NavItems>
-                        <NavItems href="/contact-us" mState={!mState}>CONTACT US</NavItems>
-                    </NavContainer>
-                    <OrderButtonContainer>
-                        <OrderButton>
-                            <OrderLink href="/order">Order Now</OrderLink>
-                        </OrderButton>
-                    </OrderButtonContainer>
-                </ContentContainer>}
+                </ContentContainer> :
+                    <ContentContainer>
+                        <LogoLink href="/">
+                            <Logo src={window.location.href.includes("lunch") ? logo_black : logo} alt="Logo" />
+                        </LogoLink>
+                        <NavContainer>
+                            <NavItems href="/menu" mState={!mState}>MENU</NavItems>
+                            <NavItems href="/lunch-bar" mState={!mState}>LUNCH BAR</NavItems>
+                            <NavItems href="/contact-us" mState={!mState}>CONTACT US</NavItems>
+                        </NavContainer>
+                        <OrderButtonContainer>
+                            <OrderButton>
+                                <OrderLink href="/cart">
+                                    <Badge badgeContent={props.cartLen} color="primary">
+                                        <ShoppingCart style={{
+                                            fontSize: '25px'
+                                        }} />
+                                    </Badge>
+                                </OrderLink>
+                            </OrderButton>
+                        </OrderButtonContainer>
+                    </ContentContainer>}
             </Bar>
             <SubBar dropBarState={dropBarState}>
                 <NavItems href="/menu" mState={mState} mobile={true}>MENU</NavItems>
                 <NavItems href="/lunch-bar" mState={mState} mobile={true}>LUNCH BAR</NavItems>
-                <NavItems href="/order" mState={mState} mobile={true}>ORDER</NavItems>
+                <NavItems href="/cart" mState={mState} mobile={true}>CART</NavItems>
                 <NavItems href="/contact-us" mState={mState} mobile={true}>CONTACT US</NavItems>
             </SubBar>
         </Container>

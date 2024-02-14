@@ -1,380 +1,192 @@
-import React, { useState, useRef } from 'react'
-import styled from 'styled-components'
-import { AccessTime, KeyboardArrowDown as DownArrow, PinDrop } from '@material-ui/icons'
-import { TextField } from '@material-ui/core'
-import CartItem from '../OrderPage/Cart/CartItem'
-import CheckoutBtn from './CheckoutBtn'
-import { MobileState } from '../hooks/MobileState'
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components';
+import {
+  PaymentElement,
+  LinkAuthenticationElement,
+  useStripe,
+  useElements,
+  CardElement
+} from "@stripe/react-stripe-js";
+import KSLogo from '../../Images/logo.svg'
+import StripeLogo from './stripeLogo.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { resetCart, setPaymentStatus } from '../../features/user/userSlice';
+import '../../App.css'
 
-const Body = styled.div`
-  width: auto;
-  z-index: 10;
-  position: relative;
-  background-color: white;
-  box-shadow: 0 0 4px 0 gray;
-  padding-bottom: 1rem;
-
-  @media(min-width: 700px) {
-    width: 1200px;
-    margin: auto;
-    box-shadow: none;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-  }
+const FormCtn = styled.div`
+  width: fit-content;
+  margin: auto;
+  position: absolute;
+  height: fit-content;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0px 1px 4px 0px black;
+  background-color: #1c1c1c;
 `
 
-const Form = styled.form`
-  display: block;
-  width: auto;
-  margin: 0;
-  padding-left: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 2rem;
-  padding-right: 1rem;
-  border-radius: 0.5rem;
-  position: relative;
-  z-index: 10;
-  background-color: #efefef;
-  margin: 0.5rem;
-
-  @media (min-width: 700px) {
-    margin: 0;
-    margin-bottom: 1rem;
-  }
-`
-
-const OrderInfoCtn = styled.div`
-  display: block;
-  width: auto;
-  background-color: #efefef;
-  padding-left: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 1rem;
-  padding-right: 1rem;
-  border-radius: 0.5rem;
-  margin: 0.5rem;
-
-  @media (min-width: 700px) {
-    margin: 1rem 0;
-  }
-`
-
-const OrderInfo = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 1rem 0;
-`
-
-const OrderCtn = styled.div`
+const PayButton = styled.button`
   width: 100%;
-  margin: 0 auto;
-  position: relative;
-  padding: 0.25rem 0;
-  z-index: 10;
-  background-color: white;
-
-  @media (min-width: 700px) {
-    margin-top: 1rem;
-    padding: 0;
-  }
-`
-
-const OrderWrapper = styled.div`
+  margin-top: 1rem;
+  height: 3rem;
+  border: 1px solid gray;
   border-radius: 0.5rem;
-  margin: 0 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 0 4px 0 gray;
-  height: ${props => props.dropDownState ? 'auto' : '42px'};
-  max-height: ${props => props.dropDownState ? '400px' : '42px'};
-  transition: max-height 0.25s ease-in-out;
-  padding-bottom: 0.5rem;
-  background-color: white;
-  overflow: hidden;
-
-  @media(min-width: 700px) {
-    max-height: none;
-    height: auto;
-    margin-right: 0;
-  }
-`
-
-const OrderLabel = styled.div`
-  width: auto;
-  height: 50px;
-  margin: 0 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const Seperator = styled.div`
-  width: auto;
-  margin: 0 1rem;
-  padding: 4px 0;
-  border-top: 1px solid gray;
-  box-shadow: 0 0 4px 4px white;
-  position: relative;
-  z-index: 10;
-  height: 0px;
-  display: ${props => props.dropDownState ? 'block' : 'none'};
-
-  @media (min-width: 700px) {
-    display: block;
-  }
-`
-
-const OrderTitle = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const OrderText = styled.p`
-  margin-right: ${props => props.left ? '0.5rem' : '0'};
-  margin-left: ${props => props.left ? '0' : '0.5rem'};
-`
-
-const OrderDetails = styled.div`
-  width: auto;
-  overflow-y: auto;
-  border-top: none;
-  display: ${props => props.dropDownState ? 'block' : 'none'};
-  border-top: none;
-  max-height: 340px;
-  position: relative;
-  z-index: 1;
-
-  @media (min-width: 700px) {
-    max-height: none;
-    display: block;
-  }
-`
-
-const ArrowContainer = styled.div`
-  transform: ${props => props.dropDownState ? 'rotate(180deg)' : 'rotate(0deg)'};
-  transition: transform 0.25s ease;
-  height: 24px;
-  width: 24px;
+  background-color: transparent;
   cursor: pointer;
 
-  @media (min-width: 700px) {
-    display: none;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
-`
 
-const Edit = styled.p`
-  font-size: small;
-  color: purple;
-  text-align: right;
-  margin: 1rem;
-  cursor: pointer;
-  
   &:active {
-    text-decoration: underline;
+    box-shadow: inset 0 0 4px 2px black;
   }
 `
 
-const Header = styled.p`
-  text-align: left;
+const ButtonText = styled.span`
+  color: white;
   font-size: 16px;
-  margin-top: 0.5rem;
-  margin-bottom: 0;
   font-weight: 600;
 `
 
-export default function Checkout(props) {
-  const [dropDownState, setDropDownState] = useState(false)
-  const form = useRef(null)
-  const mState = MobileState()
+const Logo = styled.img`
+  width: 100%;
+  height: 40px;
+  margin-bottom: 1rem;
+`
 
-  const [info, setInfo] = useState({
-    fName: "",
-    lName: "",
-    phoneNo: "",
-    email: ""
-  })
+const StripeLogoCtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+`
 
-  const [error, setError] = useState({
-    fName: false,
-    lName: false,
-    phoneNo: false,
-    email: false
-  })
+const Stripelogo = styled.img`
+  height: 40px;
+`
 
-  function handleChange(event) {
-    const target = event.target
+const Cancel = styled.a`
+  text-decoration: none;
+  box-shadow: 0px 0px 4px 1px black;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
 
-    if(target.id === "fName") {
-      setInfo({...info, fName: target.value})
-      if(target.value.length < 1) error.fName = true
-      else error.fName = false
-    } else if(target.id === "lName") {
-      setInfo({...info, lName: target.value})
-      if(target.value.length < 1) error.lName = true
-      else error.lName = false
-    } else if(target.id === "phoneNo") {
-      const hasLetter = /[a-zA-Z]/g
-      if(!hasLetter.test(target.value)) {
-        setInfo({...info, phoneNo: target.value})
-        if(target.value.length < 9) error.phoneNo = true
-        else error.phoneNo = false
+  &:active {
+    box-shadow: 0px 0px 1px 1px black;
+  }
+`
+
+export default function CheckoutForm() {
+  const stripe = useStripe()
+  const elements = useElements()
+  const dispatch = useDispatch()
+
+  const [message, setMessage] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const total = useSelector((store) => store.user.cart.total)
+  const order = JSON.parse(localStorage.getItem('order'))
+  const orderNo = order.orderNo
+  const email = order.email
+  const pickupTime = order.pickupTime
+  const pickupDate = order.pickupDate
+  const returnURL = process.env.NODE_ENV === 'production' ? `https://kschicken.co.nz/success/?orderNo=${orderNo}&email=${email}&pickupTime=${pickupTime}&pickupDate=${pickupDate}` : `http://localhost:3000/success/?orderNo=${orderNo}&email=${email}&pickupTime=${pickupTime}&pickupDate=${pickupDate}`
+
+  useEffect(() => {
+    if (!stripe) return
+
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      "payment_intent_client_secret"
+    )
+
+    if (!clientSecret) return
+
+    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      switch (paymentIntent.status) {
+        case "succeeded":
+          setMessage("Payment succeeded")
+          break;
+        case "processing":
+          setMessage("Your payment is processing")
+          break;
+        case "requires_payment_method":
+          setMessage("Your payment was not successful, please try again")
+          break;
+        default:
+          setMessage("Something went wrong")
+          break;
       }
-    } else {
-      setInfo({...info, email: target.value})
-      if(target.value.length < 10) error.email = true
-      else error.email = false
-    }
+    })
+
+  }, [stripe])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!stripe || !elements) return
+
+    setIsLoading(true)
+
+    await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: returnURL
+      }
+    }).then((result) => {
+      if (!result.error) {
+        dispatch(resetCart())
+        dispatch(setPaymentStatus({ paid: true }))
+      } else {
+        console.log(result)
+
+        if (result.error.type === "card_error" || result.error.type === "validation_error") {
+          setMessage(result.error.message)
+        } else {
+          setMessage("An unexpected error occurred")
+        }
+      }
+    })
+
+    setIsLoading(false)
   }
 
-  function toggleDropDown() {
-    setDropDownState(!dropDownState)
-  }
-
-  function inputCheck() {
-    if(info.fName.length < 1) error.fName = true
-    if(info.lName.length < 1) error.lName = true
-    if(info.phoneNo.length < 9) error.phoneNo = true
-    if(info.email.length < 10) error.email = true
-
-    if(error.fName === true || error.lName === true || error.phoneNo === true || error.email === true) {
-      setError({...error})
-    } else {
-      props.checkout(info)
-    }
+  const paymentElementOptions = {
+    layout: "tabs"
   }
 
   return (
-    <div>
-      {mState ? <Body>
-        {/* <p style={{padding: '1rem', margin: '0', textAlign: 'left', fontWeight: '600', backgroundColor: '#efefef'}}>CHECKOUT</p> */}
-        <OrderCtn>
-        <Header style={{margin: '1rem'}}>Your Cart</Header>
-        <OrderWrapper dropDownState={dropDownState}>
-          <OrderLabel dropDownState={dropDownState}>
-            <OrderTitle>
-              <OrderText left>{props.numItems} Item{props.numItems === 1 ? '' : 's'}</OrderText>
-              <p>|</p>
-              <OrderText>${props.total}</OrderText>
-            </OrderTitle>
-            <ArrowContainer dropDownState={dropDownState}>
-              <DownArrow onClick={toggleDropDown}/>
-            </ArrowContainer>
-          </OrderLabel>
-          <Seperator dropDownState={dropDownState}/>
-          <OrderDetails dropDownState={dropDownState}>
-            {props.cart.map(item => {
-                return <CartItem 
-                  title={item.title}
-                  img={item.img}
-                  size={item.size}
-                  quantity={item.quantity}
-                  price={item.price}
-                  details={item.details}
-                  chicken={item.chicken}
-                  powderToppings={item.powderToppings}
-                  chickenToppings={item.chickenToppings}
-                  sauce={item.sauce}
-                  cut={item.cut}
-                  sides={item.sides}
-                  editItem={() => props.editItem(item)}
-                  key={item.key}
-                  checkout
-                />
-            })}
-            <a href="/order"><Edit>Edit order</Edit></a>
-          </OrderDetails>
-        </OrderWrapper>
-      </OrderCtn>
-      <OrderInfoCtn>
-              <Header>Order Information</Header>
-              <OrderInfo>
-                <AccessTime />
-                <p style={{margin: '0 0 0 0.5rem', fontSize: '14px', height: '100%'}}>5th April, 3:15PM</p>
-              </OrderInfo>
-              <OrderInfo>
-                <PinDrop />
-                <div>
-                  <p style={{margin: '0 0 0 0.5rem', fontSize: '14px', height: '100%', textAlign: 'left', marginBottom: '0.25rem'}}>Rosedale Store</p>
-                  <p style={{margin: '0 0 0 0.5rem', fontSize: '14px', height: '100%', textAlign: 'left'}}>33b Triton Drive, Rosedale, Auckland, NZ</p>
-                </div>
-              </OrderInfo>
-        </OrderInfoCtn>
-      <div>
-        <Form ref={form}>
-        <Header>Contact Information</Header>
-        <TextField fullWidth id="fName" label="First name" variant="standard" required value={info.fName} onChange={handleChange} helperText={error.fName ? "Please enter a first name" : ""} error={error.fName} style={{margin: '0.5rem 0'}}/>
-        <TextField fullWidth id="lName" label="Last name" variant="standard" required value={info.lName} onChange={handleChange} helperText={error.lName ? "Please enter a  last name" : ""} error={error.lName} style={{margin: '0.5rem 0'}}/>
-        <TextField fullWidth id="phoneNo" label="Phone number" variant="standard" required value={info.phoneNo} onChange={handleChange} helperText={error.phoneNo ? "Please enter a valid phone number" : ""} error={error.phoneNo} style={{margin: '0.5rem 0'}}/>
-        <TextField fullWidth id="email" label="Email address" variant="standard" required value={info.email} onChange={handleChange} helperText={error.email ? "Please enter a valid email address" : ""} error={error.email} style={{margin: '0.5rem 0'}}/>
-        <CheckoutBtn checkout={inputCheck}/>
-      </Form>
+    <main style={{ backgroundColor: '#252425', position: 'relative', width: '100vw', height: '100vh', margin: '0', padding: '0rem 0' }}>
+      <div style={{ height: 'fit-content' }}>
+        <StripeLogoCtn>
+          <span style={{ color: 'white', height: '100%', fontSize: '16px', fontFamily: 'coffee_rg' }}></span>
+          <Stripelogo src={StripeLogo} alt="Stripe Logo" />
+        </StripeLogoCtn>
+        <FormCtn>
+          <Logo src={KSLogo} alt="KS Logo" />
+          <form id="payment-form" onSubmit={handleSubmit} style={{ position: 'relative' }}>
+            <PaymentElement id="payment-element" options={paymentElementOptions} />
+            <PayButton disabled={isLoading || !stripe || !elements} id="submit">
+              <ButtonText id="button-text">
+                {isLoading ? <div className='spinner' id="spinner"></div> : `$${total.toFixed(2)} Pay Now`}
+              </ButtonText>
+            </PayButton>
+          </form>
+          <p style={{ color: '#990000', fontFamily: 'sans-serif', margin: '2rem 0', fontWeight: '600' }}>{message}</p>
+          <p style={{ textAlign: 'center', margin: '0', marginBottom: '0.5rem' }}>
+            <Cancel href="/cart" style={{ color: 'white', fontFamily: 'coffee_rg', fontSize: '14px' }}>CANCEL</Cancel>
+          </p>
+        </FormCtn>
       </div>
-        </Body> : <div>
-        <h2 style={{textAlign: 'left', width: '1200px', margin: '1rem auto 0 auto', borderBottom: '1px solid black'}}>CHECKOUT</h2>
-        <Body>
-        <div style={{position: 'sticky', height: 'auto'}}>
-          <OrderInfoCtn>
-              <Header>Order Information</Header>
-              <OrderInfo>
-                <AccessTime />
-                <p style={{margin: '0 0 0 0.5rem', fontSize: '14px', height: '100%'}}>5th April, 3:15PM</p>
-              </OrderInfo>
-              <OrderInfo>
-                <PinDrop />
-                <div>
-                  <p style={{margin: '0 0 0 0.5rem', fontSize: '14px', height: '100%', textAlign: 'left', marginBottom: '0.25rem'}}>Rosedale Store</p>
-                  <p style={{margin: '0 0 0 0.5rem', fontSize: '14px', height: '100%', textAlign: 'left'}}>33b Triton Drive, Rosedale, Auckland, NZ</p>
-                </div>
-              </OrderInfo>
-          </OrderInfoCtn>
-          <Form ref={form}>
-          <Header>Contact Information</Header>
-          <TextField fullWidth id="fName" label="First name" variant="standard" required value={info.fName} onChange={handleChange} helperText={error.fName ? "Please enter a first name" : ""} error={error.fName} style={{margin: '0.5rem 0'}}/>
-          <TextField fullWidth id="lName" label="Last name" variant="standard" required value={info.lName} onChange={handleChange} helperText={error.lName ? "Please enter a  last name" : ""} error={error.lName} style={{margin: '0.5rem 0'}}/>
-          <TextField fullWidth id="phoneNo" label="Phone number" variant="standard" required value={info.phoneNo} onChange={handleChange} helperText={error.phoneNo ? "Please enter a valid phone number" : ""} error={error.phoneNo} style={{margin: '0.5rem 0'}}/>
-          <TextField fullWidth id="email" label="Email address" variant="standard" required value={info.email} onChange={handleChange} helperText={error.email ? "Please enter a valid email address" : ""} error={error.email} style={{margin: '0.5rem 0'}}/>
-          <CheckoutBtn checkout={inputCheck}/>
-          </Form>
-        </div>
-        <OrderCtn>
-          <OrderWrapper dropDownState={dropDownState}>
-            <Header style={{margin: '1rem 0 0 1rem'}}>Your Cart</Header>
-            <OrderLabel dropDownState={dropDownState}>
-              <OrderTitle>
-                <OrderText left>{props.numItems} Item{props.numItems === 1 ? '' : 's'}</OrderText>
-                <p>|</p>
-                <OrderText>${props.total}</OrderText>
-              </OrderTitle>
-              <ArrowContainer dropDownState={dropDownState}>
-                <DownArrow onClick={toggleDropDown}/>
-              </ArrowContainer>
-            </OrderLabel>
-            <Seperator dropDownState={dropDownState}/>
-            <OrderDetails dropDownState={dropDownState}>
-              {props.cart.map(item => {
-                  return <CartItem 
-                    title={item.title}
-                    img={item.img}
-                    size={item.size}
-                    quantity={item.quantity}
-                    price={item.price}
-                    details={item.details}
-                    chicken={item.chicken}
-                    powderToppings={item.powderToppings}
-                    chickenToppings={item.chickenToppings}
-                    sauce={item.sauce}
-                    cut={item.cut}
-                    sides={item.sides}
-                    editItem={() => props.editItem(item)}
-                    key={item.key}
-                    checkout
-                  />
-              })}
-              <a href="/order"><Edit>Edit order</Edit></a>
-            </OrderDetails>
-          </OrderWrapper>
-        </OrderCtn>
-        </Body>
-        </div>}
-    </div>
+    </main>
   )
 }
