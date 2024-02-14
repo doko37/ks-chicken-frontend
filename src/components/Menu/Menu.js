@@ -3,9 +3,6 @@ import styled from 'styled-components'
 import Item from './Item/Item'
 import './Menu.css'
 import '../../App.css'
-<<<<<<< HEAD
-import { ReportOutlined as Warning } from '@material-ui/icons'
-=======
 import Drawer from './Drawer/Drawer'
 import Backdrop from './Drawer/Backdrop'
 import publicRequest from '../../api/requestMethod'
@@ -14,7 +11,6 @@ import { addItemToCart, updateCart } from "../../features/user/userSlice"
 import { ShoppingCart } from '@material-ui/icons'
 import { Badge } from '@material-ui/core'
 import Modal from '../Modal/Modal'
->>>>>>> beta
 
 const Container = styled.div`
     width: auto;
@@ -64,10 +60,6 @@ const NavBarItemContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-<<<<<<< HEAD
-    //margin-top: ${props => props.active ? '1px' : '0'};
-=======
->>>>>>> beta
     border-bottom: ${props => props.active ? '2px solid white' : '2px solid #201e1f'};
     cursor: ${props => !props.temp ? 'pointer' : 'default'};
 
@@ -121,27 +113,6 @@ export const CategoryTitle = styled.h3`
     color: ${props => props.lunch ? 'black' : 'white'};
 `
 
-<<<<<<< HEAD
-const Alert = styled.div`
-    width: auto;
-    background-color: #cf8334;
-    color: white;
-    padding: 0.5rem;
-    font-size: x-large;
-`
-
-const AlertWrapper = styled.div`
-    margin: 0.25rem;
-    border: 4px white dashed;
-    position: relative;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    width: auto;
-
-    @media(min-width: 1200px) {
-        width: 1176px;
-        margin: 0.25rem auto;
-=======
 const CartButton = styled.a`
     display: flex;
     opacity: ${props => props.yPos > 500 ? '100%' : '0%'};
@@ -166,7 +137,6 @@ const CartButton = styled.a`
 
     @media(min-width: 700px) {
         display: none;
->>>>>>> beta
     }
 `
 
@@ -192,8 +162,8 @@ export default function Menu(props) {
                 let chicken = await publicRequest.get("/items/chicken")
                 let sides = await publicRequest.get("/items/sides")
                 let drinks = await publicRequest.get("/items/drinks")
-                setItems({chicken: chicken.data, sides: sides.data, drinks: drinks.data})
-            } catch(err) { }
+                setItems({ chicken: chicken.data, sides: sides.data, drinks: drinks.data })
+            } catch (err) { }
         }
 
         getItems()
@@ -201,11 +171,7 @@ export default function Menu(props) {
 
     useEffect(() => {
         function detectYPos() {
-<<<<<<< HEAD
-            if (chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2 || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
-=======
             if ((chickenRef.current.getBoundingClientRect().top > 0 && chickenRef.current.getBoundingClientRect().top < window.innerHeight / 2) || sidesRef.current.getBoundingClientRect().top > window.innerHeight / 2) {
->>>>>>> beta
                 setInView('chicken')
             } else if (sidesRef.current.getBoundingClientRect().top > 0 && sidesRef.current.getBoundingClientRect().top < window.innerHeight / 2) {
                 setInView('sides')
@@ -237,62 +203,6 @@ export default function Menu(props) {
     }
 
     return (
-<<<<<<< HEAD
-        <Body id="body" cartState={props.cartState} className='Italic' ref={ctnRef}>
-            <NavBarContainer>
-                <NavBar>
-                    <NavBarItemContainer active={inView === 'chicken' ? true : false} onClick={() => scrollMenu('chicken')}>
-                        <NavBarItem>Chicken</NavBarItem>
-                    </NavBarItemContainer>
-                    <NavBarItemContainer active={inView === 'sides' ? true : false} onClick={() => scrollMenu('sides')}>
-                        <NavBarItem>Sides</NavBarItem>
-                    </NavBarItemContainer>
-                    <NavBarItemContainer active={inView === 'drinks' ? true : false} temp>
-                        <NavBarItem temp>Drinks</NavBarItem>
-                    </NavBarItemContainer>
-                </NavBar>
-            </NavBarContainer>
-            <Container>
-                <ItemContainer>
-                    <CategoryTitle ref={chickenRef}>CHICKEN</CategoryTitle>
-                    <CategoryContainer id="chicken">
-                        {Chicken.map(item => {
-                            return (
-                                <Item
-                                    img={item.img}
-                                    title={item.title.toUpperCase()}
-                                    halfprice={item.halfprice}
-                                    fullprice={item.fullprice}
-                                    type="chicken"
-                                    itemKey={item.key}
-                                    key={item.key}
-                                />
-                            )
-                        })}
-                    </CategoryContainer>
-                    <CategoryTitle ref={sidesRef}>SIDES</CategoryTitle>
-                    <CategoryContainer id="sides">
-                        {Sides.map(item => {
-                            return (
-                                <Item
-                                    img={item.img}
-                                    title={item.title.toUpperCase()}
-                                    price={item.priceLabel}
-                                    mediumPrice={item.mediumPrice}
-                                    largePrice={item.largePrice}
-                                    type="sides"
-                                    itemKey={item.key}
-                                    key={item.key}
-                                />
-                            )
-                        })}
-                    </CategoryContainer>
-                </ItemContainer>
-            </Container>
-            {/* <ItemBox itemSelectedState={itemSelectedState} itemSelected={itemSelected} selectedItem={selectedItem} addItem={item => addItem(item)}/>
-                <OrderFooter toggleCart={props.toggleCart} numItems={props.numItems}/> */}
-        </Body>
-=======
         <div>
             <Body id="body" cartState={props.cartState} className='Italic' drawerState={props.drawerState}>
                 <NavBarContainer>
@@ -386,8 +296,7 @@ export default function Menu(props) {
                     <ShoppingCart />
                 </Badge>
             </CartButton>
-            <Modal item={item} mode={"add"} modalState={modalState} toggleModalState={() => setModalState(null)}/>
+            <Modal item={item} mode={"add"} modalState={modalState} toggleModalState={() => setModalState(null)} />
         </div>
->>>>>>> beta
     )
 }

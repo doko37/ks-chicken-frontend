@@ -11,8 +11,6 @@ import '../Alert.css'
 import { Report } from '@material-ui/icons'
 import lights from './lights.png'
 import promotionImg from './promotion.jpg'
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
 import { MobileState } from '../hooks/MobileState'
 import hoursMobile from './Images/hours_mobile.jpg'
 import hoursDesktop from './Images/hours_desktop.jpg'
