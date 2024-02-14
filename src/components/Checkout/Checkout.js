@@ -92,11 +92,15 @@ export default function CheckoutForm() {
   const elements = useElements()
   const dispatch = useDispatch()
 
-  const [email, setEmail] = useState('')
   const [message, setMessage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const total = useSelector((store) => store.user.cart.total)
-  const returnURL = process.env.NODE_ENV === 'production' ? 'https://kschicken.co.nz/success' : 'http://localhost:3000/success'
+  const order = JSON.parse(localStorage.getItem('order'))
+  const orderNo = order.orderNo
+  const email = order.email
+  const pickupTime = order.pickupTime
+  const pickupDate = order.pickupDate
+  const returnURL = process.env.NODE_ENV === 'production' ? `https://kschicken.co.nz/success/?orderNo=${orderNo}&email=${email}&pickupTime=${pickupTime}&pickupDate=${pickupDate}` : `http://localhost:3000/success/?orderNo=${orderNo}&email=${email}&pickupTime=${pickupTime}&pickupDate=${pickupDate}`
 
   useEffect(() => {
     if (!stripe) return

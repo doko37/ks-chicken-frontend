@@ -187,7 +187,7 @@ export default function Cart(props) {
         {closed ?
           <Ctn style={{ display: 'block' }}>
             <Notice>
-              <Text style={{ fontSize: mState ? '38px' : '48px' }}>THE STORE IS CURRENTLY CLOSED, <br />SORRY ABOUT THAT.</Text>
+              <Text style={{ fontSize: mState ? '30px' : '48px' }}>ONLINE ORDERING IS CURRENTLY CLOSED FOR MAINTENANCE, <br />IT WILL BE BACK IN A FEW DAYS!<br /><br />SORRY ABOUT THAT.</Text>
               <ConfusedChicken src={chickenIcon} alt="Confused Chicken" />
             </Notice>
           </Ctn> : cart.items.length > 0 ?
