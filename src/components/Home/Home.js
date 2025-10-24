@@ -303,21 +303,11 @@ export default function Home() {
 
     return (
         <Body className='Italic'>
-            {/* <Slider /> */}
-            {/* <h1 style={{color: 'white', fontWeight: '300', fontSize: '42px'}}>KS Chicken</h1> */}
             <Top>
                 <Hero src={hero} />
                 <HeroTitleCtn top>
                     <Title top>The Best Korean Fried Chicken in Auckland!</Title>
                 </HeroTitleCtn>
-                {/* <Carousel infiniteLoop={true} autoPlay={true}>
-                    <div>
-                        <Hero src={mState ? hoursMobile : hoursDesktop} />
-                    </div>
-                    <div>
-                        <Hero src={mState ? dealMobile : dealDesktop} />
-                    </div>
-                </Carousel> */}
             </Top>
             <Bottom>
                 <DescCtn>
@@ -337,10 +327,6 @@ export default function Home() {
                         <Image src={chips} id='Image' />
                         <ButtonTxt href='./menu#sides'>SIDES</ButtonTxt>
                     </Button>
-                    {/* <Button id='Cover'>
-                        <Image src={cola} id='Image' />
-                        <ButtonTxt href="/menu">DRINKS</ButtonTxt>
-                    </Button> */}
                     <Button id='Cover'>
                         <Image src={lunch} id='Image' />
                         <ButtonTxt href="/lunch-bar">LUNCH BAR</ButtonTxt>
