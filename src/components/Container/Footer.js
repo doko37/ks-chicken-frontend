@@ -54,16 +54,6 @@ const Right = styled.div`
   }
 `
 
-const Left = styled.div`
-  text-align: center;
-  flex: 2;
-  margin-left: 1rem;
-
-  @media(min-width: 700px) {
-    flex: 1;
-  }
-`
-
 const Text = styled.p`
   margin: 0;
   margin-bottom: 1rem;
@@ -127,14 +117,9 @@ const TextCtn = styled.div`
 `
 
 export default function Footer(props) {
-  const mState = MobileState()
-
   return (
     <Body className='Normal' img={logo_full}>
       <Ctn>
-        {/* <Left>
-          <Text><Link href="/">Home</Link> | <Link href="/menu">Menu</Link> | <Link href="/lunch-bar">Lunch Bar</Link> | <Link href="/contact-us">Contact Us</Link></Text>
-        </Left> */}
         <Right>
           <div>
             <Text><Link href="/">Home</Link> | <Link href="/menu">Menu</Link> | <Link href="/lunch-bar">Lunch Bar</Link> | <Link href="/contact-us">Contact Us</Link></Text>
@@ -149,7 +134,6 @@ export default function Footer(props) {
             <Text copyright>© 2023 KS Chicken. All Rights Reserved.</Text>
           </TextCtn>
         </Right>
-        {/* <Logo src={mState ? logo : logo_full} first /> */}
       </Ctn>
       <Logo src={logo} second />
       <Logo src={logo} third />

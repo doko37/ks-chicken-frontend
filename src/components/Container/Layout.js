@@ -14,7 +14,7 @@ import Cart from '../Cart/Cart';
 import publicRequest from '../../api/requestMethod'
 import StoreSelector from '../Cart/StoreSelector';
 import Backdrop from '../Menu/Drawer/Backdrop';
-import { getCart, setEmail, setCart, resetUser, setUser, setPickupTime, setCartAmount, resetCart } from '../../features/user/userSlice';
+import { setEmail, resetUser, setUser, setPickupTime, setCartAmount } from '../../features/user/userSlice';
 import { setClosed } from '../../features/menu/menuSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadStripe } from "@stripe/stripe-js";
@@ -227,11 +227,11 @@ export default function Layout() {
             await updateSession()
             const { closed } = (await publicRequest.get('/dates/storeHours/today')).data
             console.log(closed)
-            if (closed) {
-                dispatch(setClosed({ closed: true }))
-                dispatch(resetUser())
-                return
-            }
+            // if (closed) {
+            //     dispatch(setClosed({ closed: true }))
+            //     dispatch(resetUser())
+            //     return
+            // }
             const _dates = await publicRequest.get('/dates')
             setDates(_dates.data)
             let now = moment.tz('Pacific/Auckland')
