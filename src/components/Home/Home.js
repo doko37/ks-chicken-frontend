@@ -3,19 +3,12 @@ import styled from 'styled-components'
 //import Slider from './Slider'
 import chicken from '../../Images/KSChicken_KoreanFC.jpg'
 import chips from '../../Images/KSChicken_Chips.jpg'
-import cola from '../../Images/cola.jpg'
 import lunch from '../../Images/lunchsummary.jpg'
 import hero from './KSChicken_Hero.jpg'
 import './Home.css'
 import '../Alert.css'
-import { Report } from '@material-ui/icons'
 import lights from './lights.png'
-import promotionImg from './promotion.jpg'
 import { MobileState } from '../hooks/MobileState'
-import hoursMobile from './Images/hours_mobile.jpg'
-import hoursDesktop from './Images/hours_desktop.jpg'
-import dealMobile from './Images/deal_mobile.png'
-import dealDesktop from './Images/deal_desktop.png'
 
 const Body = styled.div`
     width: 100%;
@@ -224,10 +217,6 @@ const NoticeCtn = styled.div`
         padding: 0.5rem 0;
         margin-top: -1rem;
     }
-`
-
-const NoticeTxt = styled.p`
-    margin: 0.5rem;
 `
 
 const Lights = styled.div`

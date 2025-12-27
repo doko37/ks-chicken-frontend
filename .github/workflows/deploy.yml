@@ -2,7 +2,7 @@ name: Build and Deploy to AWS EC2
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["CICD_test"]
 
 permissions:
   id-token: write
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Install dependencies
         run: npm ci
@@ -42,9 +42,9 @@ jobs:
         run: |
           aws s3 cp build.zip s3://my-app-deployments/build-${{ github.sha }}.zip
 
-      - name: Trigger CodeDeploy deployment
-        run: |
-          aws deploy create-deployment \
-            --application-name ks-chicken \
-            --deployment-group-name Deploy-to-ASG \
-            --s3-location bucket=my-app-deployments,bundleType=zip,key=build-${{ github.sha }}.zip
+      # - name: Trigger CodeDeploy deployment
+      #   run: |
+      #     aws deploy create-deployment \
+      #       --application-name ks-chicken \
+      #       --deployment-group-name Deploy-to-ASG \
+      #       --s3-location bucket=my-app-deployments,bundleType=zip,key=build-${{ github.sha }}.zip
