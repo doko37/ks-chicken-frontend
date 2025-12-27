@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import moment from 'moment'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import CartItem from './CartItem'
 import '../../App.css'
-import Backdrop from '../Menu/Drawer/Backdrop'
 import Drawer from '../Menu/Drawer/Drawer'
 import CheckoutPanel from './CheckoutPanel'
-import StoreSelector from './StoreSelector'
-import api from '../../api/requestMethod'
 import { KeyboardArrowDown as Down } from '@material-ui/icons'
 import { MobileState } from '../hooks/MobileState'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCart, updateCart, removeItemFromCart, editItemInCart } from '../../features/user/userSlice'
+import { updateCart, removeItemFromCart, editItemInCart } from '../../features/user/userSlice'
 import { Body as CheckoutPanelBody } from './CheckoutPanel'
 import { Button as DrawerButton } from '../Menu/Drawer/Drawer'
 import Modal from '../Modal/Modal'
@@ -152,7 +148,6 @@ export default function Cart(props) {
   const session = useSelector((store) => store.user)
   const closed = useSelector((store) => store.menu.closed)
   const cart = session.cart
-  const userToken = session.userToken
   const dispatch = useDispatch()
 
   const toggleCartDisplay = () => {
@@ -187,7 +182,7 @@ export default function Cart(props) {
         {closed ?
           <Ctn style={{ display: 'block' }}>
             <Notice>
-              <Text style={{ fontSize: mState ? '30px' : '48px' }}>ONLINE ORDERING IS CURRENTLY CLOSED FOR MAINTENANCE, <br />IT WILL BE BACK IN A FEW DAYS!<br /><br />SORRY ABOUT THAT.</Text>
+              <Text style={{ fontSize: mState ? '30px' : '48px' }}>ONLINE ORDERING IS CURRENTLY UNAVAILABLE <br />SORRY ABOUT THAT.</Text>
               <ConfusedChicken src={chickenIcon} alt="Confused Chicken" />
             </Notice>
           </Ctn> : cart.items.length > 0 ?

@@ -140,7 +140,7 @@ export default function CheckoutPanel(props) {
             <AccessTime style={{ color: 'white', fontSize: '26px' }} />
             <div>
               <Text>{moment(pickupTime).format('dddd, MMM Do, h:mm A')}</Text>
-              <Text style={{ fontSize: '14px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() > 20 || moment().hour() === 20 && moment().minute() > 15) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
+              <Text style={{ fontSize: '14px', color: 'darkred', display: moment().day() === 0 || (moment().hour() < 11 || moment().hour() > 20 || (moment().hour() === 20 && moment().minute() > 15)) ? '' : 'none' }}>We are currently closed. Order for another time?</Text>
             </div>
             <Change onClick={props.togglessState}>Change</Change>
           </FlexCtn>
