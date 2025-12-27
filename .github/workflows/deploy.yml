@@ -42,9 +42,9 @@ jobs:
         run: |
           aws s3 cp build.zip s3://my-app-deployments/build-${{ github.sha }}.zip
 
-      - name: Trigger CodeDeploy deployment
-        run: |
-          aws deploy create-deployment \
-            --application-name ks-chicken \
-            --deployment-group-name Deploy-to-ASG \
-            --s3-location bucket=my-app-deployments,bundleType=zip,key=build-${{ github.sha }}.zip
+      # - name: Trigger CodeDeploy deployment
+      #   run: |
+      #     aws deploy create-deployment \
+      #       --application-name ks-chicken \
+      #       --deployment-group-name Deploy-to-ASG \
+      #       --s3-location bucket=my-app-deployments,bundleType=zip,key=build-${{ github.sha }}.zip
