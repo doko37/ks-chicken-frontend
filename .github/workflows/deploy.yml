@@ -59,4 +59,4 @@ jobs:
           aws deploy create-deployment \
             --application-name ks-chicken-test \
             --deployment-group-name v1 \
-            --s3-location bucket=ks-chicken,bundleType=zip,key=deployments/client/build${{ github.sha }}.zip \
+            --s3-location bucket=ks-chicken,bundleType=zip,key=deployments/client/deployment_bundle${{ github.sha }}.zip \
