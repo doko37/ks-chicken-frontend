@@ -40,7 +40,7 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 cp build.zip s3://my-app-deployments/build-${{ github.sha }}.zip
+          aws s3 cp build.zip s3://ks-chicken/deployments/client/build${{ github.sha }}.zip
 
       # - name: Trigger CodeDeploy deployment
       #   run: |
