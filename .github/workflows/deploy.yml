@@ -38,13 +38,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-2
 
+      - name: Prepare CodeDeploy bundle
+        run: |
+          mkdir deploy
+          cp appspec.yml deploy/
+          cp -r scripts deploy/
+          cp -r build deploy/
+
+      - name: Zip deployment bundle
+        run: |
+          cd deploy
+          zip -r ../deployment_bundle.zip .
+
       - name: Upload to S3
         run: |
-          aws s3 cp build.zip s3://ks-chicken/deployments/client/build${{ github.sha }}.zip
+          aws s3 cp deployment_bundle.zip s3://ks-chicken/deployments/codedeploy/deployment_bundle${{ github.sha }}.zip
 
-      # - name: Trigger CodeDeploy deployment
-      #   run: |
-      #     aws deploy create-deployment \
-      #       --application-name ks-chicken \
-      #       --deployment-group-name Deploy-to-ASG \
-      #       --s3-location bucket=my-app-deployments,bundleType=zip,key=build-${{ github.sha }}.zip
+      - name: Trigger CodeDeploy deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name ks-chicken-test \
+            --deployment-group-name v1
+            --s3-location bucket=ks-chicken,bundleType=zip,key=deployments/client/build${{ github.sha }}.zip \

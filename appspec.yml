@@ -1,0 +1,19 @@
+verison: 0.1
+os: linux
+
+hooks:
+  BeforeInstall:
+    - location: scripts/clean.sh
+      runas: root
+
+files:
+  - source: /
+    destination: /var/www/html/ks-chicken
+    overwrite: true
+
+permissions:
+  - object: /var/www/html/ks-chicken
+    pattern: "**"
+    owner: nginx
+    group: nginx
+    mode: 755
