@@ -14,6 +14,6 @@ files:
 permissions:
   - object: /var/www/html/ks-chicken
     pattern: "**"
-    owner: nginx
-    group: nginx
+    owner: www-data
+    group: www-data
     mode: 755
