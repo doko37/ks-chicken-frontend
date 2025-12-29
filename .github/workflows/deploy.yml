@@ -40,6 +40,7 @@ jobs:
 
       - name: Prepare CodeDeploy bundle
         run: |
+          rm -rf deploy deployment_bundle.zip
           mkdir deploy
           cp appspec.yml deploy/
           cp -r scripts deploy/
