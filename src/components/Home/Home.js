@@ -296,7 +296,6 @@ export default function Home() {
                 <Hero src={hero} />
                 <HeroTitleCtn top>
                     <Title top>The Best Korean Fried Chicken in Auckland!</Title>
-                    <Title>This is a test</Title>
                 </HeroTitleCtn>
             </Top>
             <Bottom>
