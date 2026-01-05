@@ -25,6 +25,8 @@ jobs:
         run: npm ci
 
       - name: Build application
+        env:
+          REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ vars.STRIPE_PUBLISHABLE_KEY }}
         run: CI=false npm run build
 
       - name: Zip build artifacts
