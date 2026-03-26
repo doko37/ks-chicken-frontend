@@ -1,17 +1,45 @@
-# Front-End side of the KS Chicken website.
+# KS Chicken — Frontend
 
-### Developed using:
-- ReactJS ⚛️
-- Styled-components
-- React-redux
-- and other cool libraries
-  
-### Built by:
-- Me
+Frontend application for KS Chicken, a responsive e-commerce-style web application built using React.  
+The application provides a modern ordering interface with integrated Stripe checkout and automated cloud deployment.
 
-### Easy to use e-commerce UI:
-- Menu for viewing items
-- Contact page for store information such as location (google maps), store hours, phone number, etc.
-- Adding, removing, and editing items in a cart
-- Changing order time and date
-- Stripe checkout page for payment with form for customer information
+---
+
+## Features
+
+- Built using **React.js**
+- Fully **responsive design** supporting desktop and mobile devices
+- **Stripe Checkout integration** for secure payment processing
+- Dynamic cart and order flow
+- Production-style **CI/CD pipeline**
+- Automated deployment to AWS using GitHub Actions and CodeDeploy
+
+---
+
+## Tech Stack
+
+**Frontend**
+- React.js
+- HTML5
+- CSS3
+
+**Payments**
+- Stripe Checkout API
+
+**CI/CD & Deployment**
+- GitHub Actions
+- AWS CodeDeploy
+- AWS EC2
+- AWS S3
+
+---
+
+## Deployment Workflow
+
+The build and deployment process is fully automated:
+
+1. Code is pushed to GitHub
+2. GitHub Actions runs the build process
+3. Build artifacts are packaged and uploaded to S3
+4. AWS CodeDeploy deploys the application to EC2 instances
+5. Application updates automatically with zero manual steps
